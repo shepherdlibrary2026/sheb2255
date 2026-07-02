@@ -1,20 +1,172 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Sign Up | The Shepherd's Library</title>
-</head>
-<body>
-  <h1>Create Account</h1>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <input id="fullName" type="text" placeholder="Full Name">
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="signUp()">Sign Up</button>
-
-  <p id="message"></p>
+  <title>Create Account | The Shepherd's Library</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/auth.js"></script>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+    body{min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a,#312e81);display:flex;align-items:center;justify-content:center;color:#0f172a}
+    .wrapper{width:92%;max-width:1100px;display:grid;grid-template-columns:1fr 1fr;background:white;border-radius:28px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.35)}
+    .left{padding:60px;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:white}
+    .left h1{font-size:46px;line-height:1.1;margin-bottom:20px}
+    .left p{color:#dbeafe;font-size:18px;margin-bottom:30px}
+    .feature{margin:18px 0;color:#fde68a;font-weight:700}
+    .right{padding:55px}
+    .logo{font-size:24px;font-weight:900;color:#1e3a8a;margin-bottom:25px}
+    h2{font-size:34px;margin-bottom:10px}
+    .subtitle{color:#64748b;margin-bottom:25px}
+    .social{display:grid;gap:12px;margin-bottom:24px}
+    .social button{height:48px;border:1px solid #cbd5e1;background:white;border-radius:12px;font-weight:800;cursor:pointer}
+    .divider{text-align:center;color:#94a3b8;margin:22px 0;position:relative}
+    .divider:before,.divider:after{content:"";height:1px;background:#e2e8f0;width:38%;position:absolute;top:50%}
+    .divider:before{left:0}.divider:after{right:0}
+    label{font-weight:700;display:block;margin:14px 0 7px}
+    input{width:100%;padding:15px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .terms{font-size:14px;color:#64748b;margin:18px 0}
+    .terms a{color:#1e3a8a;font-weight:800}
+    .btn{width:100%;padding:16px;border:none;border-radius:999px;background:#1e3a8a;color:white;font-weight:900;font-size:16px;cursor:pointer}
+    .login{text-align:center;margin-top:18px;color:#64748b}
+    .login a{color:#1e3a8a;font-weight:900}
+    #message{margin-top:15px;font-weight:700;color:#1e3a8a}
+    @media(max-width:850px){.wrapper{grid-template-columns:1fr}.left{display:none}.right{padding:35px}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <div class="left">
+    <h1>Start building your spiritual library today.</h1>
+    <p>
+      Create sermons, organize Bible study notes, save prayers, and grow deeper in God’s Word with AI-powered ministry tools.
+    </p>
+
+    <div class="feature">✓ AI Bible Study Assistant</div>
+    <div class="feature">✓ Sermon Builder for Pastors</div>
+    <div class="feature">✓ Prayer Journal & Study Notes</div>
+    <div class="feature">✓ Built for believers, pastors, and churches</div>
+  </div>
+
+  <div class="right">
+    <div class="logo">📖 The Shepherd's Library</div>
+
+    <h2>Create Account</h2>
+    <p class="subtitle">Start free. No credit card required.</p>
+
+    <div class="social">
+      <button onclick="signUpWithGoogle()">Continue with Google</button>
+      <button onclick="signUpWithApple()">Continue with Apple</button>
+    </div>
+
+    <div class="divider">or</div>
+
+    <form onsubmit="signUp(event)">
+      <div class="row">
+        <div>
+          <label>First Name</label>
+          <input id="firstName" type="text" required>
+        </div>
+
+        <div>
+          <label>Last Name</label>
+          <input id="lastName" type="text" required>
+        </div>
+      </div>
+
+      <label>Email Address</label>
+      <input id="email" type="email" required>
+
+      <label>Church / Ministry Name</label>
+      <input id="churchName" type="text" placeholder="Optional">
+
+      <label>Your Role</label>
+      <input id="role" type="text" placeholder="Pastor, Teacher, Student, Believer">
+
+      <label>Password</label>
+      <input id="password" type="password" minlength="8" required>
+
+      <p class="terms">
+        By creating an account, you agree to our
+        <a href="terms.html">Terms</a> and
+        <a href="privacy.html">Privacy Policy</a>.
+      </p>
+
+      <button class="btn" type="submit">Create Free Account</button>
+    </form>
+
+    <p id="message"></p>
+
+    <p class="login">
+      Already have an account?
+      <a href="login.html">Sign in</a>
+    </p>
+  </div>
+
+</div>
+
+<script src="js/config.js"></script>
+
+<script>
+  async function signUp(event) {
+    event.preventDefault();
+
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const email = document.getElementById("email").value;
+    const churchName = document.getElementById("churchName").value;
+    const role = document.getElementById("role").value;
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("message");
+
+    const fullName = `${firstName} ${lastName}`;
+
+    const { error } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          first_name: firstName,
+          last_name: lastName,
+          church_name: churchName,
+          role: role
+        }
+      }
+    });
+
+    if (error) {
+      message.textContent = error.message;
+      return;
+    }
+
+    message.textContent = "Account created. Please check your email to confirm your account.";
+  }
+
+  async function signUpWithGoogle() {
+    await supabaseClient.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin + "/dashboard.html"
+      }
+    });
+  }
+
+  async function signUpWithApple() {
+    await supabaseClient.auth.signInWithOAuth({
+      provider: "apple",
+      options: {
+        redirectTo: window.location.origin + "/dashboard.html"
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
