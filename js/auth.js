@@ -75,7 +75,9 @@ async function login(event) {
 // Google Login
 // -------------------------------
 async function loginWithGoogle() {
-  const { error } = await supabaseClient.auth.signInWithOAuth({
+  console.log("Google button clicked");
+
+  const { data, error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",
     options: {
       redirectTo: window.location.origin + "/dashboard.html"
@@ -83,9 +85,12 @@ async function loginWithGoogle() {
   });
 
   if (error) {
-    console.error(error.message);
+    console.error("Google OAuth Error:", error);
     alert(error.message);
+    return;
   }
+
+  console.log("OAuth request started:", data);
 }
 // -------------------------------
 // Apple Login
