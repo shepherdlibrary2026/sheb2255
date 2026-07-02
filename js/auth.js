@@ -87,44 +87,7 @@ async function loginWithGoogle() {
   }
 }
 
-async function signUp(event) {
-  event.preventDefault();
-  alert("Create account clicked");
 
-  const firstName = document.getElementById("firstName").value;
-  const lastName = document.getElementById("lastName").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const churchName = document.getElementById("churchName").value;
-  const role = document.getElementById("role").value;
-  const message = document.getElementById("message");
-
-  const fullName = `${firstName} ${lastName}`;
-
-  const { error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        full_name: fullName,
-        first_name: firstName,
-        last_name: lastName,
-        church_name: churchName,
-        role: role
-      }
-    }
-  });
-
-  if (error) {
-    message.textContent = error.message;
-    message.style.color = "red";
-    return;
-  }
-
-  message.textContent = "Account created. Please check your email.";
-  message.style.color = "green";
-}
-// -------------------------------
 // Apple Login
 // -------------------------------
 async function loginWithApple() {
