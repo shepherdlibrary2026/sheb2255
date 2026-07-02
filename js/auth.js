@@ -2,10 +2,6 @@
 // The Shepherd's Library Auth JS
 // ===============================
 
-// Change this to localhost when testing locally
-const REDIRECT_URL = "https://sheb2255.vercel.app/dashboard.html";";
-const RESET_PASSWORD_URL = "https://sheb2255.vercel.app/account.html";
-
 // -------------------------------
 // Email + Password Signup
 // -------------------------------
