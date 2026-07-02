@@ -75,8 +75,6 @@ async function login(event) {
 // Google Login
 // -------------------------------
 async function loginWithGoogle() {
-  alert("Google button clicked");
-
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",
     options: {
