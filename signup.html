@@ -149,14 +149,19 @@
     message.textContent = "Account created. Please check your email to confirm your account.";
   }
 
-  async function signUpWithGoogle() {
-    await supabaseClient.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin + "/dashboard.html"
-      }
-    });
+ async function loginWithGoogle() {
+  const { data, error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.origin + "/dashboard.html"
+    }
+  });
+
+  if (error) {
+    console.error(error);
+    alert(error.message);
   }
+}
 
   async function signUpWithApple() {
     await supabaseClient.auth.signInWithOAuth({
