@@ -6,8 +6,6 @@
 
   <title>Create Account | The Shepherd's Library</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
     body{min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a,#312e81);display:flex;align-items:center;justify-content:center;color:#0f172a}
@@ -61,8 +59,8 @@
     <p class="subtitle">Start free. No credit card required.</p>
 
     <div class="social">
-     <button type="button" onclick="loginWithGoogle()">Continue with Google</button>
-      <button onclick="signUpWithApple()">Continue with Apple</button>
+      <button type="button" onclick="loginWithGoogle()">Continue with Google</button>
+      <button type="button" onclick="loginWithApple()">Continue with Apple</button>
     </div>
 
     <div class="divider">or</div>
@@ -70,26 +68,26 @@
     <form onsubmit="signUp(event)">
       <div class="row">
         <div>
-          <label>First Name</label>
+          <label for="firstName">First Name</label>
           <input id="firstName" type="text" required>
         </div>
 
         <div>
-          <label>Last Name</label>
+          <label for="lastName">Last Name</label>
           <input id="lastName" type="text" required>
         </div>
       </div>
 
-      <label>Email Address</label>
+      <label for="email">Email Address</label>
       <input id="email" type="email" required>
 
-      <label>Church / Ministry Name</label>
+      <label for="churchName">Church / Ministry Name</label>
       <input id="churchName" type="text" placeholder="Optional">
 
-      <label>Your Role</label>
+      <label for="role">Your Role</label>
       <input id="role" type="text" placeholder="Pastor, Teacher, Student, Believer">
 
-      <label>Password</label>
+      <label for="password">Password</label>
       <input id="password" type="password" minlength="8" required>
 
       <p class="terms">
@@ -111,67 +109,9 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
-
-<script>
-  async function signUp(event) {
-    event.preventDefault();
-
-    const firstName = document.getElementById("firstName").value;
-    const lastName = document.getElementById("lastName").value;
-    const email = document.getElementById("email").value;
-    const churchName = document.getElementById("churchName").value;
-    const role = document.getElementById("role").value;
-    const password = document.getElementById("password").value;
-    const message = document.getElementById("message");
-
-    const fullName = `${firstName} ${lastName}`;
-
-    const { error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          first_name: firstName,
-          last_name: lastName,
-          church_name: churchName,
-          role: role
-        }
-      }
-    });
-
-    if (error) {
-      message.textContent = error.message;
-      return;
-    }
-
-    message.textContent = "Account created. Please check your email to confirm your account.";
-  }
-
- async function loginWithGoogle() {
-  const { data, error } = await supabaseClient.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: window.location.origin + "/dashboard.html"
-    }
-  });
-
-  if (error) {
-    console.error(error);
-    alert(error.message);
-  }
-}
-
-  async function signUpWithApple() {
-    await supabaseClient.auth.signInWithOAuth({
-      provider: "apple",
-      options: {
-        redirectTo: window.location.origin + "/dashboard.html"
-      }
-    });
-  }
-</script>
+<script src="js/auth.js"></script>
 
 </body>
 </html>
