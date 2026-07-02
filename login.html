@@ -1,19 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Login | The Shepherd's Library</title>
-</head>
-<body>
-  <h1>Login</h1>
-
-  <input id="email" type="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-
-  <p id="message"></p>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/config.js"></script>
-  <script src="js/auth.js"></script>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+    body{min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a,#312e81);display:flex;align-items:center;justify-content:center;color:#0f172a}
+    .wrapper{width:92%;max-width:1050px;display:grid;grid-template-columns:1fr 1fr;background:white;border-radius:28px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.35)}
+    .left{padding:60px;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:white}
+    .left h1{font-size:46px;line-height:1.1;margin-bottom:20px}
+    .left p{color:#dbeafe;font-size:18px;margin-bottom:30px}
+    .feature{margin:18px 0;color:#fde68a;font-weight:700}
+    .right{padding:55px}
+    .logo{font-size:24px;font-weight:900;color:#1e3a8a;margin-bottom:25px}
+    h2{font-size:34px;margin-bottom:10px}
+    .subtitle{color:#64748b;margin-bottom:25px}
+    .social{display:grid;gap:12px;margin-bottom:24px}
+    .social button{height:48px;border:1px solid #cbd5e1;background:white;border-radius:12px;font-weight:800;cursor:pointer}
+    .divider{text-align:center;color:#94a3b8;margin:22px 0;position:relative}
+    .divider:before,.divider:after{content:"";height:1px;background:#e2e8f0;width:38%;position:absolute;top:50%}
+    .divider:before{left:0}.divider:after{right:0}
+    label{font-weight:700;display:block;margin:14px 0 7px}
+    input{width:100%;padding:15px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px}
+    .options{display:flex;justify-content:space-between;align-items:center;margin:16px 0;font-size:14px;color:#64748b}
+    .options a{color:#1e3a8a;font-weight:800;text-decoration:none}
+    .remember{display:flex;align-items:center;gap:8px}
+    .remember input{width:auto}
+    .btn{width:100%;padding:16px;border:none;border-radius:999px;background:#1e3a8a;color:white;font-weight:900;font-size:16px;cursor:pointer}
+    .signup{text-align:center;margin-top:18px;color:#64748b}
+    .signup a{color:#1e3a8a;font-weight:900;text-decoration:none}
+    #message{margin-top:15px;font-weight:700;color:#dc2626}
+    @media(max-width:850px){.wrapper{grid-template-columns:1fr}.left{display:none}.right{padding:35px}}
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <div class="left">
+    <h1>Welcome back to your spiritual study space.</h1>
+    <p>
+      Continue preparing sermons, organizing Bible study notes, saving prayers, and growing deeper in Scripture.
+    </p>
+
+    <div class="feature">✓ Continue your sermon preparation</div>
+    <div class="feature">✓ Access your prayer journal</div>
+    <div class="feature">✓ Review your saved study notes</div>
+    <div class="feature">✓ Use AI tools for Bible study</div>
+  </div>
+
+  <div class="right">
+    <div class="logo">📖 The Shepherd's Library</div>
+
+    <h2>Sign In</h2>
+    <p class="subtitle">Access your Bible study dashboard.</p>
+
+    <div class="social">
+      <button onclick="loginWithGoogle()">Continue with Google</button>
+      <button onclick="loginWithApple()">Continue with Apple</button>
+    </div>
+
+    <div class="divider">or</div>
+
+    <form onsubmit="login(event)">
+      <label>Email Address</label>
+      <input id="email" type="email" placeholder="you@example.com" required>
+
+      <label>Password</label>
+      <input id="password" type="password" placeholder="Enter your password" required>
+
+      <div class="options">
+        <label class="remember">
+          <input type="checkbox">
+          Remember me
+        </label>
+
+        <a href="#" onclick="resetPassword()">Forgot password?</a>
+      </div>
+
+      <button class="btn" type="submit">Sign In</button>
+    </form>
+
+    <p id="message"></p>
+
+    <p class="signup">
+      Don’t have an account?
+      <a href="signup.html">Create account</a>
+    </p>
+  </div>
+
+</div>
+
+<script src="js/config.js"></script>
+
+<script>
+  async function login(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("message");
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      message.textContent = error.message;
+      return;
+    }
+
+    window.location.href = "dashboard.html";
+  }
+
+  async function loginWithGoogle() {
+    await supabaseClient.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin + "/dashboard.html"
+      }
+    });
+  }
+
+  async function loginWithApple() {
+    await supabaseClient.auth.signInWithOAuth({
+      provider: "apple",
+      options: {
+        redirectTo: window.location.origin + "/dashboard.html"
+      }
+    });
+  }
+
+  async function resetPassword() {
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message");
+
+    if (!email) {
+      message.textContent = "Enter your email first, then click forgot password.";
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + "/account.html"
+    });
+
+    if (error) {
+      message.textContent = error.message;
+      return;
+    }
+
+    message.style.color = "#1e3a8a";
+    message.textContent = "Password reset link sent. Check your email.";
+  }
+</script>
+
 </body>
 </html>
