@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | The Shepherd's Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+    body{background:#f8fafc;color:#0f172a}
+    .container{width:92%;max-width:1000px;margin:auto}
+    header{background:white;border-bottom:1px solid #e2e8f0}
+    nav{height:76px;display:flex;justify-content:space-between;align-items:center}
+    a{text-decoration:none;color:#1e3a8a;font-weight:700}
+    .logo{font-size:24px;font-weight:900}
+    .btn{background:#1e3a8a;color:white;padding:13px 22px;border-radius:999px}
+    .hero{text-align:center;padding:80px 0 40px}
+    .hero h1{font-size:48px;margin-bottom:14px}
+    .hero p{color:#64748b;font-size:19px}
+    .card{background:white;border:1px solid #e2e8f0;border-radius:24px;padding:36px;margin:30px auto 90px;box-shadow:0 12px 30px rgba(15,23,42,.05)}
+    label{font-weight:700;display:block;margin:18px 0 8px}
+    input,textarea{width:100%;padding:15px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+    textarea{min-height:150px}
+    button{margin-top:22px;border:0;background:#1e3a8a;color:white;padding:15px 26px;border-radius:999px;font-weight:800;cursor:pointer}
+    footer{text-align:center;background:#020617;color:white;padding:35px}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">📖 The Shepherd's Library</div>
+      <div>
+        <a href="index.html">Home</a> &nbsp;&nbsp;
+        <a href="pricing.html">Pricing</a> &nbsp;&nbsp;
+        <a href="signup.html" class="btn">Start Free</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>Have questions about The Shepherd's Library? Send us a message.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="card">
+    <form action="mailto:support@theshepherdslibrary.com" method="post" enctype="text/plain">
+      <label>Your Name</label>
+      <input type="text" name="name" placeholder="Enter your name" required>
+
+      <label>Email Address</label>
+      <input type="email" name="email" placeholder="Enter your email" required>
+
+      <label>Subject</label>
+      <input type="text" name="subject" placeholder="How can we help?">
+
+      <label>Message</label>
+      <textarea name="message" placeholder="Write your message here..." required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 The Shepherd's Library. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
