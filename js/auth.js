@@ -10,42 +10,42 @@ const RESET_PASSWORD_URL = "https://the-shepherds-library.vercel.app/account.htm
 // Email + Password Signup
 // -------------------------------
 async function signUp(event) {
-  if (event) event.preventDefault();
+if (event) event.preventDefault();
 
-  const firstName = document.getElementById("firstName")?.value || "";
-  const lastName = document.getElementById("lastName")?.value || "";
-  const fullName = `${firstName} ${lastName}`.trim();
+const firstName = document.getElementById("firstName")?.value || "";
+const lastName = document.getElementById("lastName")?.value || "";
+const fullName = `${firstName} ${lastName}`.trim();
 
-  const email = document.getElementById("email")?.value || "";
-  const password = document.getElementById("password")?.value || "";
-  const churchName = document.getElementById("churchName")?.value || "";
-  const role = document.getElementById("role")?.value || "";
-  const message = document.getElementById("message");
+const email = document.getElementById("email")?.value || "";
+const password = document.getElementById("password")?.value || "";
+const churchName = document.getElementById("churchName")?.value || "";
+const role = document.getElementById("role")?.value || "";
+const message = document.getElementById("message");
 
-  const { error } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        full_name: fullName,
-        first_name: firstName,
-        last_name: lastName,
-        church_name: churchName,
-        role: role
-      }
-    }
-  });
+const { error } = await supabaseClient.auth.signUp({
+email,
+password,
+options: {
+data: {
+full_name: fullName,
+first_name: firstName,
+last_name: lastName,
+church_name: churchName,
+role: role
+}
+}
+});
 
-  if (error) {
-    showMessage(message, error.message, "error");
-    return;
-  }
+if (error) {
+showMessage(message, error.message, "error");
+return;
+}
 
-  showMessage(
-    message,
-    "Account created successfully. Please check your email to confirm your account.",
-    "success"
-  );
+showMessage(
+message,
+"Account created successfully. Please check your email to confirm your account.",
+"success"
+);
 }
 
 // -------------------------------
