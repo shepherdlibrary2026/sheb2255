@@ -78,15 +78,15 @@ async function loginWithGoogle() {
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "https://the-shepherds-library.vercel.app/dashboard.html"
+      redirectTo: window.location.origin + "/dashboard.html"
     }
   });
 
   if (error) {
+    console.error(error.message);
     alert(error.message);
   }
 }
-
 // -------------------------------
 // Apple Login
 // -------------------------------
