@@ -78,7 +78,7 @@ async function loginWithGoogle() {
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: REDIRECT_URL
+      redirectTo: "https://the-shepherds-library.vercel.app/dashboard.html"
     }
   });
 
