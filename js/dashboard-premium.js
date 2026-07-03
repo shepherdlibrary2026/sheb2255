@@ -81,6 +81,7 @@ function renderPremiumDashboard() {
           <a href="#">🙏 Prayer Journal</a>
           <a href="#">📚 Study Notes</a>
           <a href="#">⭐ Bookmarks</a>
+          <a href="media.html">🎥 Media & Presentation Builder</a>
           <a href="account.html">⚙️ Account Settings</a>
         </div>
 
