@@ -1,0 +1,299 @@
+/* ==========================================
+   The Shepherd's Library
+   Premium Pricing Page
+========================================== */
+
+.pricing-hero {
+  padding: 90px 0 50px;
+  text-align: center;
+  background: linear-gradient(180deg, #ffffff, #eef2ff);
+}
+
+.pricing-hero h1 {
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.05;
+  margin-bottom: 18px;
+  color: #0f172a;
+}
+
+.pricing-hero p {
+  max-width: 760px;
+  margin: auto;
+  color: #64748b;
+  font-size: 20px;
+}
+
+.billing-toggle {
+  margin: 35px auto 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 6px;
+  display: inline-flex;
+  gap: 6px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.billing-toggle button {
+  border: none;
+  background: transparent;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 900;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.billing-toggle button.active {
+  background: #1e3a8a;
+  color: white;
+}
+
+.pricing-section {
+  padding: 70px 0 100px;
+  background: #f8fafc;
+}
+
+.pricing-grid {
+  width: 92%;
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.pricing-card {
+  position: relative;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 34px;
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
+  transition: 0.25s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
+}
+
+.pricing-card.popular {
+  border: 2px solid #1e3a8a;
+  transform: scale(1.03);
+}
+
+.pricing-card.popular:hover {
+  transform: scale(1.03) translateY(-6px);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f59e0b;
+  color: #111827;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.plan-name {
+  font-size: 24px;
+  font-weight: 900;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.plan-description {
+  color: #64748b;
+  min-height: 52px;
+}
+
+.plan-price {
+  margin: 24px 0;
+  font-size: 52px;
+  font-weight: 900;
+  color: #1e3a8a;
+}
+
+.plan-price span {
+  color: #64748b;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.plan-features {
+  list-style: none;
+  margin: 28px 0;
+}
+
+.plan-features li {
+  padding: 10px 0;
+  color: #475569;
+  font-weight: 600;
+}
+
+.plan-features li::before {
+  content: "✓";
+  color: #16a34a;
+  font-weight: 900;
+  margin-right: 10px;
+}
+
+.plan-features li.locked {
+  color: #94a3b8;
+}
+
+.plan-features li.locked::before {
+  content: "—";
+  color: #94a3b8;
+}
+
+.pricing-card .btn {
+  width: 100%;
+}
+
+.pricing-note {
+  text-align: center;
+  color: #64748b;
+  margin-top: 35px;
+}
+
+/* Comparison Table */
+
+.comparison-section {
+  padding: 100px 0;
+  background: white;
+}
+
+.comparison-wrapper {
+  width: 92%;
+  max-width: 1200px;
+  margin: auto;
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.06);
+}
+
+.comparison-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+  text-align: left;
+}
+
+.comparison-table thead {
+  background: #f8fafc;
+}
+
+.comparison-table th {
+  color: #0f172a;
+  font-weight: 900;
+}
+
+.comparison-table td {
+  color: #475569;
+}
+
+.check {
+  color: #16a34a;
+  font-weight: 900;
+}
+
+.minus {
+  color: #94a3b8;
+  font-weight: 900;
+}
+
+/* FAQ */
+
+.pricing-faq {
+  padding: 90px 0;
+  background: #f8fafc;
+}
+
+.faq-wrap {
+  width: 92%;
+  max-width: 850px;
+  margin: auto;
+}
+
+.pricing-faq details {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 22px 26px;
+  margin-bottom: 14px;
+}
+
+.pricing-faq summary {
+  cursor: pointer;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.pricing-faq p {
+  margin-top: 14px;
+  color: #64748b;
+}
+
+/* CTA */
+
+.pricing-cta {
+  padding: 90px 0;
+  background: white;
+}
+
+.pricing-cta-box {
+  width: 92%;
+  max-width: 1100px;
+  margin: auto;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a, #312e81);
+  color: white;
+  text-align: center;
+  border-radius: 32px;
+  padding: 70px 30px;
+}
+
+.pricing-cta-box h2 {
+  font-size: clamp(34px, 5vw, 54px);
+  margin-bottom: 18px;
+}
+
+.pricing-cta-box p {
+  color: #dbeafe;
+  font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto 30px;
+}
+
+/* Responsive */
+
+@media (max-width: 850px) {
+  .pricing-card.popular {
+    transform: none;
+  }
+
+  .pricing-card.popular:hover {
+    transform: translateY(-6px);
+  }
+
+  .plan-description {
+    min-height: auto;
+  }
+}
