@@ -1,0 +1,251 @@
+/* ==========================================
+   The Shepherd's Library
+   Premium Form Components
+========================================== */
+
+.form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+label {
+  display: block;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 15px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 15px;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.12);
+}
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+select {
+  cursor: pointer;
+}
+
+.form-help {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.form-error {
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.form-success {
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+/* Checkbox / Radio */
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+  color: #475569;
+  font-weight: 600;
+}
+
+.checkbox-group input,
+.radio-group input {
+  width: auto;
+}
+
+/* Search */
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  padding-left: 44px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+}
+
+/* Auth Forms */
+
+.auth-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 42px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+}
+
+.auth-title {
+  font-size: 34px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.auth-subtitle {
+  color: #64748b;
+  margin-bottom: 28px;
+}
+
+.social-login {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.social-login button {
+  height: 50px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  border-radius: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.social-login button:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+}
+
+.form-divider {
+  text-align: center;
+  color: #94a3b8;
+  margin: 24px 0;
+  position: relative;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: "";
+  height: 1px;
+  background: #e2e8f0;
+  width: 38%;
+  position: absolute;
+  top: 50%;
+}
+
+.form-divider::before {
+  left: 0;
+}
+
+.form-divider::after {
+  right: 0;
+}
+
+/* Buttons inside forms */
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  border: none;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background: #1e3a8a;
+  color: white;
+}
+
+.cancel-btn {
+  background: #e0e7ff;
+  color: #1e3a8a;
+}
+
+/* File Upload */
+
+.file-upload {
+  border: 2px dashed #cbd5e1;
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  background: #f8fafc;
+  transition: 0.25s ease;
+}
+
+.file-upload:hover {
+  border-color: #1e3a8a;
+  background: #eef2ff;
+}
+
+.file-upload input {
+  display: none;
+}
+
+.file-upload label {
+  cursor: pointer;
+  color: #1e3a8a;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-card {
+    padding: 28px;
+  }
+
+  .auth-title {
+    font-size: 28px;
+  }
+}
