@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Media & Presentation Builder | The Shepherd's Library</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+    body{background:#eef2ff;color:#0f172a}
+    .layout{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+    .sidebar{background:#020617;color:white;padding:28px}
+    .brand{font-size:24px;font-weight:900;color:#fde68a;margin-bottom:35px}
+    .nav a{display:block;color:#cbd5e1;text-decoration:none;padding:14px 16px;border-radius:14px;margin-bottom:8px;font-weight:800}
+    .nav a:hover,.nav a.active{background:#1e3a8a;color:white}
+    .main{padding:32px}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+    .topbar h1{font-size:36px}
+    .topbar p{color:#64748b}
+    .btn{border:0;background:#1e3a8a;color:white;padding:14px 22px;border-radius:999px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}
+    .hero{background:linear-gradient(135deg,#0f172a,#1e3a8a,#312e81);color:white;border-radius:30px;padding:36px;margin-bottom:26px}
+    .hero h2{font-size:34px;margin-bottom:12px}
+    .hero p{color:#dbeafe;max-width:780px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-bottom:28px}
+    .card{background:white;border:1px solid #e2e8f0;border-radius:24px;padding:26px;box-shadow:0 10px 30px rgba(15,23,42,.05)}
+    .card h3{color:#1e3a8a;margin-bottom:10px}
+    .card p{color:#64748b}
+    .builder{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    input,textarea,select{width:100%;padding:14px;border:1px solid #cbd5e1;border-radius:14px;margin:9px 0 15px;font-size:15px}
+    textarea{min-height:130px}
+    .preview{background:#020617;color:white;border-radius:24px;min-height:360px;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}
+    .preview-box h2{font-size:38px;color:#fde68a;margin-bottom:15px}
+    .preview-box p{color:#dbeafe;font-size:18px}
+    .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:24px}
+    .tool{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px;font-weight:900;color:#1e3a8a}
+    footer{padding:30px;text-align:center;color:#64748b}
+    @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.builder{grid-template-columns:1fr}.topbar{display:block}.topbar .btn{margin-top:16px}}
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">📖 Shepherd Library</div>
+
+    <div class="nav">
+      <a href="dashboard.html">🏠 Dashboard</a>
+      <a href="bible-reader.html">📖 Bible Reader</a>
+      <a href="ai-assistant.html">🤖 AI Assistant</a>
+      <a href="sermon-builder.html">📝 Sermon Builder</a>
+      <a href="prayer-journal.html">🙏 Prayer Journal</a>
+      <a href="study-notes.html">📚 Study Notes</a>
+      <a href="media.html" class="active">🎥 Media Builder</a>
+      <a href="account.html">⚙️ Account Settings</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>🎥 Media & Presentation Builder</h1>
+        <p>Create sermon slides, Bible verse graphics, announcements, thumbnails, and church media assets.</p>
+      </div>
+
+      <a href="dashboard.html" class="btn">Back to Dashboard</a>
+    </div>
+
+    <section class="hero">
+      <h2>Build professional church media in minutes.</h2>
+      <p>
+        Design sermon presentation slides, worship backgrounds, announcement graphics, social media posts,
+        livestream thumbnails, and teaching visuals for your ministry.
+      </p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>📺 Sermon Slides</h3>
+        <p>Create title slides, sermon point slides, scripture slides, and closing prayer slides.</p>
+      </div>
+
+      <div class="card">
+        <h3>📖 Bible Verse Graphics</h3>
+        <p>Turn Scripture into beautiful visuals for church screens and social media.</p>
+      </div>
+
+      <div class="card">
+        <h3>📢 Announcements</h3>
+        <p>Create church event graphics, weekly announcements, and ministry updates.</p>
+      </div>
+
+      <div class="card">
+        <h3>🎬 Livestream Assets</h3>
+        <p>Design thumbnails, lower thirds, sermon series graphics, and online ministry content.</p>
+      </div>
+    </section>
+
+    <section class="builder">
+      <div class="card">
+        <h2>Create New Media Project</h2>
+
+        <label>Project Type</label>
+        <select id="projectType">
+          <option>Sermon Slide</option>
+          <option>Bible Verse Graphic</option>
+          <option>Church Announcement</option>
+          <option>Livestream Thumbnail</option>
+          <option>Teaching Presentation</option>
+        </select>
+
+        <label>Title</label>
+        <input id="mediaTitle" placeholder="Example: Faith That Moves Mountains">
+
+        <label>Scripture / Subtitle</label>
+        <input id="mediaSubtitle" placeholder="Example: Matthew 17:20">
+
+        <label>Description / Notes</label>
+        <textarea id="mediaDescription" placeholder="Add sermon points, announcement details, or slide notes..."></textarea>
+
+        <button class="btn" onclick="updatePreview()">Preview Design</button>
+      </div>
+
+      <div class="card">
+        <h2>Live Preview</h2>
+
+        <div class="preview">
+          <div class="preview-box">
+            <h2 id="previewTitle">Faith That Moves Mountains</h2>
+            <p id="previewSubtitle">Matthew 17:20</p>
+            <br>
+            <p id="previewDescription">Your media preview will appear here.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:24px;">
+      <h2>Quick Media Tools</h2>
+
+      <div class="tools">
+        <div class="tool">🎨 Slide Designer</div>
+        <div class="tool">📖 Verse Graphic</div>
+        <div class="tool">📢 Announcement Maker</div>
+        <div class="tool">🎬 Thumbnail Creator</div>
+        <div class="tool">🖼 Flyer Builder</div>
+        <div class="tool">📱 Social Post</div>
+      </div>
+    </section>
+
+    <footer>
+      © 2026 The Shepherd's Library — Media & Presentation Builder
+    </footer>
+  </main>
+
+</div>
+
+<script>
+  function updatePreview() {
+    const title = document.getElementById("mediaTitle").value || "Faith That Moves Mountains";
+    const subtitle = document.getElementById("mediaSubtitle").value || "Matthew 17:20";
+    const description = document.getElementById("mediaDescription").value || "Your media preview will appear here.";
+
+    document.getElementById("previewTitle").textContent = title;
+    document.getElementById("previewSubtitle").textContent = subtitle;
+    document.getElementById("previewDescription").textContent = description;
+  }
+</script>
+
+</body>
+</html>
