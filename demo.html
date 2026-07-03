@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Demo | The Shepherd's Library</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+    body{background:#f8fafc;color:#0f172a;line-height:1.6}
+    .container{width:92%;max-width:1200px;margin:auto}
+    header{background:white;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:999}
+    nav{height:76px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-size:24px;font-weight:900;color:#1e3a8a}
+    nav a{text-decoration:none;color:#0f172a;font-weight:800;margin-left:22px}
+    .btn{background:#1e3a8a;color:white!important;padding:13px 22px;border-radius:999px}
+    .hero{background:linear-gradient(135deg,#0f172a,#1e3a8a,#312e81);color:white;text-align:center;padding:90px 20px}
+    .hero h1{font-size:52px;line-height:1.1;margin-bottom:20px}
+    .hero p{font-size:20px;color:#dbeafe;max-width:760px;margin:auto}
+    .video-box{margin:-55px auto 70px;background:white;border-radius:28px;box-shadow:0 30px 80px rgba(15,23,42,.25);padding:18px;max-width:1000px}
+    .video-placeholder{height:520px;border-radius:20px;background:linear-gradient(135deg,#020617,#1e3a8a);display:flex;align-items:center;justify-content:center;text-align:center;color:white;padding:30px}
+    .play{width:92px;height:92px;border-radius:50%;background:white;color:#1e3a8a;display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 22px}
+    section{padding:80px 0}
+    .section-title{text-align:center;font-size:42px;margin-bottom:16px}
+    .section-subtitle{text-align:center;color:#64748b;font-size:19px;max-width:740px;margin:0 auto 50px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+    .card{background:white;border:1px solid #e2e8f0;border-radius:24px;padding:32px;box-shadow:0 12px 30px rgba(15,23,42,.05)}
+    .icon{font-size:36px;margin-bottom:16px}
+    .card h3{font-size:22px;margin-bottom:12px;color:#1e3a8a}
+    .card p{color:#64748b}
+    .steps{max-width:900px;margin:auto}
+    .step{display:grid;grid-template-columns:70px 1fr;gap:20px;background:white;border:1px solid #e2e8f0;border-radius:22px;padding:26px;margin-bottom:18px}
+    .number{width:52px;height:52px;border-radius:50%;background:#1e3a8a;color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px}
+    .cta{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:white;text-align:center;border-radius:30px;padding:70px 30px}
+    .cta h2{font-size:42px;margin-bottom:18px}
+    .cta p{color:#dbeafe;margin-bottom:30px;font-size:19px}
+    footer{background:#020617;color:white;text-align:center;padding:40px}
+    footer a{color:#cbd5e1;text-decoration:none;margin:0 10px}
+    @media(max-width:800px){.hero h1{font-size:38px}.video-placeholder{height:320px}nav a{display:none}.btn{display:inline-block!important}.step{grid-template-columns:1fr}}
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">📖 The Shepherd's Library</div>
+      <div>
+        <a href="index.html">Home</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="contact.html">Contact</a>
+        <a href="signup.html" class="btn">Start Free</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Watch How The Shepherd's Library Works</h1>
+  <p>
+    See how pastors, Bible teachers, ministry leaders, and believers can use our platform to study Scripture, prepare sermons, organize prayers, and grow spiritually.
+  </p>
+</section>
+
+<div class="container">
+  <div class="video-box">
+    <div class="video-placeholder">
+      <div>
+        <div class="play">▶</div>
+        <h2>Demo Video Coming Soon</h2>
+        <p>
+          Add your YouTube, Vimeo, or Loom demo video here when ready.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <h2 class="section-title">What Clients Will See in the Demo</h2>
+    <p class="section-subtitle">
+      This demo page explains the main features of The Shepherd's Library and shows how the platform helps users save time and grow deeper in God’s Word.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="icon">📖</div>
+        <h3>Bible Reader</h3>
+        <p>Users can read Scripture, search passages, save verses, and organize their study in one place.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h3>AI Bible Assistant</h3>
+        <p>Ask Bible questions, explore themes, create study outlines, and receive research support.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">📝</div>
+        <h3>Sermon Builder</h3>
+        <p>Pastors can create sermon outlines, points, introductions, illustrations, and applications.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🙏</div>
+        <h3>Prayer Journal</h3>
+        <p>Users can write prayers, save prayer requests, and track spiritual growth over time.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">📚</div>
+        <h3>Study Notes</h3>
+        <p>Create and organize Bible study notes, lesson ideas, discipleship materials, and teaching plans.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">⛪</div>
+        <h3>Church Tools</h3>
+        <p>Churches can prepare Bible studies, training materials, teaching series, and ministry resources.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#eef2ff;">
+  <div class="container">
+    <h2 class="section-title">How the Platform Works</h2>
+    <p class="section-subtitle">
+      A simple workflow for pastors, teachers, and believers.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="number">1</div>
+        <div>
+          <h3>Create Your Free Account</h3>
+          <p>Users sign up with email, Google, or Apple and access their personal dashboard.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="number">2</div>
+        <div>
+          <h3>Choose a Study or Ministry Tool</h3>
+          <p>Open the Bible reader, sermon builder, prayer journal, AI assistant, or study notes.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="number">3</div>
+        <div>
+          <h3>Save and Organize Your Work</h3>
+          <p>All notes, sermons, prayers, and study materials are saved securely to the user account.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="number">4</div>
+        <div>
+          <h3>Grow Personally or Equip Your Church</h3>
+          <p>Use the platform for personal devotion, Bible study, sermon preparation, and church teaching.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta">
+      <h2>Ready to Try The Shepherd's Library?</h2>
+      <p>Create your free account today and begin building your spiritual library.</p>
+      <a href="signup.html" class="btn">Start Free Today</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 The Shepherd's Library. All Rights Reserved.</p>
+  <br>
+  <a href="privacy.html">Privacy</a>
+  <a href="terms.html">Terms</a>
+  <a href="contact.html">Contact</a>
+</footer>
+
+</body>
+</html>
