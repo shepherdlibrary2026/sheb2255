@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slide Designer | Shepherd Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #101935;
+      --navy-2: #172447;
+      --navy-3: #24335f;
+      --gold: #f6b73c;
+      --orange: #f28c28;
+      --orange-dark: #d97316;
+      --lavender: #f4f2ff;
+      --card: #ffffff;
+      --text: #14213d;
+      --muted: #64748b;
+      --border: #e6e8f2;
+      --purple: #5b4bdb;
+      --blue: #1e3a8a;
+      --green: #16a34a;
+      --red: #dc2626;
+      --shadow: 0 22px 45px rgba(16, 25, 53, 0.12);
+      --shadow-soft: 0 12px 28px rgba(16, 25, 53, 0.08);
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--lavender);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, var(--navy), #0b1024 100%);
+      color: #fff;
+      padding: 28px 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 34px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--gold), #fff2b7);
+      color: var(--navy);
+      font-size: 26px;
+      box-shadow: 0 12px 24px rgba(246, 183, 60, .28);
+    }
+
+    .brand-title {
+      font-weight: 900;
+      font-size: 21px;
+      line-height: 1.05;
+    }
+
+    .brand-subtitle {
+      color: #cbd5e1;
+      font-size: 12px;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: #8391b4;
+      font-weight: 800;
+      margin: 24px 12px 10px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 15px;
+      color: #dce5f7;
+      font-weight: 700;
+      font-size: 14px;
+      margin: 5px 0;
+      transition: .2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      transform: translateX(3px);
+    }
+
+    .nav-link.active {
+      background: linear-gradient(135deg, rgba(246,183,60,.26), rgba(91,75,219,.24));
+      border: 1px solid rgba(246,183,60,.35);
+    }
+
+    .sidebar-card {
+      margin-top: 26px;
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(246,183,60,.18), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .sidebar-card h3 { margin: 0 0 8px; font-size: 16px; }
+    .sidebar-card p { margin: 0 0 14px; color: #d4d9e8; font-size: 13px; line-height: 1.55; }
+
+    .main {
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .top-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: .2s ease;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--orange), #ffb347); color: #fff; box-shadow: 0 12px 22px rgba(242, 140, 40, .25); }
+    .btn-secondary { background: var(--navy-2); color: #fff; }
+    .btn-light { background: #fff; color: var(--navy); border: 1px solid var(--border); }
+    .btn-danger { background: #fee2e2; color: #991b1b; }
+    .btn-success { background: #dcfce7; color: #166534; }
+    .btn-small { padding: 9px 12px; font-size: 12px; border-radius: 11px; }
+
+    .hero {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top right, rgba(246,183,60,.45), transparent 35%), linear-gradient(135deg, #16234e 0%, #35227b 54%, #111827 100%);
+      color: #fff;
+      padding: 34px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      right: -80px;
+      bottom: -90px;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 850px; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .hero h2 {
+      margin: 0 0 12px;
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #dbe4ff;
+      line-height: 1.7;
+      font-size: 16px;
+      max-width: 760px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .metric-card strong {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+
+    .metric-card span { color: var(--muted); font-weight: 700; font-size: 13px; }
+
+    .designer-grid {
+      display: grid;
+      grid-template-columns: minmax(350px, 440px) 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .panel-header h3 { margin: 0; font-size: 20px; letter-spacing: -0.03em; }
+    .panel-header p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .panel-body { padding: 24px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 850;
+      margin: 0 0 8px;
+      color: #263553;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fbfcff;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: .2s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(91,75,219,.1);
+      background: #fff;
+    }
+
+    textarea { min-height: 145px; resize: vertical; line-height: 1.6; }
+    .field { margin-bottom: 18px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .prompt-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .chip {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 12px;
+      color: #334155;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .chip:hover { background: #f8fafc; border-color: #cfd6e8; }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin: 10px 0 18px;
+    }
+
+    .template {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      cursor: pointer;
+      background: #fff;
+      transition: .2s ease;
+    }
+    .template:hover, .template.active { border-color: var(--purple); box-shadow: 0 10px 24px rgba(91,75,219,.12); }
+    .template-preview {
+      height: 70px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #16234e, #5b4bdb);
+      position: relative;
+      overflow: hidden;
+    }
+    .template:nth-child(2) .template-preview { background: linear-gradient(135deg, #111827, #f28c28); }
+    .template:nth-child(3) .template-preview { background: linear-gradient(135deg, #064e3b, #16a34a); }
+    .template:nth-child(4) .template-preview { background: linear-gradient(135deg, #4c1d95, #db2777); }
+    .template-preview::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 16px;
+      width: 60%;
+      height: 8px;
+      border-radius: 99px;
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 18px 0 rgba(255,255,255,.55), 0 36px 0 rgba(255,255,255,.3);
+    }
+    .template b { display: block; font-size: 13px; }
+    .template span { color: var(--muted); font-size: 11px; font-weight: 700; }
+
+    .action-stack { display: grid; gap: 10px; }
+
+    .workspace-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 14px;
+      background: #f8f9ff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-weight: 850;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .tab-btn.active { background: #fff; border-color: var(--border); color: var(--navy); box-shadow: 0 8px 16px rgba(15,23,42,.06); }
+
+    .workspace-tools {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .workspace-tools .left, .workspace-tools .right { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .slide-stage {
+      padding: 24px;
+      background: linear-gradient(180deg, #fff, #f8f9ff);
+      min-height: 620px;
+    }
+
+    .slide-canvas {
+      width: min(100%, 940px);
+      aspect-ratio: 16 / 9;
+      margin: 0 auto 22px;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      color: #fff;
+      padding: 44px;
+      background: linear-gradient(135deg, #172447, #5b4bdb);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-canvas.classic { background: linear-gradient(135deg, #16234e, #5b4bdb); }
+    .slide-canvas.bold { background: linear-gradient(135deg, #111827, #f28c28); }
+    .slide-canvas.ministry { background: linear-gradient(135deg, #064e3b, #16a34a); }
+    .slide-canvas.worship { background: linear-gradient(135deg, #4c1d95, #db2777); }
+
+    .slide-canvas::before {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.09);
+      top: -140px;
+      right: -110px;
+    }
+    .slide-canvas::after {
+      content: '';
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(246,183,60,.2);
+      bottom: -90px;
+      left: -70px;
+    }
+
+    .slide-inner { position: relative; z-index: 2; }
+    .slide-kicker { font-size: clamp(11px, 1.4vw, 15px); text-transform: uppercase; letter-spacing: .15em; font-weight: 900; color: rgba(255,255,255,.75); margin-bottom: 16px; }
+    .slide-title { font-size: clamp(28px, 5vw, 62px); line-height: 1; letter-spacing: -0.06em; font-weight: 900; max-width: 800px; margin-bottom: 18px; }
+    .slide-text { font-size: clamp(15px, 2vw, 25px); line-height: 1.45; color: rgba(255,255,255,.9); max-width: 720px; font-weight: 600; }
+    .slide-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; position: relative; z-index: 2; color: rgba(255,255,255,.74); font-size: 13px; font-weight: 800; }
+
+    .slide-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .mini-slide {
+      border: 2px solid transparent;
+      background: #fff;
+      border-radius: 18px;
+      padding: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(15,23,42,.06);
+      transition: .2s ease;
+    }
+    .mini-slide.active { border-color: var(--orange); }
+    .mini-screen {
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #172447, #5b4bdb);
+      color: #fff;
+      padding: 12px;
+      font-size: 9px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .mini-slide b { display: block; font-size: 12px; margin-top: 9px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-slide span { color: var(--muted); font-size: 11px; font-weight: 700; }
+
+    .editor-area { display: none; }
+    .editor-area.active { display: block; }
+
+    .slides-list { display: grid; gap: 14px; }
+    .slide-edit-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fff;
+    }
+    .slide-edit-card-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .slide-edit-card-header strong { font-size: 14px; }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .resource-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
+    }
+    .resource-card .icon { font-size: 30px; margin-bottom: 10px; }
+    .resource-card h4 { margin: 0 0 8px; font-size: 16px; }
+    .resource-card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 13px; }
+
+    .empty-state {
+      text-align: center;
+      padding: 56px 20px;
+      color: var(--muted);
+    }
+    .empty-state .icon { font-size: 46px; margin-bottom: 12px; }
+    .empty-state h3 { color: var(--text); margin: 0 0 8px; }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s ease;
+      z-index: 99;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1180px) {
+      .designer-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .resource-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 850px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .main { padding: 18px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .hero { padding: 24px; }
+      .metrics { grid-template-columns: 1fr; }
+      .form-row, .template-grid { grid-template-columns: 1fr; }
+      .slide-canvas { padding: 28px; border-radius: 18px; }
+      .workspace-tools { flex-direction: column; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .sidebar, .topbar, .hero, .metrics, .builder-panel, .workspace-tabs, .workspace-tools, .slide-strip, .resource-grid, .toast { display: none !important; }
+      .app { display: block; }
+      .main { padding: 0; }
+      .designer-grid { display: block; }
+      .panel { border: none; box-shadow: none; }
+      .panel-header { display: none; }
+      .slide-stage { padding: 0; background: #fff; }
+      .slide-canvas { width: 100vw; height: 56.25vw; page-break-after: always; border-radius: 0; box-shadow: none; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">📖</div>
+        <div>
+          <div class="brand-title">Shepherd<br>Library</div>
+          <div class="brand-subtitle">Pastor Study Dashboard</div>
+        </div>
+      </div>
+
+      <div class="nav-section-title">Library Tools</div>
+      <a class="nav-link" href="dashboard.html">🏠 Dashboard</a>
+      <a class="nav-link" href="bible-reader.html">📖 Bible Reader</a>
+      <a class="nav-link" href="ai-assistant.html">🤖 AI Bible Assistant</a>
+      <a class="nav-link" href="sermon-builder.html">📝 Sermon Builder</a>
+      <a class="nav-link" href="study-notes.html">🎓 Study Notes</a>
+      <a class="nav-link" href="research.html">📚 Research Library</a>
+      <a class="nav-link" href="prayer-journal.html">🙏 Prayer Journal</a>
+
+      <div class="nav-section-title">Creative Ministry</div>
+      <a class="nav-link active" href="slide-designer.html">🎨 Slide Designer</a>
+      <a class="nav-link" href="media.html">🎥 Media Builder</a>
+      <a class="nav-link" href="podcast-teaching-note.html">🎙️ Podcast Notes</a>
+      <a class="nav-link" href="bookmarks.html">🔖 Bookmarks</a>
+      <a class="nav-link" href="account-settings.html">⚙️ Account Settings</a>
+
+      <div class="sidebar-card">
+        <h3>AI Presentation Studio</h3>
+        <p>Create sermon slides, Bible study decks, youth teaching visuals, and announcement screens in minutes.</p>
+        <button class="btn btn-primary btn-small" onclick="scrollToBuilder()">Create Slides</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <div class="breadcrumb">Dashboard / Creative Ministry / Slide Designer</div>
+          <h1>AI Slide Designer</h1>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-light" onclick="saveDeck()">💾 Save Deck</button>
+          <button class="btn btn-secondary" onclick="downloadDeckHTML()">⬇️ Download HTML</button>
+          <button class="btn btn-primary" onclick="window.print()">🖨️ Export / Print</button>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-badge">✨ Premium AI tool for churches, pastors, teachers, and ministry leaders</div>
+          <h2>Create beautiful ministry slides with AI.</h2>
+          <p>Turn a sermon theme, Bible study topic, announcement, leadership lesson, or Scripture passage into clean 16:9 presentation slides that can be edited, saved, printed, copied, and exported.</p>
+        </div>
+      </section>
+
+      <section class="metrics">
+        <div class="metric-card"><strong id="slideCount">6</strong><span>Slides in current deck</span></div>
+        <div class="metric-card"><strong>16:9</strong><span>Church screen ready</span></div>
+        <div class="metric-card"><strong>4</strong><span>Premium themes</span></div>
+        <div class="metric-card"><strong>AI</strong><span>Prompt-based creation</span></div>
+      </section>
+
+      <section class="designer-grid" id="builder">
+        <div class="panel builder-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Build with AI</h3>
+              <p>Enter your topic and let the slide builder create a strong ministry-ready deck.</p>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="field">
+              <label for="deckTitle">Presentation Title</label>
+              <input id="deckTitle" value="Returning to the Church of the Book of Acts" placeholder="Example: The Power of Prayer" />
+            </div>
+
+            <div class="field">
+              <label for="audience">Audience</label>
+              <select id="audience">
+                <option>Sunday Sermon</option>
+                <option>Bible Study</option>
+                <option>Youth Ministry</option>
+                <option>Leadership Training</option>
+                <option>New Believers Class</option>
+                <option>Church Announcement</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="prompt">AI Prompt / Teaching Notes</label>
+              <textarea id="prompt" placeholder="Describe the sermon, lesson, announcement, scripture, or teaching goal...">Theme: Recovering God's original design for His church. Scriptures: Acts 2:42-47, Acts 4:31-35, Ephesians 4:11-16. Create a powerful Bible study presentation for pastors, leaders, and believers.</textarea>
+            </div>
+
+            <div class="prompt-chips">
+              <button class="chip" onclick="usePrompt('sermon')">Sermon Deck</button>
+              <button class="chip" onclick="usePrompt('bibleStudy')">Bible Study</button>
+              <button class="chip" onclick="usePrompt('announcement')">Announcement</button>
+              <button class="chip" onclick="usePrompt('youth')">Youth Lesson</button>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="slideNumber">Number of Slides</label>
+                <select id="slideNumber">
+                  <option value="5">5 Slides</option>
+                  <option value="6" selected>6 Slides</option>
+                  <option value="8">8 Slides</option>
+                  <option value="10">10 Slides</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="tone">Tone</label>
+                <select id="tone">
+                  <option>Inspirational</option>
+                  <option>Teaching</option>
+                  <option>Prophetic</option>
+                  <option>Professional</option>
+                  <option>Youthful</option>
+                </select>
+              </div>
+            </div>
+
+            <label>Choose a Premium Theme</label>
+            <div class="template-grid">
+              <div class="template active" data-theme="classic" onclick="selectTheme('classic', this)"><div class="template-preview"></div><b>Royal Classic</b><span>Deep blue ministry style</span></div>
+              <div class="template" data-theme="bold" onclick="selectTheme('bold', this)"><div class="template-preview"></div><b>Bold Revival</b><span>Orange and midnight</span></div>
+              <div class="template" data-theme="ministry" onclick="selectTheme('ministry', this)"><div class="template-preview"></div><b>Growth Ministry</b><span>Green discipleship</span></div>
+              <div class="template" data-theme="worship" onclick="selectTheme('worship', this)"><div class="template-preview"></div><b>Worship Night</b><span>Purple creative glow</span></div>
+            </div>
+
+            <div class="action-stack">
+              <button class="btn btn-primary" onclick="generateDeck()">✨ Generate Slide Deck</button>
+              <button class="btn btn-secondary" onclick="addSlide()">➕ Add Blank Slide</button>
+              <button class="btn btn-light" onclick="connectAIInfo()">🔌 Connect Real AI API</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Presentation Workspace</h3>
+              <p>Preview, edit, reorder, copy, save, and export your ministry slide deck.</p>
+            </div>
+          </div>
+
+          <div class="workspace-tabs">
+            <button class="tab-btn active" onclick="switchTab('preview', this)">Preview</button>
+            <button class="tab-btn" onclick="switchTab('edit', this)">Edit Slides</button>
+            <button class="tab-btn" onclick="switchTab('notes', this)">Speaker Notes</button>
+          </div>
+
+          <div class="workspace-tools">
+            <div class="left">
+              <button class="btn btn-light btn-small" onclick="previousSlide()">← Previous</button>
+              <button class="btn btn-light btn-small" onclick="nextSlide()">Next →</button>
+              <button class="btn btn-success btn-small" onclick="copyCurrentSlide()">📋 Copy Slide Text</button>
+            </div>
+            <div class="right">
+              <button class="btn btn-light btn-small" onclick="downloadJSON()">JSON</button>
+              <button class="btn btn-light btn-small" onclick="downloadText()">Text Outline</button>
+              <button class="btn btn-danger btn-small" onclick="deleteSlide()">Delete Slide</button>
+            </div>
+          </div>
+
+          <div class="slide-stage editor-area active" id="previewArea">
+            <div class="slide-canvas classic" id="slideCanvas">
+              <div class="slide-inner">
+                <div class="slide-kicker" id="slideKicker">Shepherd Library</div>
+                <div class="slide-title" id="slideTitle">Returning to the Church of the Book of Acts</div>
+                <div class="slide-text" id="slideText">Recovering God’s original design for His church through Scripture, prayer, fellowship, generosity, and Spirit-filled witness.</div>
+              </div>
+              <div class="slide-footer"><span id="slideFooter">Acts 2:42–47</span><span id="slidePosition">Slide 1 of 6</span></div>
+            </div>
+            <div class="slide-strip" id="slideStrip"></div>
+          </div>
+
+          <div class="slide-stage editor-area" id="editArea">
+            <div class="slides-list" id="slidesList"></div>
+          </div>
+
+          <div class="slide-stage editor-area" id="notesArea">
+            <div class="field">
+              <label for="speakerNotes">Speaker Notes</label>
+              <textarea id="speakerNotes" placeholder="Write or generate notes for your selected slide..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="generateSpeakerNotes()">✨ Generate Notes for Current Slide</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="resource-grid">
+        <div class="resource-card">
+          <div class="icon">⛪</div>
+          <h4>Church Service Slides</h4>
+          <p>Create sermon points, worship night slides, Scripture displays, giving reminders, and ministry announcements.</p>
+        </div>
+        <div class="resource-card">
+          <div class="icon">🎓</div>
+          <h4>Bible Study Lessons</h4>
+          <p>Turn teaching notes into structured slides with theme, key Scripture, main points, discussion questions, and application.</p>
+        </div>
+        <div class="resource-card">
+          <div class="icon">📤</div>
+          <h4>Export Ready</h4>
+          <p>Print to PDF, download as HTML, save to browser storage, or copy slide text into PowerPoint, Canva, Google Slides, or ProPresenter.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">Saved</div>
+
+  <script>
+    let selectedTheme = 'classic';
+    let currentSlide = 0;
+
+    let slides = [
+      {
+        kicker: 'Shepherd Library',
+        title: 'Returning to the Church of the Book of Acts',
+        text: 'Recovering God’s original design for His church through Scripture, prayer, fellowship, generosity, and Spirit-filled witness.',
+        footer: 'Acts 2:42–47',
+        notes: 'Open by explaining that the goal is not nostalgia, but spiritual recovery. The Book of Acts shows the church alive, devoted, united, generous, and empowered by the Holy Spirit.'
+      },
+      {
+        kicker: 'Foundation',
+        title: 'Devoted to the Apostles’ Teaching',
+        text: 'The early church was built on truth before it was built on activity. Scripture shaped their thinking, worship, decisions, and mission.',
+        footer: 'Acts 2:42',
+        notes: 'Emphasize that a healthy church must be Word-centered. Programs cannot replace doctrine, discipleship, and obedience to Scripture.'
+      },
+      {
+        kicker: 'Community',
+        title: 'Genuine Fellowship and Shared Life',
+        text: 'They were not just attending services; they were building spiritual family, sharing burdens, breaking bread, and walking together.',
+        footer: 'Acts 2:44–46',
+        notes: 'Discuss the difference between a crowd and a community. Ask how believers can move from Sunday attendance to daily fellowship.'
+      },
+      {
+        kicker: 'Prayer',
+        title: 'A Praying Church Carries Power',
+        text: 'When they prayed, the place was shaken. Prayer was not a backup plan; it was the engine of the church’s courage and witness.',
+        footer: 'Acts 4:31',
+        notes: 'Call the church back to corporate prayer. Explain that prayer produces boldness, unity, direction, and spiritual authority.'
+      },
+      {
+        kicker: 'Mission',
+        title: 'Evangelism Empowered by the Spirit',
+        text: 'The early church grew because believers carried the gospel beyond the building with boldness, compassion, and the power of the Holy Spirit.',
+        footer: 'Acts 1:8',
+        notes: 'Encourage every believer to see themselves as a witness. The Spirit empowers ordinary people for extraordinary mission.'
+      },
+      {
+        kicker: 'Application',
+        title: 'Every Believer Serving with Gifts',
+        text: 'God designed the church as a body. When every believer serves, the church matures, grows, and reflects Christ to the world.',
+        footer: 'Ephesians 4:11–16',
+        notes: 'Close with a call to action: return to Scripture, rebuild prayer, deepen fellowship, serve with gifts, and reach the lost.'
+      }
+    ];
+
+    const prompts = {
+      sermon: 'Create a sermon presentation with title slide, introduction, key scripture, 3 main points, practical application, altar call, and closing prayer.',
+      bibleStudy: 'Create a Bible study presentation with theme, key scriptures, historical background, main teaching points, discussion questions, and application for daily life.',
+      announcement: 'Create a church announcement presentation with event title, date, time, location, purpose, who should attend, call to action, and closing reminder.',
+      youth: 'Create a youth ministry lesson presentation with engaging title, icebreaker, Bible passage, real-life example, main lesson, discussion questions, and challenge for the week.'
+    };
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2300);
+    }
+
+    function scrollToBuilder() {
+      document.getElementById('builder').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function selectTheme(theme, element) {
+      selectedTheme = theme;
+      document.querySelectorAll('.template').forEach(item => item.classList.remove('active'));
+      element.classList.add('active');
+      renderSlide();
+      showToast('Theme updated');
+    }
+
+    function usePrompt(type) {
+      document.getElementById('prompt').value = prompts[type];
+      showToast('Prompt loaded');
+    }
+
+    function cleanTitle(text) {
+      return text.replace(/Theme:/i, '').replace(/Topic:/i, '').trim() || 'Untitled Presentation';
+    }
+
+    function generateDeck() {
+      const title = cleanTitle(document.getElementById('deckTitle').value);
+      const prompt = document.getElementById('prompt').value;
+      const audience = document.getElementById('audience').value;
+      const tone = document.getElementById('tone').value;
+      const count = Number(document.getElementById('slideNumber').value);
+      const scriptureMatch = prompt.match(/(Acts|Genesis|Exodus|Leviticus|Numbers|Deuteronomy|Joshua|Judges|Ruth|Samuel|Kings|Chronicles|Ezra|Nehemiah|Esther|Job|Psalm|Proverbs|Ecclesiastes|Song|Isaiah|Jeremiah|Lamentations|Ezekiel|Daniel|Hosea|Joel|Amos|Obadiah|Jonah|Micah|Nahum|Habakkuk|Zephaniah|Haggai|Zechariah|Malachi|Matthew|Mark|Luke|John|Romans|Corinthians|Galatians|Ephesians|Philippians|Colossians|Thessalonians|Timothy|Titus|Philemon|Hebrews|James|Peter|Jude|Revelation)[^,.]*/i);
+      const scripture = scriptureMatch ? scriptureMatch[0].trim() : 'Shepherd Library';
+
+      const baseSlides = [
+        {
+          kicker: audience,
+          title,
+          text: `A ${tone.toLowerCase()} presentation designed to teach, inspire, and help believers respond faithfully to God's Word.`,
+          footer: scripture,
+          notes: `Introduce the topic clearly. Explain why this message matters for ${audience.toLowerCase()} and prepare the audience to engage Scripture with an open heart.`
+        },
+        {
+          kicker: 'Opening Scripture',
+          title: 'What Does the Bible Reveal?',
+          text: `Begin with the key Scripture and allow the Word of God to set the foundation for every point in this presentation.`,
+          footer: scripture,
+          notes: 'Read the Scripture slowly. Highlight repeated words, promises, commands, warnings, and the heart of God revealed in the passage.'
+        },
+        {
+          kicker: 'Key Point 1',
+          title: 'God’s Design Must Be Recovered',
+          text: 'True ministry begins when the church returns to God’s pattern instead of depending only on programs, trends, or tradition.',
+          footer: 'Biblical Foundation',
+          notes: 'Explain the difference between man-made activity and God-given design. Invite the audience to examine what needs to be restored.'
+        },
+        {
+          kicker: 'Key Point 2',
+          title: 'Spiritual Power Requires Devotion',
+          text: 'The people of God grow stronger when they are devoted to Scripture, prayer, fellowship, holiness, generosity, and service.',
+          footer: 'Acts 2:42',
+          notes: 'Challenge the audience to move from occasional interest to consistent devotion. Emphasize daily spiritual habits.'
+        },
+        {
+          kicker: 'Key Point 3',
+          title: 'Every Believer Has a Role',
+          text: 'The church becomes healthy when every believer discovers their gift, serves with humility, and builds up the body of Christ.',
+          footer: 'Ephesians 4:11–16',
+          notes: 'Help listeners understand that ministry is not only for pastors. Every believer is called to contribute to the body.'
+        },
+        {
+          kicker: 'Application',
+          title: 'How Should We Respond?',
+          text: 'Return to the Word. Rebuild prayer. Strengthen fellowship. Serve faithfully. Carry the gospel with boldness and love.',
+          footer: 'Personal Response',
+          notes: 'Close with practical steps. Ask the audience to identify one action they will take this week in response to the message.'
+        },
+        {
+          kicker: 'Discussion',
+          title: 'Questions for Reflection',
+          text: 'What has God been asking us to recover? What must change in our priorities? How can we become a healthier church?',
+          footer: 'Group Conversation',
+          notes: 'Use this slide for Bible study or leadership discussion. Give people time to respond honestly and prayerfully.'
+        },
+        {
+          kicker: 'Prayer',
+          title: 'Lord, Restore Your Church',
+          text: 'Ask God to revive hearts, restore biblical priorities, strengthen leaders, and empower the church to witness with boldness.',
+          footer: 'Closing Prayer',
+          notes: 'Lead the church into prayer. Invite repentance, surrender, renewed commitment, and fresh dependence on the Holy Spirit.'
+        },
+        {
+          kicker: 'Next Steps',
+          title: 'This Week’s Action Plan',
+          text: 'Read the passage again, pray with someone, serve in one area, invite one person, and write down what God is teaching you.',
+          footer: 'Faith in Action',
+          notes: 'Give clear next steps so the presentation becomes more than information. Encourage accountability and follow-through.'
+        },
+        {
+          kicker: 'Closing',
+          title: 'Built According to God’s Pattern',
+          text: 'A church that follows God’s Word, walks in love, and depends on the Holy Spirit will continue to impact the world.',
+          footer: 'Shepherd Library',
+          notes: 'End with encouragement. Speak vision over the church and remind them that God still builds His church through surrendered people.'
+        }
+      ];
+
+      slides = baseSlides.slice(0, count);
+      currentSlide = 0;
+      renderSlide();
+      renderEditors();
+      showToast('AI slide deck generated');
+    }
+
+    function renderSlide() {
+      if (!slides.length) return;
+      const slide = slides[currentSlide];
+      const canvas = document.getElementById('slideCanvas');
+      canvas.className = `slide-canvas ${selectedTheme}`;
+      document.getElementById('slideKicker').textContent = slide.kicker;
+      document.getElementById('slideTitle').textContent = slide.title;
+      document.getElementById('slideText').textContent = slide.text;
+      document.getElementById('slideFooter').textContent = slide.footer;
+      document.getElementById('slidePosition').textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+      document.getElementById('speakerNotes').value = slide.notes || '';
+      document.getElementById('slideCount').textContent = slides.length;
+      renderStrip();
+    }
+
+    function renderStrip() {
+      const strip = document.getElementById('slideStrip');
+      strip.innerHTML = slides.map((slide, index) => `
+        <div class="mini-slide ${index === currentSlide ? 'active' : ''}" onclick="goToSlide(${index})">
+          <div class="mini-screen"><strong>${escapeHTML(slide.title)}</strong><br><br>${escapeHTML(slide.text)}</div>
+          <b>${escapeHTML(slide.title)}</b>
+          <span>Slide ${index + 1}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderEditors() {
+      const list = document.getElementById('slidesList');
+      if (!slides.length) {
+        list.innerHTML = '<div class="empty-state"><div class="icon">🎨</div><h3>No slides yet</h3><p>Generate a new deck or add a blank slide.</p></div>';
+        return;
+      }
+      list.innerHTML = slides.map((slide, index) => `
+        <div class="slide-edit-card">
+          <div class="slide-edit-card-header">
+            <strong>Slide ${index + 1}</strong>
+            <div>
+              <button class="btn btn-light btn-small" onclick="moveSlide(${index}, -1)">↑</button>
+              <button class="btn btn-light btn-small" onclick="moveSlide(${index}, 1)">↓</button>
+            </div>
+          </div>
+          <div class="field"><label>Kicker</label><input value="${escapeAttr(slide.kicker)}" oninput="updateSlide(${index}, 'kicker', this.value)"></div>
+          <div class="field"><label>Title</label><input value="${escapeAttr(slide.title)}" oninput="updateSlide(${index}, 'title', this.value)"></div>
+          <div class="field"><label>Text</label><textarea oninput="updateSlide(${index}, 'text', this.value)">${escapeHTML(slide.text)}</textarea></div>
+          <div class="field"><label>Footer / Scripture</label><input value="${escapeAttr(slide.footer)}" oninput="updateSlide(${index}, 'footer', this.value)"></div>
+        </div>
+      `).join('');
+    }
+
+    function switchTab(tab, button) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      document.querySelectorAll('.editor-area').forEach(area => area.classList.remove('active'));
+      document.getElementById(`${tab}Area`).classList.add('active');
+      if (tab === 'edit') renderEditors();
+    }
+
+    function goToSlide(index) { currentSlide = index; renderSlide(); }
+    function previousSlide() { currentSlide = Math.max(0, currentSlide - 1); renderSlide(); }
+    function nextSlide() { currentSlide = Math.min(slides.length - 1, currentSlide + 1); renderSlide(); }
+
+    function updateSlide(index, field, value) {
+      slides[index][field] = value;
+      if (index === currentSlide) renderSlide();
+    }
+
+    function moveSlide(index, direction) {
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= slides.length) return;
+      [slides[index], slides[newIndex]] = [slides[newIndex], slides[index]];
+      currentSlide = newIndex;
+      renderEditors();
+      renderSlide();
+    }
+
+    function addSlide() {
+      slides.push({
+        kicker: 'New Slide',
+        title: 'Add Your Slide Title',
+        text: 'Write your main slide message here. Keep it clear, powerful, and easy to read from the screen.',
+        footer: 'Shepherd Library',
+        notes: 'Add speaker notes for this slide.'
+      });
+      currentSlide = slides.length - 1;
+      renderSlide();
+      renderEditors();
+      showToast('Blank slide added');
+    }
+
+    function deleteSlide() {
+      if (slides.length <= 1) {
+        showToast('Keep at least one slide');
+        return;
+      }
+      slides.splice(currentSlide, 1);
+      currentSlide = Math.max(0, currentSlide - 1);
+      renderSlide();
+      renderEditors();
+      showToast('Slide deleted');
+    }
+
+    function generateSpeakerNotes() {
+      const slide = slides[currentSlide];
+      const notes = `Open this slide by reading the title: "${slide.title}." Explain the main idea in simple language: ${slide.text} Connect it to ${slide.footer}. Ask the audience how this truth applies to their personal walk with God, their family, and their service in the church.`;
+      slide.notes = notes;
+      document.getElementById('speakerNotes').value = notes;
+      showToast('Speaker notes generated');
+    }
+
+    document.getElementById('speakerNotes').addEventListener('input', function() {
+      if (slides[currentSlide]) slides[currentSlide].notes = this.value;
+    });
+
+    function saveDeck() {
+      const deck = { title: document.getElementById('deckTitle').value, theme: selectedTheme, slides };
+      localStorage.setItem('shepherdSlideDeck', JSON.stringify(deck));
+      showToast('Deck saved in this browser');
+    }
+
+    function loadDeck() {
+      const saved = localStorage.getItem('shepherdSlideDeck');
+      if (!saved) return;
+      try {
+        const deck = JSON.parse(saved);
+        if (deck.slides && deck.slides.length) {
+          slides = deck.slides;
+          selectedTheme = deck.theme || 'classic';
+          document.getElementById('deckTitle').value = deck.title || '';
+          document.querySelectorAll('.template').forEach(item => item.classList.toggle('active', item.dataset.theme === selectedTheme));
+        }
+      } catch (error) {
+        console.warn('Could not load saved deck', error);
+      }
+    }
+
+    function copyCurrentSlide() {
+      const s = slides[currentSlide];
+      const text = `${s.kicker}\n${s.title}\n${s.text}\n${s.footer}`;
+      navigator.clipboard.writeText(text).then(() => showToast('Slide copied'));
+    }
+
+    function downloadJSON() {
+      downloadFile('shepherd-slide-deck.json', JSON.stringify({ theme: selectedTheme, slides }, null, 2), 'application/json');
+    }
+
+    function downloadText() {
+      const text = slides.map((s, i) => `Slide ${i + 1}: ${s.title}\n${s.kicker}\n${s.text}\nFooter: ${s.footer}\nNotes: ${s.notes || ''}`).join('\n\n---\n\n');
+      downloadFile('shepherd-slide-outline.txt', text, 'text/plain');
+    }
+
+    function downloadDeckHTML() {
+      const slideMarkup = slides.map((s, i) => `
+        <section class="slide ${selectedTheme}">
+          <div>
+            <div class="kicker">${escapeHTML(s.kicker)}</div>
+            <h1>${escapeHTML(s.title)}</h1>
+            <p>${escapeHTML(s.text)}</p>
+          </div>
+          <footer><span>${escapeHTML(s.footer)}</span><span>Slide ${i + 1} of ${slides.length}</span></footer>
+        </section>
+      `).join('');
+      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Shepherd Slide Deck</title><style>
+        body{margin:0;font-family:Inter,Arial,sans-serif;background:#111827}.slide{width:100vw;height:56.25vw;min-height:100vh;color:white;padding:6vw;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;page-break-after:always;position:relative;overflow:hidden}.classic{background:linear-gradient(135deg,#172447,#5b4bdb)}.bold{background:linear-gradient(135deg,#111827,#f28c28)}.ministry{background:linear-gradient(135deg,#064e3b,#16a34a)}.worship{background:linear-gradient(135deg,#4c1d95,#db2777)}.kicker{text-transform:uppercase;letter-spacing:.15em;font-weight:900;color:rgba(255,255,255,.75);margin-bottom:24px}h1{font-size:6vw;line-height:1;margin:0 0 24px;letter-spacing:-.06em}p{font-size:2.1vw;line-height:1.45;max-width:80%;font-weight:600;color:rgba(255,255,255,.9)}footer{display:flex;justify-content:space-between;color:rgba(255,255,255,.75);font-weight:800}@media print{.slide{height:100vh}}
+      </style></head><body>${slideMarkup}</body></html>`;
+      downloadFile('shepherd-slide-deck.html', html, 'text/html');
+    }
+
+    function connectAIInfo() {
+      alert(`To connect real AI generation:\n\n1. Create an API route in your backend, for example: /api/generate-slides\n2. Send the title, prompt, audience, tone, slide count, and theme to your AI model.\n3. Return JSON with slides: [{ kicker, title, text, footer, notes }].\n4. Replace generateDeck() with a fetch() call to your API route.\n\nThis page already has the front-end UI, editor, save, copy, print, and export functions.`);
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`${filename} downloaded`);
+    }
+
+    function escapeHTML(value) {
+      return String(value || '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' }[char]));
+    }
+
+    function escapeAttr(value) {
+      return escapeHTML(value).replace(/`/g, '&#096;');
+    }
+
+    loadDeck();
+    renderSlide();
+    renderEditors();
+  </script>
+</body>
+</html>
