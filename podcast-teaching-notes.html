@@ -4,58 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Podcast & Teaching Notes | Shepherd Library</title>
-
-  <!-- Shepherd Library Styles -->
-  <link rel="stylesheet" href="dashboard.css" />
-  <link rel="stylesheet" href="app.css" />
-  <link rel="stylesheet" href="sidebar.css" />
-  <link rel="stylesheet" href="cards.css" />
-  <link rel="stylesheet" href="forms.css" />
-  <link rel="stylesheet" href="buttons.css" />
-  <link rel="stylesheet" href="responsive.css" />
-
   <style>
     :root {
-      --podcast-bg: #f8fafc;
-      --podcast-card: #ffffff;
-      --podcast-dark: #0f172a;
-      --podcast-muted: #64748b;
-      --podcast-border: #e2e8f0;
-      --podcast-primary: #7c3aed;
-      --podcast-primary-dark: #5b21b6;
-      --podcast-gold: #f59e0b;
-      --podcast-green: #16a34a;
-      --podcast-red: #dc2626;
-      --podcast-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
-      --podcast-radius: 24px;
+      --sl-sidebar: #050918;
+      --sl-sidebar-soft: #081026;
+      --sl-primary: #243f96;
+      --sl-primary-dark: #152b73;
+      --sl-hero: #111d4f;
+      --sl-hero-2: #34308e;
+      --sl-bg: #eef2ff;
+      --sl-card: #ffffff;
+      --sl-text: #111827;
+      --sl-muted: #5b6b84;
+      --sl-border: #dbe3f0;
+      --sl-orange: #ffa30d;
+      --sl-orange-dark: #ee8f00;
+      --sl-green: #05a53b;
+      --sl-danger: #dc2626;
+      --sl-radius: 24px;
+      --sl-shadow: 0 14px 35px rgba(18, 30, 70, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, rgba(124, 58, 237, 0.10), transparent 32%), var(--podcast-bg);
-      color: var(--podcast-dark);
+      color: var(--sl-text);
+      background: var(--sl-bg);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
 
-    .app-shell {
+    button, input, textarea, select { font: inherit; }
+
+    .dashboard-shell {
       min-height: 100vh;
       display: grid;
       grid-template-columns: 290px minmax(0, 1fr);
     }
 
     .sidebar {
-      background: linear-gradient(180deg, #111827 0%, #1e1b4b 100%);
-      color: #fff;
-      padding: 28px 20px;
+      background: var(--sl-sidebar);
+      color: #ffffff;
+      padding: 28px 26px;
       position: sticky;
       top: 0;
       height: 100vh;
@@ -64,1121 +58,1028 @@
 
     .brand {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-
-    .brand-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, #a78bfa, #f59e0b);
-      display: grid;
-      place-items: center;
-      font-size: 24px;
-      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.25);
-    }
-
-    .brand h1 {
-      font-size: 18px;
-      margin: 0;
-      letter-spacing: -0.02em;
-    }
-
-    .brand p {
-      margin: 2px 0 0;
-      color: #cbd5e1;
-      font-size: 12px;
-    }
-
-    .nav-section-title {
-      color: #94a3b8;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin: 24px 12px 10px;
-    }
-
-    .nav-list {
-      display: grid;
+      align-items: flex-start;
       gap: 8px;
+      margin-bottom: 34px;
+      line-height: 1.05;
+    }
+
+    .brand-mark {
+      font-size: 20px;
+      margin-top: 3px;
+    }
+
+    .brand-title {
+      margin: 0;
+      color: #fff3a8;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-title span { display: block; }
+
+    .nav-menu {
+      display: grid;
+      gap: 14px;
+      padding-bottom: 30px;
     }
 
     .nav-link {
+      min-height: 58px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      color: #e5e7eb;
-      font-size: 14px;
+      gap: 10px;
+      padding: 13px 16px;
+      border-radius: 13px;
+      color: rgba(255,255,255,0.82);
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.25;
       transition: 0.2s ease;
     }
 
     .nav-link:hover,
     .nav-link.active {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
+      background: var(--sl-primary);
+      color: #ffffff;
       transform: translateX(2px);
     }
 
-    .main-content {
-      padding: 28px;
+    .nav-icon { width: 21px; text-align: center; flex: 0 0 21px; }
+
+    .main-area {
+      padding: 30px 32px 54px;
+      overflow: hidden;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 24px;
+      gap: 22px;
+      margin-bottom: 28px;
     }
 
-    .breadcrumb {
-      color: var(--podcast-muted);
-      font-size: 14px;
+    .page-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--sl-primary);
+      font-weight: 900;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       margin-bottom: 6px;
     }
 
-    .page-title {
+    .topbar h1 {
       margin: 0;
-      font-size: clamp(28px, 4vw, 44px);
-      letter-spacing: -0.05em;
+      color: #11192f;
+      font-size: clamp(30px, 3vw, 42px);
       line-height: 1.05;
+      font-weight: 950;
+      letter-spacing: -0.055em;
     }
 
-    .topbar-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+    .topbar p {
+      margin: 5px 0 0;
+      color: var(--sl-muted);
+      font-size: 17px;
     }
 
-    .btn {
-      border: 0;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: 0.2s ease;
-      font-size: 14px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--podcast-primary), var(--podcast-primary-dark));
-      color: #fff;
-      box-shadow: 0 14px 24px rgba(124, 58, 237, 0.25);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 18px 32px rgba(124, 58, 237, 0.32);
-    }
-
-    .btn-secondary {
-      background: #fff;
-      color: var(--podcast-dark);
-      border: 1px solid var(--podcast-border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--podcast-primary);
-      color: var(--podcast-primary);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-
-    .hero-card {
-      position: relative;
-      overflow: hidden;
-      border-radius: 32px;
-      background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 48%, #7c2d12 100%);
-      color: #fff;
-      padding: 34px;
-      min-height: 300px;
-      box-shadow: var(--podcast-shadow);
-    }
-
-    .hero-card::after {
-      content: "";
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      right: -80px;
-      top: -80px;
+    .account-pill {
+      background: #ffffff;
+      border: 1px solid var(--sl-border);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.13);
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      color: #fef3c7;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 18px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-card h2 {
-      font-size: clamp(32px, 5vw, 56px);
-      line-height: 0.95;
-      letter-spacing: -0.06em;
-      margin: 0 0 16px;
-      max-width: 780px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-card p {
-      color: #ddd6fe;
-      max-width: 660px;
-      line-height: 1.7;
-      margin: 0 0 26px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-actions .btn-secondary {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.25);
-      color: #fff;
-      backdrop-filter: blur(10px);
-    }
-
-    .live-card {
-      border-radius: 32px;
-      background: #fff;
-      padding: 26px;
-      box-shadow: var(--podcast-shadow);
-      border: 1px solid var(--podcast-border);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 300px;
-    }
-
-    .live-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 13px;
+      padding: 12px 20px 12px 13px;
+      min-width: 255px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+      flex-shrink: 0;
     }
 
-    .status-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: var(--podcast-red);
-      box-shadow: 0 0 0 8px rgba(220, 38, 38, 0.12);
-    }
-
-    .episode-cover {
-      border-radius: 24px;
-      padding: 24px;
-      background: linear-gradient(135deg, #f5f3ff, #fff7ed);
-      border: 1px solid #ede9fe;
-      text-align: center;
-      margin-bottom: 18px;
-    }
-
-    .episode-cover .mic {
-      font-size: 52px;
-      margin-bottom: 10px;
-    }
-
-    .episode-cover h3 {
-      margin: 0;
-      font-size: 21px;
-      letter-spacing: -0.03em;
-    }
-
-    .episode-cover p {
-      margin: 8px 0 0;
-      color: var(--podcast-muted);
-      font-size: 14px;
-    }
-
-    .audio-bar {
-      display: grid;
-      grid-template-columns: 42px 1fr 44px;
-      align-items: center;
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .play-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      border: 0;
-      background: var(--podcast-primary);
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--sl-primary);
       color: #fff;
       display: grid;
       place-items: center;
-      cursor: pointer;
+      font-weight: 950;
+      font-size: 20px;
     }
 
-    .progress {
-      height: 8px;
+    .account-pill strong { display: block; font-size: 16px; line-height: 1.1; }
+    .account-pill span { color: var(--sl-muted); font-size: 15px; }
+
+    .hero {
+      border-radius: 28px;
+      background: linear-gradient(110deg, var(--sl-hero), var(--sl-primary), var(--sl-hero-2));
+      color: #fff;
+      padding: 40px 36px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.75fr);
+      gap: 34px;
+      align-items: center;
+      box-shadow: var(--sl-shadow);
+      margin-bottom: 28px;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: clamp(30px, 3.4vw, 43px);
+      line-height: 1.08;
+      font-weight: 950;
+      letter-spacing: -0.055em;
+    }
+
+    .hero p {
+      max-width: 930px;
+      margin: 16px 0 24px;
+      color: rgba(255,255,255,0.92);
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .btn {
+      border: 0;
       border-radius: 999px;
-      background: #ede9fe;
-      overflow: hidden;
+      padding: 13px 24px;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.2s ease;
+      text-decoration: none;
+      white-space: nowrap;
     }
 
-    .progress span {
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--sl-orange); color: #101526; box-shadow: 0 12px 24px rgba(255, 163, 13, 0.25); }
+    .btn-primary:hover { background: var(--sl-orange-dark); }
+    .btn-secondary { background: var(--sl-primary); color: #fff; }
+    .btn-secondary:hover { background: var(--sl-primary-dark); }
+    .btn-light { background: #ffffff; color: var(--sl-primary); }
+    .btn-ghost { background: rgba(255,255,255,0.13); color: #fff; border: 1px solid rgba(255,255,255,0.18); }
+    .btn-danger { background: #fee2e2; color: var(--sl-danger); }
+    .btn-small { min-height: 38px; padding: 9px 14px; font-size: 13px; }
+    .btn-block { width: 100%; }
+
+    .verse-card {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 22px;
+      padding: 24px;
+      min-height: 165px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .verse-card h3 {
+      margin: 0 0 18px;
+      font-size: 19px;
+      font-weight: 950;
+    }
+
+    .verse-card em {
       display: block;
-      width: 46%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--podcast-primary), var(--podcast-gold));
-      border-radius: inherit;
+      color: rgba(255,255,255,0.93);
+      font-size: 16px;
+      line-height: 1.45;
+      margin-bottom: 17px;
     }
 
-    .duration {
-      color: var(--podcast-muted);
-      font-size: 13px;
-      font-weight: 700;
-    }
+    .verse-card strong { font-size: 16px; }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
+      gap: 20px;
+      margin-bottom: 28px;
     }
 
     .stat-card {
-      background: var(--podcast-card);
-      border: 1px solid var(--podcast-border);
+      background: var(--sl-card);
       border-radius: 22px;
-      padding: 20px;
-      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+      padding: 25px 26px;
+      min-height: 142px;
+      box-shadow: var(--sl-shadow);
+      border: 1px solid rgba(219, 227, 240, 0.75);
     }
 
     .stat-card span {
-      color: var(--podcast-muted);
+      color: #60708a;
+      font-weight: 900;
       font-size: 13px;
-      font-weight: 700;
+      display: block;
+      margin-bottom: 8px;
     }
 
     .stat-card strong {
+      color: var(--sl-primary);
       display: block;
-      font-size: 30px;
-      letter-spacing: -0.04em;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-card small {
+      color: var(--sl-green);
+      display: block;
       margin-top: 8px;
+      font-size: 13px;
+      font-weight: 900;
     }
 
     .content-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 380px;
+      grid-template-columns: minmax(0, 1.45fr) minmax(370px, 0.95fr);
       gap: 24px;
+      align-items: start;
     }
 
-    .panel {
-      background: #fff;
-      border: 1px solid var(--podcast-border);
-      border-radius: var(--podcast-radius);
-      padding: 24px;
-      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
-      margin-bottom: 24px;
+    .card {
+      background: var(--sl-card);
+      border-radius: 24px;
+      box-shadow: var(--sl-shadow);
+      border: 1px solid rgba(219, 227, 240, 0.8);
+      padding: 28px;
+      overflow: hidden;
     }
 
-    .panel-header {
+    .card + .card { margin-top: 24px; }
+
+    .card-header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 21px;
     }
 
-    .panel-header h2,
-    .panel-header h3 {
+    .card-title {
       margin: 0;
-      letter-spacing: -0.04em;
+      font-size: 26px;
+      line-height: 1.1;
+      letter-spacing: -0.045em;
+      font-weight: 950;
+      color: #121a31;
     }
 
-    .panel-header p {
-      margin: 6px 0 0;
-      color: var(--podcast-muted);
-      line-height: 1.5;
-      font-size: 14px;
+    .card-subtitle {
+      margin: 8px 0 0;
+      color: var(--sl-muted);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #eef2ff;
+      color: var(--sl-primary);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 950;
+      white-space: nowrap;
     }
 
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 14px;
     }
 
-    .field {
-      display: grid;
-      gap: 8px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
+    .form-group { display: grid; gap: 8px; }
+    .form-group.full { grid-column: 1 / -1; }
 
     label {
+      color: #34415b;
       font-size: 13px;
-      font-weight: 800;
-      color: #334155;
+      font-weight: 900;
     }
 
-    input,
-    select,
-    textarea {
+    input, select, textarea {
       width: 100%;
-      border: 1px solid var(--podcast-border);
+      border: 1px solid #ccd7e8;
       border-radius: 15px;
-      padding: 13px 14px;
-      font: inherit;
-      background: #f8fafc;
+      background: #ffffff;
+      color: #111827;
       outline: none;
+      padding: 14px 15px;
+      min-height: 52px;
       transition: 0.2s ease;
     }
 
     textarea {
-      min-height: 130px;
       resize: vertical;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      border-color: var(--podcast-primary);
-      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
-      background: #fff;
-    }
-
-    .template-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .template-card {
-      border: 1px solid var(--podcast-border);
-      border-radius: 20px;
-      padding: 18px;
-      background: #fff;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .template-card:hover,
-    .template-card.active {
-      transform: translateY(-3px);
-      border-color: var(--podcast-primary);
-      box-shadow: 0 15px 28px rgba(124, 58, 237, 0.12);
-    }
-
-    .template-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: #f5f3ff;
-      display: grid;
-      place-items: center;
-      margin-bottom: 12px;
-      font-size: 22px;
-    }
-
-    .template-card h4 {
-      margin: 0 0 6px;
-      font-size: 16px;
-    }
-
-    .template-card p {
-      margin: 0;
-      color: var(--podcast-muted);
-      font-size: 13px;
+      min-height: 160px;
       line-height: 1.5;
     }
 
-    .episode-list {
-      display: grid;
-      gap: 14px;
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--sl-primary);
+      box-shadow: 0 0 0 4px rgba(36, 63, 150, 0.10);
     }
 
-    .episode-item {
-      display: grid;
-      grid-template-columns: 58px minmax(0, 1fr) auto;
-      gap: 14px;
-      align-items: center;
-      padding: 16px;
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 18px;
+    }
+
+    .preview-box {
+      background: #f8faff;
+      border: 1px solid #dbe3f0;
       border-radius: 20px;
-      border: 1px solid var(--podcast-border);
-      background: #fff;
+      padding: 22px;
+      margin-top: 22px;
     }
 
-    .episode-number {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      background: #f5f3ff;
-      display: grid;
-      place-items: center;
-      color: var(--podcast-primary);
-      font-weight: 900;
-    }
-
-    .episode-info h4 {
-      margin: 0 0 6px;
-      font-size: 16px;
-    }
-
-    .episode-info p {
-      margin: 0;
-      color: var(--podcast-muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .badge {
-      border-radius: 999px;
-      padding: 7px 10px;
-      font-size: 12px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .badge.published {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .badge.draft {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .badge.recording {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .note-preview {
-      display: grid;
-      gap: 16px;
-    }
-
-    .note-block {
-      border-left: 4px solid var(--podcast-primary);
-      padding: 14px 16px;
-      background: #faf5ff;
-      border-radius: 0 18px 18px 0;
-    }
-
-    .note-block h4 {
-      margin: 0 0 8px;
-    }
-
-    .note-block p,
-    .note-block ul {
-      margin-top: 0;
-      color: #475569;
-      line-height: 1.7;
-      font-size: 14px;
-    }
-
-    .note-block ul {
-      padding-left: 20px;
-      margin-bottom: 0;
-    }
-
-    .side-panel {
-      position: sticky;
-      top: 28px;
-      align-self: start;
-    }
-
-    .scripture-card {
-      background: linear-gradient(135deg, #fffbeb, #fff7ed);
-      border: 1px solid #fed7aa;
-    }
-
-    .scripture-card blockquote {
-      margin: 0;
+    .preview-box h3 {
+      margin: 0 0 10px;
       font-size: 20px;
-      line-height: 1.5;
-      letter-spacing: -0.02em;
-      color: #7c2d12;
-      font-weight: 800;
+      letter-spacing: -0.03em;
     }
 
-    .scripture-card cite {
-      display: block;
-      margin-top: 12px;
-      color: #92400e;
-      font-style: normal;
-      font-weight: 800;
+    .preview-content {
+      color: #26334d;
+      font-size: 15px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      min-height: 140px;
     }
 
-    .checklist {
+    .mini-grid {
       display: grid;
-      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
     }
 
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #475569;
-      font-size: 14px;
+    .mini-card {
+      background: #f8faff;
+      border: 1px solid #dbe3f0;
+      border-radius: 19px;
+      padding: 18px;
     }
 
-    .check-item input {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--podcast-primary);
-    }
-
-    .calendar-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .calendar-item {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 14px;
-      background: #f8fafc;
-      border-radius: 18px;
-      border: 1px solid var(--podcast-border);
-    }
-
-    .date-box {
-      min-width: 52px;
-      border-radius: 14px;
-      background: #ede9fe;
-      color: var(--podcast-primary-dark);
-      padding: 8px;
-      text-align: center;
-      font-weight: 900;
-      line-height: 1;
-    }
-
-    .date-box span {
+    .mini-card strong {
       display: block;
-      font-size: 11px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
+      font-size: 15px;
+      margin-bottom: 7px;
     }
 
-    .calendar-item h4 {
-      margin: 0 0 5px;
-      font-size: 14px;
-    }
-
-    .calendar-item p {
+    .mini-card p {
+      color: var(--sl-muted);
       margin: 0;
-      color: var(--podcast-muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .draft-list {
+      display: grid;
+      gap: 13px;
+      max-height: 515px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .draft-item {
+      border: 1px solid #dbe3f0;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .draft-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .draft-item h4 {
+      margin: 0;
+      color: #111827;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .draft-item p {
+      margin: 4px 0 0;
+      color: var(--sl-muted);
       font-size: 13px;
       line-height: 1.4;
     }
 
-    .resource-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .resource-link {
+    .draft-actions {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 13px 14px;
-      border: 1px solid var(--podcast-border);
-      border-radius: 16px;
-      color: #334155;
-      font-size: 14px;
-      font-weight: 700;
-      transition: 0.2s ease;
-    }
-
-    .resource-link:hover {
-      border-color: var(--podcast-primary);
-      color: var(--podcast-primary);
-      background: #faf5ff;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .empty-state {
-      border: 1px dashed #cbd5e1;
-      border-radius: 22px;
-      padding: 24px;
+      border: 1px dashed #b9c6db;
+      background: #f8faff;
+      border-radius: 18px;
+      padding: 22px;
+      color: var(--sl-muted);
       text-align: center;
-      background: #f8fafc;
-      color: var(--podcast-muted);
+      line-height: 1.5;
     }
 
-    .section-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 18px;
+    .planner-row {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+      padding: 15px 0;
+      border-bottom: 1px solid #e7edf7;
     }
 
-    @media (max-width: 1180px) {
-      .app-shell {
-        grid-template-columns: 1fr;
-      }
+    .planner-row:last-child { border-bottom: 0; }
 
+    .step-number {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: #eef2ff;
+      color: var(--sl-primary);
+      display: grid;
+      place-items: center;
+      font-weight: 950;
+    }
+
+    .planner-row strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .planner-row p {
+      margin: 0;
+      color: var(--sl-muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .toast {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      background: #111827;
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 16px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+      font-weight: 800;
+      transform: translateY(30px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+      z-index: 50;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1200px) {
+      .dashboard-shell { grid-template-columns: 250px minmax(0, 1fr); }
+      .sidebar { padding: 24px 18px; }
+      .hero { grid-template-columns: 1fr; }
+      .content-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 820px) {
+      .dashboard-shell { display: block; }
       .sidebar {
         position: relative;
         height: auto;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
       }
-
-      .hero-grid,
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .side-panel {
-        position: relative;
-        top: auto;
-      }
+      .nav-menu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .account-pill { width: 100%; }
+      .main-area { padding: 24px 18px 40px; }
+      .hero { padding: 30px 22px; border-radius: 22px; }
+      .stats-grid, .form-grid, .mini-grid { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 760px) {
-      .main-content {
-        padding: 18px;
-      }
-
-      .topbar,
-      .panel-header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .hero-card,
-      .live-card,
-      .panel {
-        border-radius: 22px;
-        padding: 20px;
-      }
-
-      .stats-grid,
-      .form-grid,
-      .template-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .episode-item {
-        grid-template-columns: 1fr;
-      }
+    @media print {
+      .sidebar, .topbar, .hero, .stats-grid, .button-row, .draft-actions, .toast { display: none !important; }
+      .dashboard-shell { display: block; }
+      .main-area { padding: 0; background: white; }
+      .content-grid { display: block; }
+      .card { box-shadow: none; border: 0; padding: 0; }
+      .preview-box { border: 0; padding: 0; }
+      body { background: white; }
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <!-- Sidebar -->
+  <div class="dashboard-shell">
     <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-icon">📚</div>
-        <div>
-          <h1>Shepherd Library</h1>
-          <p>Pastoral study & ministry tools</p>
-        </div>
-      </div>
+      <a class="brand" href="index.html" aria-label="Shepherd Library Home">
+        <span class="brand-mark">📖</span>
+        <h1 class="brand-title"><span>Shepherd</span><span>Library</span></h1>
+      </a>
 
-      <div class="nav-section-title">Library Tools</div>
-      <nav class="nav-list" aria-label="Main Navigation">
-        <a class="nav-link" href="dashboard.html">🏠 Dashboard</a>
-        <a class="nav-link" href="bible-reader.html">📖 Bible Reader</a>
-        <a class="nav-link" href="ai-assistant.html">🤖 AI Bible Assistant</a>
-        <a class="nav-link" href="sermon-builder.html">📝 AI Sermon Builder</a>
-        <a class="nav-link" href="study-notes.html">🎓 Bible Study Creator</a>
-        <a class="nav-link" href="research.html">📚 Christian Research Library</a>
-        <a class="nav-link active" href="podcast-teaching-notes.html">🎙️ Podcast & Teaching Notes</a>
-      </nav>
-
-      <div class="nav-section-title">Ministry Workspace</div>
-      <nav class="nav-list" aria-label="Workspace Navigation">
-        <a class="nav-link" href="prayer-journal.html">🙏 Prayer Journal</a>
-        <a class="nav-link" href="church-resources.html">⛪ Church Resource Center</a>
-        <a class="nav-link" href="team-collaboration.html">👥 Team Collaboration</a>
-        <a class="nav-link" href="sermon-calendar.html">📅 Sermon Calendar</a>
-        <a class="nav-link" href="media.html">🎥 Media Builder</a>
-        <a class="nav-link" href="bookmarks.html">🔖 Bookmarks</a>
+      <nav class="nav-menu" aria-label="Main navigation">
+        <a class="nav-link" href="index.html"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
+        <a class="nav-link" href="bible-reader.html"><span class="nav-icon">📖</span><span>Bible Reader</span></a>
+        <a class="nav-link" href="ai-assistant.html"><span class="nav-icon">🤖</span><span>AI Bible Assistant</span></a>
+        <a class="nav-link" href="sermon-builder.html"><span class="nav-icon">📝</span><span>Sermon Builder</span></a>
+        <a class="nav-link" href="prayer-journal.html"><span class="nav-icon">🙏</span><span>Prayer Journal</span></a>
+        <a class="nav-link" href="study-notes.html"><span class="nav-icon">📚</span><span>Study Notes</span></a>
+        <a class="nav-link" href="bookmarks.html"><span class="nav-icon">⭐</span><span>Bookmarks</span></a>
+        <a class="nav-link" href="media.html"><span class="nav-icon">🎥</span><span>Media & Presentation Builder</span></a>
+        <a class="nav-link" href="settings.html"><span class="nav-icon">⚙️</span><span>Account Settings</span></a>
+        <a class="nav-link" href="research.html"><span class="nav-icon">📚</span><span>Christian Research Library</span></a>
+        <a class="nav-link active" href="podcast-teaching-notes.html"><span class="nav-icon">🎙️</span><span>Podcast & Teaching Notes</span></a>
       </nav>
     </aside>
 
-    <!-- Main -->
-    <main class="main-content">
+    <main class="main-area">
       <header class="topbar">
         <div>
-          <div class="breadcrumb">Dashboard / Ministry Media / Podcast & Teaching Notes</div>
-          <h1 class="page-title">Podcast & Teaching Notes</h1>
+          <span class="page-kicker">🎙️ Podcast Studio</span>
+          <h1>Podcast & Teaching Notes</h1>
+          <p>Plan episodes, write ministry teaching notes, save drafts, print, and export your content.</p>
         </div>
-        <div class="topbar-actions">
-          <button class="btn btn-secondary" type="button">📤 Export Notes</button>
-          <button class="btn btn-primary" type="button">✨ Create New Episode</button>
+        <div class="account-pill">
+          <div class="avatar">A</div>
+          <div>
+            <strong>African kids Daily life</strong>
+            <span>free Plan</span>
+          </div>
         </div>
       </header>
 
-      <section class="hero-grid">
-        <div class="hero-card">
-          <div class="hero-pill">🎙️ Teaching ministry made simple</div>
-          <h2>Plan, record, teach, and publish with excellence.</h2>
-          <p>
-            Build podcast outlines, sermon summaries, Bible teaching notes, devotionals, and discussion questions for every episode or lesson in one organized ministry workspace.
-          </p>
+      <section class="hero">
+        <div>
+          <h2>Prepare, teach, record, and lead with clarity.</h2>
+          <p>Create strong biblical teaching outlines, podcast talking points, discussion questions, prayers, and practical applications for your church, Bible study, or online ministry.</p>
           <div class="hero-actions">
-            <button class="btn btn-primary" type="button">Generate Teaching Notes</button>
-            <button class="btn btn-secondary" type="button">View Episode Library</button>
+            <a class="btn btn-primary" href="#podcastBuilder">Create Podcast Note</a>
+            <a class="btn btn-ghost" href="#teachingBuilder">Create Teaching Note</a>
           </div>
         </div>
-
-        <aside class="live-card">
-          <div>
-            <div class="live-header">
-              <strong>Featured Episode</strong>
-              <span class="status-dot" aria-label="Recording status"></span>
-            </div>
-            <div class="episode-cover">
-              <div class="mic">🎧</div>
-              <h3>Returning to the Church of Acts</h3>
-              <p>Recovering God’s original design for the church</p>
-              <div class="audio-bar">
-                <button class="play-btn" type="button" aria-label="Play episode">▶</button>
-                <div class="progress"><span></span></div>
-                <div class="duration">24:18</div>
-              </div>
-            </div>
-          </div>
-          <button class="btn btn-secondary" type="button">Open Episode Workspace</button>
+        <aside class="verse-card">
+          <h3>Verse of the Day</h3>
+          <em>“Preach the word; be ready in season and out of season...”</em>
+          <strong>2 Timothy 4:2</strong>
         </aside>
       </section>
 
-      <section class="stats-grid" aria-label="Podcast Statistics">
+      <section class="stats-grid" aria-label="Podcast and teaching stats">
         <div class="stat-card">
-          <span>Total Episodes</span>
-          <strong>42</strong>
+          <span>Podcast Episodes</span>
+          <strong id="episodeCount">0</strong>
+          <small>Ready for recording</small>
         </div>
         <div class="stat-card">
           <span>Teaching Notes</span>
-          <strong>118</strong>
+          <strong id="teachingCount">0</strong>
+          <small>Prepared for ministry</small>
         </div>
         <div class="stat-card">
-          <span>Series Drafts</span>
-          <strong>9</strong>
+          <span>Saved Drafts</span>
+          <strong id="draftCount">0</strong>
+          <small>Stored in this browser</small>
         </div>
         <div class="stat-card">
-          <span>Ready to Publish</span>
-          <strong>6</strong>
+          <span>Current Plan</span>
+          <strong style="font-size:38px;">free</strong>
+          <small>Upgrade anytime</small>
         </div>
       </section>
 
       <section class="content-grid">
         <div>
-          <section class="panel">
-            <div class="panel-header">
+          <article class="card" id="podcastBuilder">
+            <div class="card-header">
               <div>
-                <h2>Create Podcast or Teaching Notes</h2>
-                <p>Start with a topic, scripture, audience, and lesson goal. Use this workspace to prepare clear notes before recording or teaching.</p>
+                <h2 class="card-title">🎙️ Podcast Episode Builder</h2>
+                <p class="card-subtitle">Create an episode title, scripture anchor, talking points, intro, outro, and call to action.</p>
               </div>
-              <button class="btn btn-secondary" type="button">🧠 AI Assist</button>
+              <span class="badge">Local autosave ready</span>
             </div>
 
-            <form>
+            <form id="podcastForm">
               <div class="form-grid">
-                <div class="field">
-                  <label for="contentType">Content Type</label>
-                  <select id="contentType" name="contentType">
-                    <option>Podcast Episode</option>
-                    <option>Bible Study Lesson</option>
-                    <option>Sermon Teaching Notes</option>
-                    <option>Devotional Teaching</option>
-                    <option>Leadership Training</option>
+                <div class="form-group">
+                  <label for="podcastTitle">Episode Title</label>
+                  <input id="podcastTitle" type="text" placeholder="Example: Returning to the Church of Acts" />
+                </div>
+                <div class="form-group">
+                  <label for="podcastScripture">Scripture Reference</label>
+                  <input id="podcastScripture" type="text" placeholder="Example: Acts 2:42-47" />
+                </div>
+                <div class="form-group">
+                  <label for="podcastSeries">Series Name</label>
+                  <input id="podcastSeries" type="text" placeholder="Example: Church of the Book of Acts" />
+                </div>
+                <div class="form-group">
+                  <label for="podcastType">Episode Type</label>
+                  <select id="podcastType">
+                    <option value="Teaching Episode">Teaching Episode</option>
+                    <option value="Sermon Recap">Sermon Recap</option>
+                    <option value="Bible Study Conversation">Bible Study Conversation</option>
+                    <option value="Devotional Episode">Devotional Episode</option>
+                    <option value="Leadership Training">Leadership Training</option>
                   </select>
                 </div>
-
-                <div class="field">
-                  <label for="seriesName">Series Name</label>
-                  <input id="seriesName" name="seriesName" type="text" placeholder="Example: The Church of Acts" />
-                </div>
-
-                <div class="field full">
-                  <label for="episodeTitle">Episode or Teaching Title</label>
-                  <input id="episodeTitle" name="episodeTitle" type="text" placeholder="Example: What Made the Early Church Powerful?" />
-                </div>
-
-                <div class="field">
-                  <label for="mainText">Main Scripture</label>
-                  <input id="mainText" name="mainText" type="text" placeholder="Example: Acts 2:42-47" />
-                </div>
-
-                <div class="field">
-                  <label for="audience">Target Audience</label>
-                  <select id="audience" name="audience">
-                    <option>General Church</option>
-                    <option>Youth & Young Adults</option>
-                    <option>Pastors & Leaders</option>
-                    <option>New Believers</option>
-                    <option>Small Groups</option>
-                  </select>
-                </div>
-
-                <div class="field full">
-                  <label for="summary">Episode Summary</label>
-                  <textarea id="summary" name="summary" placeholder="Write a short summary of what this episode or teaching will cover..."></textarea>
+                <div class="form-group full">
+                  <label for="podcastNotes">Your Notes</label>
+                  <textarea id="podcastNotes" placeholder="Write your topic, main ideas, testimony, sermon points, or questions here..."></textarea>
                 </div>
               </div>
 
-              <div class="section-actions">
-                <button class="btn btn-primary" type="button">✨ Generate Full Notes</button>
-                <button class="btn btn-secondary" type="button">💾 Save Draft</button>
-                <button class="btn btn-secondary" type="button">📋 Copy Outline</button>
+              <div class="button-row">
+                <button class="btn btn-primary" type="button" onclick="generatePodcastOutline()">Generate Outline</button>
+                <button class="btn btn-secondary" type="button" onclick="savePodcastDraft()">Save Draft</button>
+                <button class="btn btn-secondary" type="button" onclick="printCurrentPreview()">Print</button>
+                <button class="btn btn-secondary" type="button" onclick="exportCurrentAsWord('podcast')">Export Word</button>
+                <button class="btn btn-secondary" type="button" onclick="exportCurrentAsText('podcast')">Export Text</button>
               </div>
             </form>
-          </section>
 
-          <section class="panel">
-            <div class="panel-header">
+            <div class="preview-box" id="podcastPreviewBox">
+              <h3>Episode Preview</h3>
+              <div class="preview-content" id="podcastPreview">Your generated podcast outline will appear here.</div>
+            </div>
+          </article>
+
+          <article class="card" id="teachingBuilder">
+            <div class="card-header">
               <div>
-                <h2>Teaching Note Templates</h2>
-                <p>Choose a format that fits your ministry moment.</p>
+                <h2 class="card-title">🧑🏾‍🏫 Teaching Note Builder</h2>
+                <p class="card-subtitle">Build Bible study lessons, Sunday school notes, leadership teachings, and discipleship outlines.</p>
               </div>
+              <span class="badge">Print & export</span>
             </div>
 
-            <div class="template-grid">
-              <article class="template-card active">
-                <div class="template-icon">🎙️</div>
-                <h4>Podcast Outline</h4>
-                <p>Intro, scripture focus, key points, reflection, and call to action.</p>
-              </article>
-
-              <article class="template-card">
-                <div class="template-icon">📖</div>
-                <h4>Bible Study</h4>
-                <p>Observation, interpretation, application, and discussion questions.</p>
-              </article>
-
-              <article class="template-card">
-                <div class="template-icon">📝</div>
-                <h4>Sermon Notes</h4>
-                <p>Theme, text, introduction, major points, illustrations, and altar call.</p>
-              </article>
-
-              <article class="template-card">
-                <div class="template-icon">🙏</div>
-                <h4>Devotional</h4>
-                <p>Daily reflection, prayer focus, confession, and practical action step.</p>
-              </article>
-
-              <article class="template-card">
-                <div class="template-icon">👥</div>
-                <h4>Small Group</h4>
-                <p>Icebreaker, lesson guide, group questions, and closing prayer.</p>
-              </article>
-
-              <article class="template-card">
-                <div class="template-icon">🎓</div>
-                <h4>Leadership Class</h4>
-                <p>Training objective, principles, leadership exercises, and assignments.</p>
-              </article>
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-header">
-              <div>
-                <h2>Teaching Notes Preview</h2>
-                <p>Preview how your generated notes will be organized before publishing or teaching.</p>
-              </div>
-              <button class="btn btn-secondary" type="button">✏️ Edit Notes</button>
-            </div>
-
-            <div class="note-preview">
-              <div class="note-block">
-                <h4>Theme</h4>
-                <p>Recovering spiritual power by returning to biblical devotion, fellowship, prayer, generosity, and Spirit-led evangelism.</p>
-              </div>
-
-              <div class="note-block">
-                <h4>Key Scriptures</h4>
-                <ul>
-                  <li>Acts 2:42-47 — The devotion and growth of the early church</li>
-                  <li>Acts 4:31-35 — Boldness, unity, and generosity</li>
-                  <li>Ephesians 4:11-16 — Equipping the saints for ministry</li>
-                </ul>
-              </div>
-
-              <div class="note-block">
-                <h4>Major Teaching Points</h4>
-                <ul>
-                  <li>The early church was devoted to doctrine, prayer, fellowship, and breaking of bread.</li>
-                  <li>Spiritual vitality is cultivated through obedience, unity, and Holy Spirit empowerment.</li>
-                  <li>Every believer is called to serve with their spiritual gifts for the growth of the body.</li>
-                </ul>
-              </div>
-
-              <div class="note-block">
-                <h4>Discussion Questions</h4>
-                <ul>
-                  <li>What priorities made the early church spiritually powerful?</li>
-                  <li>What has the modern church gained, and what has it lost?</li>
-                  <li>How can our local church cultivate deeper fellowship and spiritual growth?</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-header">
-              <div>
-                <h2>Recent Episodes & Notes</h2>
-                <p>Continue editing drafts, review published teachings, or prepare upcoming lessons.</p>
-              </div>
-            </div>
-
-            <div class="episode-list">
-              <article class="episode-item">
-                <div class="episode-number">01</div>
-                <div class="episode-info">
-                  <h4>Returning to the Church of the Book of Acts</h4>
-                  <p>Acts 2:42-47 • Podcast outline and Bible study questions completed.</p>
+            <form id="teachingForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="teachingTitle">Teaching Title</label>
+                  <input id="teachingTitle" type="text" placeholder="Example: Who God Is" />
                 </div>
-                <span class="badge published">Published</span>
-              </article>
-
-              <article class="episode-item">
-                <div class="episode-number">02</div>
-                <div class="episode-info">
-                  <h4>Recovering the Power of Prayer</h4>
-                  <p>Acts 4:31 • Teaching notes ready for review.</p>
+                <div class="form-group">
+                  <label for="teachingScripture">Key Scripture</label>
+                  <input id="teachingScripture" type="text" placeholder="Example: Exodus 3:14" />
                 </div>
-                <span class="badge draft">Draft</span>
-              </article>
-
-              <article class="episode-item">
-                <div class="episode-number">03</div>
-                <div class="episode-info">
-                  <h4>Every Believer Serving With Gifts</h4>
-                  <p>1 Corinthians 12 • Recording outline in progress.</p>
+                <div class="form-group">
+                  <label for="teachingAudience">Audience</label>
+                  <select id="teachingAudience">
+                    <option value="General Church">General Church</option>
+                    <option value="Youth Ministry">Youth Ministry</option>
+                    <option value="Leadership Team">Leadership Team</option>
+                    <option value="New Believers">New Believers</option>
+                    <option value="Bible Study Class">Bible Study Class</option>
+                  </select>
                 </div>
-                <span class="badge recording">Recording</span>
-              </article>
+                <div class="form-group">
+                  <label for="teachingLength">Teaching Length</label>
+                  <select id="teachingLength">
+                    <option value="30 minutes">30 minutes</option>
+                    <option value="45 minutes">45 minutes</option>
+                    <option value="60 minutes">60 minutes</option>
+                    <option value="Series Lesson">Series Lesson</option>
+                  </select>
+                </div>
+                <div class="form-group full">
+                  <label for="teachingNotes">Teaching Notes</label>
+                  <textarea id="teachingNotes" placeholder="Add lesson objective, main points, scriptures, illustrations, and application..."></textarea>
+                </div>
+              </div>
+
+              <div class="button-row">
+                <button class="btn btn-primary" type="button" onclick="generateTeachingOutline()">Generate Teaching</button>
+                <button class="btn btn-secondary" type="button" onclick="saveTeachingDraft()">Save Draft</button>
+                <button class="btn btn-secondary" type="button" onclick="printCurrentPreview()">Print</button>
+                <button class="btn btn-secondary" type="button" onclick="exportCurrentAsWord('teaching')">Export Word</button>
+                <button class="btn btn-secondary" type="button" onclick="exportCurrentAsText('teaching')">Export Text</button>
+              </div>
+            </form>
+
+            <div class="preview-box" id="teachingPreviewBox">
+              <h3>Teaching Preview</h3>
+              <div class="preview-content" id="teachingPreview">Your generated teaching note will appear here.</div>
             </div>
-          </section>
+          </article>
         </div>
 
-        <aside class="side-panel">
-          <section class="panel scripture-card">
-            <blockquote>
-              “Preach the word; be prepared in season and out of season.”
-            </blockquote>
-            <cite>2 Timothy 4:2</cite>
-          </section>
-
-          <section class="panel">
-            <div class="panel-header">
+        <aside>
+          <article class="card">
+            <div class="card-header">
               <div>
-                <h3>Publishing Checklist</h3>
-                <p>Use this before releasing any teaching or podcast episode.</p>
+                <h2 class="card-title">📌 Recent Drafts</h2>
+                <p class="card-subtitle">Saved podcast and teaching notes from this browser.</p>
               </div>
             </div>
+            <div class="draft-list" id="draftList"></div>
+          </article>
 
-            <div class="checklist">
-              <label class="check-item"><input type="checkbox" checked /> Scripture references verified</label>
-              <label class="check-item"><input type="checkbox" checked /> Main idea is clear</label>
-              <label class="check-item"><input type="checkbox" /> Audio recorded and edited</label>
-              <label class="check-item"><input type="checkbox" /> Teaching notes exported</label>
-              <label class="check-item"><input type="checkbox" /> Social caption prepared</label>
-              <label class="check-item"><input type="checkbox" /> Published to podcast platforms</label>
-            </div>
-          </section>
-
-          <section class="panel">
-            <div class="panel-header">
+          <article class="card">
+            <div class="card-header">
               <div>
-                <h3>Upcoming Schedule</h3>
-                <p>Plan teaching topics ahead of time.</p>
+                <h2 class="card-title">🧭 Teaching Flow</h2>
+                <p class="card-subtitle">Use this structure to keep every lesson clear and biblical.</p>
               </div>
             </div>
-
-            <div class="calendar-list">
-              <article class="calendar-item">
-                <div class="date-box"><span>Jul</span>08</div>
-                <div>
-                  <h4>The Church of Acts — Part 1</h4>
-                  <p>Podcast recording • 7:00 PM</p>
-                </div>
-              </article>
-
-              <article class="calendar-item">
-                <div class="date-box"><span>Jul</span>10</div>
-                <div>
-                  <h4>Prayer & Spiritual Boldness</h4>
-                  <p>Bible study teaching • 6:30 PM</p>
-                </div>
-              </article>
-
-              <article class="calendar-item">
-                <div class="date-box"><span>Jul</span>13</div>
-                <div>
-                  <h4>Every Believer in Ministry</h4>
-                  <p>Leadership training draft</p>
-                </div>
-              </article>
+            <div class="planner-row">
+              <div class="step-number">1</div>
+              <div><strong>Scripture Foundation</strong><p>Start with the Bible text and explain the passage in context.</p></div>
             </div>
-          </section>
+            <div class="planner-row">
+              <div class="step-number">2</div>
+              <div><strong>Main Truth</strong><p>State the big idea your listeners should remember.</p></div>
+            </div>
+            <div class="planner-row">
+              <div class="step-number">3</div>
+              <div><strong>Life Application</strong><p>Show how believers can obey and live the Word today.</p></div>
+            </div>
+            <div class="planner-row">
+              <div class="step-number">4</div>
+              <div><strong>Prayer & Response</strong><p>End with reflection questions, prayer, and a practical next step.</p></div>
+            </div>
+          </article>
 
-          <section class="panel">
-            <div class="panel-header">
+          <article class="card">
+            <div class="card-header">
               <div>
-                <h3>Quick Resources</h3>
-                <p>Open related Shepherd Library tools.</p>
+                <h2 class="card-title">⚡ Quick Templates</h2>
+                <p class="card-subtitle">Fast formats for ministry content.</p>
               </div>
             </div>
-
-            <div class="resource-list">
-              <a class="resource-link" href="sermon-builder.html">AI Sermon Builder <span>→</span></a>
-              <a class="resource-link" href="bible-reader.html">Bible Reader <span>→</span></a>
-              <a class="resource-link" href="research.html">Research Library <span>→</span></a>
-              <a class="resource-link" href="media.html">Media Builder <span>→</span></a>
-              <a class="resource-link" href="sermon-calendar.html">Sermon Calendar <span>→</span></a>
+            <div class="mini-grid">
+              <button class="mini-card" type="button" onclick="applyTemplate('sermonRecap')"><strong>Sermon Recap</strong><p>Intro, main points, application, prayer.</p></button>
+              <button class="mini-card" type="button" onclick="applyTemplate('bibleStudy')"><strong>Bible Study</strong><p>Observation, interpretation, application.</p></button>
+              <button class="mini-card" type="button" onclick="applyTemplate('devotional')"><strong>Devotional</strong><p>Scripture, reflection, prayer, action.</p></button>
+              <button class="mini-card" type="button" onclick="applyTemplate('leadership')"><strong>Leadership</strong><p>Principle, challenge, action plan.</p></button>
             </div>
-          </section>
+          </article>
         </aside>
       </section>
     </main>
   </div>
 
-  <script>
-    const templateCards = document.querySelectorAll('.template-card');
+  <div class="toast" id="toast">Saved</div>
 
-    templateCards.forEach((card) => {
-      card.addEventListener('click', () => {
-        templateCards.forEach((item) => item.classList.remove('active'));
-        card.classList.add('active');
-      });
-    });
+  <script>
+    const STORAGE_KEY = "shepherdPodcastTeachingDrafts";
+    let activePreview = "podcast";
+
+    function getDrafts() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch { return []; }
+    }
+
+    function setDrafts(drafts) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+      renderDrafts();
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    function todayStamp() {
+      return new Date().toLocaleString([], { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function safeTitle(title, fallback) {
+      return (title || fallback).trim();
+    }
+
+    function generatePodcastOutline() {
+      const title = safeTitle(document.getElementById("podcastTitle").value, "Untitled Podcast Episode");
+      const scripture = safeTitle(document.getElementById("podcastScripture").value, "Scripture reference needed");
+      const series = safeTitle(document.getElementById("podcastSeries").value, "Shepherd Library Teaching Series");
+      const type = document.getElementById("podcastType").value;
+      const notes = document.getElementById("podcastNotes").value.trim();
+
+      const outline = `${title}\n${series} • ${type}\nScripture: ${scripture}\n\n1. Opening Hook\nBegin with a short story, question, or current church challenge that connects listeners to the topic.\n\n2. Scripture Reading\nRead ${scripture}. Explain the setting, audience, and the reason this passage matters today.\n\n3. Main Teaching Points\n• Point 1: What God is revealing in the text.\n• Point 2: What the church must recover, obey, or strengthen.\n• Point 3: How believers can live this truth with faith and discipline.\n\n4. Ministry Application\nGive clear steps for pastors, leaders, families, and believers to apply this teaching.\n\n5. Reflection Questions\n• What is God asking me to change?\n• What truth from this scripture do I need to obey?\n• How can this teaching strengthen my church or family?\n\n6. Closing Prayer\nPray for understanding, obedience, spiritual growth, and revival.\n\n7. Call To Action\nInvite listeners to share the episode, study the scripture, and prepare for the next teaching.\n\nPersonal Notes:\n${notes || "Add your personal examples, testimony, pastoral burden, and final reminders here."}`;
+
+      document.getElementById("podcastPreview").textContent = outline;
+      activePreview = "podcast";
+      showToast("Podcast outline generated");
+    }
+
+    function generateTeachingOutline() {
+      const title = safeTitle(document.getElementById("teachingTitle").value, "Untitled Teaching Note");
+      const scripture = safeTitle(document.getElementById("teachingScripture").value, "Scripture reference needed");
+      const audience = document.getElementById("teachingAudience").value;
+      const length = document.getElementById("teachingLength").value;
+      const notes = document.getElementById("teachingNotes").value.trim();
+
+      const outline = `${title}\nAudience: ${audience}\nLength: ${length}\nKey Scripture: ${scripture}\n\nLesson Objective\nBy the end of this teaching, listeners should understand the biblical truth, examine their lives, and take one practical step of obedience.\n\nOpening Question\nWhat does this passage reveal about God, the church, and the believer's responsibility today?\n\nScripture Explanation\nRead ${scripture}. Explain the background, key words, and spiritual meaning of the text.\n\nMain Teaching Points\n1. Biblical Truth\nExplain what the Word says clearly and faithfully.\n\n2. Spiritual Diagnosis\nShow where believers or the modern church may be drifting from this truth.\n\n3. Practical Application\nGive steps the audience can apply this week through prayer, repentance, service, discipline, and faith.\n\nDiscussion Questions\n• What part of this lesson challenged you most?\n• What has the church gained or lost in this area?\n• What can we do this week to obey God's Word?\n\nClosing Prayer\nLord, give us wisdom, humility, and obedience to live Your Word with power and love. Amen.\n\nTeacher Notes:\n${notes || "Add illustrations, references, examples, and group instructions here."}`;
+
+      document.getElementById("teachingPreview").textContent = outline;
+      activePreview = "teaching";
+      showToast("Teaching note generated");
+    }
+
+    function savePodcastDraft() {
+      const content = document.getElementById("podcastPreview").textContent.includes("Your generated")
+        ? document.getElementById("podcastNotes").value.trim()
+        : document.getElementById("podcastPreview").textContent.trim();
+
+      const draft = {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        type: "Podcast",
+        title: safeTitle(document.getElementById("podcastTitle").value, "Untitled Podcast Episode"),
+        scripture: safeTitle(document.getElementById("podcastScripture").value, "No scripture added"),
+        content: content || "No notes added yet.",
+        date: todayStamp()
+      };
+      setDrafts([draft, ...getDrafts()]);
+      showToast("Podcast draft saved");
+    }
+
+    function saveTeachingDraft() {
+      const content = document.getElementById("teachingPreview").textContent.includes("Your generated")
+        ? document.getElementById("teachingNotes").value.trim()
+        : document.getElementById("teachingPreview").textContent.trim();
+
+      const draft = {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        type: "Teaching",
+        title: safeTitle(document.getElementById("teachingTitle").value, "Untitled Teaching Note"),
+        scripture: safeTitle(document.getElementById("teachingScripture").value, "No scripture added"),
+        content: content || "No notes added yet.",
+        date: todayStamp()
+      };
+      setDrafts([draft, ...getDrafts()]);
+      showToast("Teaching draft saved");
+    }
+
+    function renderDrafts() {
+      const drafts = getDrafts();
+      const list = document.getElementById("draftList");
+      const episodeCount = drafts.filter(d => d.type === "Podcast").length;
+      const teachingCount = drafts.filter(d => d.type === "Teaching").length;
+
+      document.getElementById("episodeCount").textContent = episodeCount;
+      document.getElementById("teachingCount").textContent = teachingCount;
+      document.getElementById("draftCount").textContent = drafts.length;
+
+      if (!drafts.length) {
+        list.innerHTML = `<div class="empty-state">No drafts yet. Generate an outline, save it, and it will appear here.</div>`;
+        return;
+      }
+
+      list.innerHTML = drafts.map(draft => `
+        <div class="draft-item">
+          <div class="draft-top">
+            <div>
+              <h4>${escapeHtml(draft.type)}: ${escapeHtml(draft.title)}</h4>
+              <p>${escapeHtml(draft.scripture)} • ${escapeHtml(draft.date)}</p>
+            </div>
+            <span class="badge">${escapeHtml(draft.type)}</span>
+          </div>
+          <p>${escapeHtml(draft.content.slice(0, 145))}${draft.content.length > 145 ? "..." : ""}</p>
+          <div class="draft-actions">
+            <button class="btn btn-secondary btn-small" type="button" onclick="loadDraft('${draft.id}')">Open</button>
+            <button class="btn btn-secondary btn-small" type="button" onclick="exportDraftAsWord('${draft.id}')">Word</button>
+            <button class="btn btn-secondary btn-small" type="button" onclick="exportDraftAsText('${draft.id}')">Text</button>
+            <button class="btn btn-danger btn-small" type="button" onclick="deleteDraft('${draft.id}')">Delete</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function loadDraft(id) {
+      const draft = getDrafts().find(item => item.id === id);
+      if (!draft) return;
+
+      if (draft.type === "Podcast") {
+        document.getElementById("podcastTitle").value = draft.title;
+        document.getElementById("podcastScripture").value = draft.scripture;
+        document.getElementById("podcastPreview").textContent = draft.content;
+        activePreview = "podcast";
+        document.getElementById("podcastBuilder").scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        document.getElementById("teachingTitle").value = draft.title;
+        document.getElementById("teachingScripture").value = draft.scripture;
+        document.getElementById("teachingPreview").textContent = draft.content;
+        activePreview = "teaching";
+        document.getElementById("teachingBuilder").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      showToast("Draft opened");
+    }
+
+    function deleteDraft(id) {
+      setDrafts(getDrafts().filter(item => item.id !== id));
+      showToast("Draft deleted");
+    }
+
+    function getCurrentContent(kind) {
+      if (kind === "podcast") {
+        const preview = document.getElementById("podcastPreview").textContent;
+        const title = safeTitle(document.getElementById("podcastTitle").value, "Podcast Episode");
+        const content = preview.includes("Your generated") ? document.getElementById("podcastNotes").value : preview;
+        return { title, content };
+      }
+      const preview = document.getElementById("teachingPreview").textContent;
+      const title = safeTitle(document.getElementById("teachingTitle").value, "Teaching Note");
+      const content = preview.includes("Your generated") ? document.getElementById("teachingNotes").value : preview;
+      return { title, content };
+    }
+
+    function downloadFile(filename, mimeType, content) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function slugify(text) {
+      return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "shepherd-note";
+    }
+
+    function exportCurrentAsText(kind) {
+      const data = getCurrentContent(kind);
+      downloadFile(`${slugify(data.title)}.txt`, "text/plain;charset=utf-8", data.content || data.title);
+      showToast("Text file exported");
+    }
+
+    function exportCurrentAsWord(kind) {
+      const data = getCurrentContent(kind);
+      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHtml(data.title)}</title></head><body><h1>${escapeHtml(data.title)}</h1><pre style="font-family: Arial, sans-serif; white-space: pre-wrap; line-height: 1.6;">${escapeHtml(data.content || data.title)}</pre></body></html>`;
+      downloadFile(`${slugify(data.title)}.doc`, "application/msword;charset=utf-8", html);
+      showToast("Word file exported");
+    }
+
+    function exportDraftAsText(id) {
+      const draft = getDrafts().find(item => item.id === id);
+      if (!draft) return;
+      downloadFile(`${slugify(draft.title)}.txt`, "text/plain;charset=utf-8", draft.content);
+      showToast("Text file exported");
+    }
+
+    function exportDraftAsWord(id) {
+      const draft = getDrafts().find(item => item.id === id);
+      if (!draft) return;
+      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHtml(draft.title)}</title></head><body><h1>${escapeHtml(draft.title)}</h1><p><strong>${escapeHtml(draft.type)}</strong> • ${escapeHtml(draft.scripture)}</p><pre style="font-family: Arial, sans-serif; white-space: pre-wrap; line-height: 1.6;">${escapeHtml(draft.content)}</pre></body></html>`;
+      downloadFile(`${slugify(draft.title)}.doc`, "application/msword;charset=utf-8", html);
+      showToast("Word file exported");
+    }
+
+    function printCurrentPreview() {
+      window.print();
+    }
+
+    function applyTemplate(template) {
+      const templates = {
+        sermonRecap: "Sermon Recap Template\n\nOpening: What was the main burden of the sermon?\nScripture: \nMain Point 1: \nMain Point 2: \nMain Point 3: \nLife Application: \nPrayer: \nCall to Action: ",
+        bibleStudy: "Bible Study Template\n\nObservation: What does the text say?\nInterpretation: What does the text mean?\nApplication: How should we obey it?\nDiscussion Questions:\n1. \n2. \n3. \nClosing Prayer: ",
+        devotional: "Devotional Template\n\nScripture: \nReflection: \nWhat God is saying: \nPersonal Application: \nPrayer: \nAction Step for Today: ",
+        leadership: "Leadership Teaching Template\n\nLeadership Principle: \nBiblical Example: \nChallenge Facing Leaders: \nPractical Action Plan: \nTeam Discussion: \nPrayer for Leaders: "
+      };
+      document.getElementById("teachingNotes").value = templates[template] || "";
+      document.getElementById("teachingBuilder").scrollIntoView({ behavior: "smooth", block: "start" });
+      showToast("Template added to teaching notes");
+    }
+
+    renderDrafts();
   </script>
 </body>
 </html>
