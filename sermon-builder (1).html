@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Sermon Builder | Shepherd Library</title>
+  <meta name="description" content="Create AI-assisted sermon outlines, save sermon drafts, and export sermons to PDF or Word in Shepherd Library." />
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0d1b2f;
+      --card: rgba(255, 255, 255, 0.085);
+      --card-strong: rgba(255, 255, 255, 0.13);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #f8fafc;
+      --muted: #b7c4d7;
+      --muted-2: #8ea1ba;
+      --gold: #f8c86a;
+      --gold-2: #d99b32;
+      --blue: #73b7ff;
+      --green: #56d6a2;
+      --red: #ff7676;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --sidebar: 292px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(248, 200, 106, 0.20), transparent 30%),
+        radial-gradient(circle at 85% 5%, rgba(115, 183, 255, 0.20), transparent 34%),
+        linear-gradient(135deg, #06101f 0%, #0b1728 45%, #101823 100%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    button, input, select, textarea { font-family: inherit; }
+
+    .app-shell { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: var(--sidebar);
+      position: fixed;
+      inset: 0 auto 0 0;
+      padding: 24px 18px;
+      background: rgba(4, 13, 25, 0.74);
+      border-right: 1px solid var(--border);
+      backdrop-filter: blur(22px);
+      overflow-y: auto;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 12px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #fff3c4);
+      color: #172033;
+      box-shadow: 0 15px 35px rgba(248, 200, 106, 0.25);
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .brand h1 { margin: 0; font-size: 18px; letter-spacing: -0.02em; }
+    .brand p { margin: 2px 0 0; color: var(--muted-2); font-size: 12px; }
+
+    .nav-section-title {
+      margin: 18px 12px 8px;
+      color: var(--muted-2);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      font-weight: 800;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      color: var(--muted);
+      transition: 0.2s ease;
+      font-size: 14px;
+    }
+
+    .nav-link span:first-child { display: flex; align-items: center; gap: 10px; }
+    .nav-link:hover { background: rgba(255, 255, 255, 0.08); color: var(--text); transform: translateX(2px); }
+    .nav-link.active {
+      color: #151515;
+      background: linear-gradient(135deg, var(--gold), #fff0bd);
+      box-shadow: 0 14px 28px rgba(248, 200, 106, 0.18);
+      font-weight: 800;
+    }
+
+    .main {
+      margin-left: var(--sidebar);
+      width: calc(100% - var(--sidebar));
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .mobile-menu-btn { display: none; }
+
+    .search-pill {
+      flex: 1;
+      max-width: 620px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 999px;
+      color: var(--muted-2);
+    }
+
+    .search-pill input {
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 999px;
+      padding: 8px 12px 8px 8px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffffff, var(--gold));
+      color: #142033;
+      font-weight: 900;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.45fr 0.75fr;
+      gap: 24px;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06)),
+        radial-gradient(circle at 80% 20%, rgba(248, 200, 106, 0.22), transparent 34%);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -80px;
+      bottom: -90px;
+      border-radius: 50%;
+      background: rgba(115, 183, 255, 0.12);
+      filter: blur(3px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #172033;
+      background: linear-gradient(135deg, var(--gold), #fff4ca);
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 11px;
+      padding: 8px 12px;
+    }
+
+    .hero h2 {
+      margin: 16px 0 10px;
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+      max-width: 850px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+      max-width: 780px;
+    }
+
+    .hero-stats {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 14px;
+    }
+
+    .stat-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(5, 15, 28, 0.42);
+    }
+
+    .stat-card strong { display: block; font-size: 28px; line-height: 1; }
+    .stat-card span { display: block; margin-top: 6px; color: var(--muted-2); font-size: 13px; }
+
+    .layout-grid {
+      display: grid;
+      grid-template-columns: minmax(340px, 0.78fr) minmax(420px, 1.22fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.075);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.20);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 22px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-header h3 { margin: 0; font-size: 19px; letter-spacing: -0.02em; }
+    .panel-header p { margin: 5px 0 0; color: var(--muted-2); font-size: 13px; line-height: 1.45; }
+
+    .panel-body { padding: 22px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field { display: grid; gap: 8px; margin-bottom: 14px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      color: var(--text);
+      background: rgba(7, 17, 31, 0.68);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 14px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    textarea { resize: vertical; min-height: 94px; line-height: 1.55; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(248, 200, 106, 0.85);
+      box-shadow: 0 0 0 4px rgba(248, 200, 106, 0.10);
+      background: rgba(7, 17, 31, 0.9);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 900;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); background: rgba(255, 255, 255, 0.13); }
+    .btn.primary { color: #172033; background: linear-gradient(135deg, var(--gold), #fff1bf); border-color: rgba(248, 200, 106, 0.35); box-shadow: 0 16px 34px rgba(248, 200, 106, 0.18); }
+    .btn.success { color: #072014; background: linear-gradient(135deg, var(--green), #c9ffe8); border-color: rgba(86, 214, 162, 0.40); }
+    .btn.danger { color: #fff; background: rgba(255, 118, 118, 0.15); border-color: rgba(255, 118, 118, 0.35); }
+    .btn.small { min-height: 36px; padding: 9px 11px; font-size: 12px; border-radius: 11px; }
+
+    .tool-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(7, 17, 31, 0.45);
+    }
+
+    .status {
+      color: var(--muted-2);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .editor-shell {
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 22px;
+      padding: 14px;
+    }
+
+    .editor {
+      min-height: 720px;
+      padding: clamp(20px, 3vw, 38px);
+      color: #152033;
+      background: #fffdf7;
+      border-radius: 16px;
+      outline: none;
+      line-height: 1.67;
+      box-shadow: inset 0 0 0 1px rgba(20, 32, 51, 0.06);
+    }
+
+    .editor:empty::before {
+      content: "Your sermon outline will appear here. Enter a theme and scripture, then click Generate Sermon Outline.";
+      color: #8790a1;
+    }
+
+    .editor h1, .editor h2, .editor h3 { color: #101827; letter-spacing: -0.03em; line-height: 1.18; }
+    .editor h1 { font-size: 34px; margin: 0 0 12px; }
+    .editor h2 { font-size: 22px; margin: 28px 0 8px; border-bottom: 1px solid #e7d8b9; padding-bottom: 6px; }
+    .editor h3 { font-size: 18px; margin: 22px 0 8px; }
+    .editor p { margin: 9px 0; }
+    .editor ul, .editor ol { padding-left: 24px; }
+    .editor li { margin: 7px 0; }
+    .editor blockquote {
+      margin: 18px 0;
+      padding: 16px 18px;
+      border-left: 5px solid #d99b32;
+      border-radius: 12px;
+      background: #fff6df;
+      color: #3b2f17;
+    }
+    .editor .sermon-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 18px 0 24px;
+      color: #415168;
+      font-size: 14px;
+    }
+    .editor .sermon-tag {
+      display: inline-block;
+      margin: 0 8px 8px 0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f5ebd2;
+      color: #65450f;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .draft-list { display: grid; gap: 12px; }
+
+    .draft-card {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      background: rgba(7, 17, 31, 0.48);
+      border-radius: 16px;
+    }
+
+    .draft-card strong { font-size: 14px; }
+    .draft-card small { color: var(--muted-2); line-height: 1.45; }
+    .draft-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .empty-state {
+      padding: 18px;
+      border: 1px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 16px;
+      color: var(--muted-2);
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .resource-card {
+      padding: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.07);
+      border-radius: 20px;
+    }
+
+    .resource-card strong { display: block; margin-bottom: 8px; }
+    .resource-card p { margin: 0; color: var(--muted-2); line-height: 1.5; font-size: 13px; }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      max-width: 380px;
+      padding: 14px 16px;
+      border: 1px solid rgba(248, 200, 106, 0.35);
+      border-radius: 16px;
+      background: rgba(9, 19, 33, 0.95);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      transform: translateY(30px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+      z-index: 100;
+    }
+
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.46);
+      z-index: 15;
+    }
+
+    @media (max-width: 1120px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); }
+      .layout-grid { grid-template-columns: 1fr; }
+      .resource-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      :root { --sidebar: 280px; }
+      .sidebar { transform: translateX(-102%); transition: 0.25s ease; }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.show { display: block; }
+      .main { margin-left: 0; width: 100%; padding: 18px; }
+      .mobile-menu-btn { display: inline-flex; }
+      .search-pill { display: none; }
+      .hero { padding: 22px; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .editor .sermon-meta { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff !important; }
+      .sidebar, .topbar, .hero, .panel:first-child, .tool-strip, .resource-grid, .toast, .sidebar-overlay { display: none !important; }
+      .main { margin: 0 !important; width: 100% !important; padding: 0 !important; }
+      .layout-grid { display: block !important; }
+      .panel { border: 0 !important; box-shadow: none !important; background: transparent !important; }
+      .panel-header { display: none !important; }
+      .panel-body { padding: 0 !important; }
+      .editor-shell { border: 0 !important; padding: 0 !important; background: transparent !important; }
+      .editor { min-height: auto !important; padding: 0.4in !important; color: #111 !important; background: #fff !important; box-shadow: none !important; }
+      .editor h1, .editor h2, .editor h3 { color: #111 !important; }
+      @page { margin: 0.5in; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <h1>Shepherd Library</h1>
+        <p>Pastoral study workspace</p>
+      </div>
+    </div>
+
+    <div class="nav-section-title">Library Tools</div>
+    <a class="nav-link" href="dashboard.html"><span>🏠 Dashboard</span></a>
+    <a class="nav-link" href="bible-reader.html"><span>📖 Bible Reader</span></a>
+    <a class="nav-link" href="ai-assistant.html"><span>🤖 AI Bible Assistant</span></a>
+    <a class="nav-link active" href="sermon-builder.html"><span>📝 AI Sermon Builder</span><span>●</span></a>
+    <a class="nav-link" href="study-notes.html"><span>🎓 Bible Study Creator</span></a>
+    <a class="nav-link" href="research.html"><span>📚 Research Library</span></a>
+    <a class="nav-link" href="prayer-journal.html"><span>🙏 Prayer Journal</span></a>
+    <a class="nav-link" href="podcast-teaching-notes.html"><span>🎙️ Podcast Notes</span></a>
+    <a class="nav-link" href="media.html"><span>🎥 Media Builder</span></a>
+    <a class="nav-link" href="bookmarks.html"><span>🔖 Bookmarks</span></a>
+
+    <div class="nav-section-title">Ministry</div>
+    <a class="nav-link" href="church-resources.html"><span>⛪ Church Resources</span></a>
+    <a class="nav-link" href="team.html"><span>👥 Team Collaboration</span></a>
+    <a class="nav-link" href="sermon-calendar.html"><span>📅 Sermon Calendar</span></a>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="btn mobile-menu-btn" onclick="toggleSidebar(true)">☰ Menu</button>
+      <div class="search-pill">
+        <span>🔎</span>
+        <input id="globalSearch" type="search" placeholder="Search sermon drafts by title, scripture, or theme..." oninput="filterDrafts()" />
+      </div>
+      <div class="user-chip">
+        <div class="avatar">P</div>
+        <span>Pastor Workspace</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <span class="eyebrow">📝 AI Sermon Builder</span>
+        <h2>Build sermons with structure, Scripture, clarity, and power.</h2>
+        <p>Create sermon outlines, organize points, save drafts locally, and export finished messages to PDF or Word for preaching, printing, sharing, or teaching.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <strong id="draftCount">0</strong>
+          <span>Saved sermon drafts</span>
+        </div>
+        <div class="stat-card">
+          <strong>PDF</strong>
+          <span>Print or save your sermon as PDF</span>
+        </div>
+        <div class="stat-card">
+          <strong>Word</strong>
+          <span>Download editable Microsoft Word file</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Sermon Setup</h3>
+            <p>Enter the message details and generate a complete editable outline.</p>
+          </div>
+          <span class="eyebrow">AI Ready</span>
+        </div>
+        <div class="panel-body">
+          <form id="sermonForm" onsubmit="event.preventDefault(); generateSermon();">
+            <div class="field">
+              <label for="sermonTitle">Sermon Title</label>
+              <input id="sermonTitle" type="text" placeholder="Example: Returning to the Church of Acts" />
+            </div>
+
+            <div class="field">
+              <label for="theme">Theme / Main Idea</label>
+              <input id="theme" type="text" placeholder="Example: Recovering God's original design for His church" required />
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="scripture">Main Scripture</label>
+                <input id="scripture" type="text" placeholder="Acts 2:42-47" required />
+              </div>
+              <div class="field">
+                <label for="audience">Audience</label>
+                <select id="audience">
+                  <option>Sunday Worship</option>
+                  <option>Bible Study</option>
+                  <option>Youth & Young Adults</option>
+                  <option>Leadership Training</option>
+                  <option>Prayer Meeting</option>
+                  <option>Church Anniversary</option>
+                  <option>Funeral / Memorial</option>
+                  <option>Wedding / Family Service</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="sermonType">Sermon Type</label>
+                <select id="sermonType">
+                  <option>Expository</option>
+                  <option>Topical</option>
+                  <option>Textual</option>
+                  <option>Evangelistic</option>
+                  <option>Teaching</option>
+                  <option>Prophetic Encouragement</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="tone">Tone</label>
+                <select id="tone">
+                  <option>Pastoral and Encouraging</option>
+                  <option>Powerful and Prophetic</option>
+                  <option>Teaching and Explanatory</option>
+                  <option>Evangelistic and Urgent</option>
+                  <option>Leadership and Discipleship</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="length">Target Length</label>
+                <select id="length">
+                  <option>20 minutes</option>
+                  <option>30 minutes</option>
+                  <option selected>45 minutes</option>
+                  <option>60 minutes</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="pointsCount">Number of Main Points</label>
+                <select id="pointsCount">
+                  <option>3</option>
+                  <option selected>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="keyPoints">Key Points or Notes</label>
+              <textarea id="keyPoints" placeholder="Add any points, scriptures, examples, church context, or direction you want included..."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="application">Call to Action / Application</label>
+              <textarea id="application" placeholder="Example: Call the church back to prayer, fellowship, generosity, and evangelism."></textarea>
+            </div>
+
+            <div class="button-row">
+              <button type="submit" class="btn primary">✨ Generate Sermon Outline</button>
+              <button type="button" class="btn success" onclick="saveDraft()">💾 Save Draft</button>
+              <button type="button" class="btn" onclick="loadStarterTemplate()">📋 Starter Template</button>
+              <button type="button" class="btn danger" onclick="clearBuilder()">🧹 Clear</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Editable Sermon Draft</h3>
+            <p>Click inside the document to edit before exporting or saving.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="tool-strip">
+            <div class="status" id="statusText">Ready to generate your next sermon outline.</div>
+            <div class="button-row" style="margin-top:0;">
+              <button class="btn small" onclick="formatSelection('bold')">Bold</button>
+              <button class="btn small" onclick="formatSelection('italic')">Italic</button>
+              <button class="btn small" onclick="formatSelection('insertUnorderedList')">Bullets</button>
+              <button class="btn small" onclick="exportPDF()">📄 Export PDF</button>
+              <button class="btn small" onclick="exportWord()">📝 Export Word</button>
+            </div>
+          </div>
+
+          <div class="editor-shell">
+            <article id="sermonEditor" class="editor" contenteditable="true" aria-label="Editable sermon document"></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="resource-grid">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Saved Drafts</h3>
+            <p>Drafts are stored safely in this browser using local storage.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="draftList" class="draft-list"></div>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <strong>Suggested Sermon Flow</strong>
+        <p>Title, text, introduction, background, main points, illustration, application, altar call, and closing prayer.</p>
+      </div>
+
+      <div class="resource-card">
+        <strong>Export Tip</strong>
+        <p>Use Export PDF to open your print dialog and choose “Save as PDF.” Use Export Word to download an editable .doc file.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'shepherd_sermon_builder_drafts_v1';
+
+    const scripturesByTheme = [
+      '2 Timothy 4:2', 'Romans 10:17', 'Acts 2:42-47', 'Ephesians 4:11-16',
+      'Matthew 28:18-20', 'John 15:1-8', 'Romans 12:1-2', 'Hebrews 12:1-2'
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderDrafts();
+      loadStarterTemplate(false);
+      updateStats();
+    });
+
+    function toggleSidebar(force) {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const shouldOpen = typeof force === 'boolean' ? force : !sidebar.classList.contains('open');
+      sidebar.classList.toggle('open', shouldOpen);
+      overlay.classList.toggle('show', shouldOpen);
+    }
+
+    function getFormData() {
+      return {
+        title: valueOf('sermonTitle') || valueOf('theme') || 'Untitled Sermon',
+        theme: valueOf('theme'),
+        scripture: valueOf('scripture'),
+        audience: valueOf('audience'),
+        sermonType: valueOf('sermonType'),
+        tone: valueOf('tone'),
+        length: valueOf('length'),
+        pointsCount: Number(valueOf('pointsCount') || 4),
+        keyPoints: valueOf('keyPoints'),
+        application: valueOf('application')
+      };
+    }
+
+    function valueOf(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    }
+
+    function setStatus(message) {
+      document.getElementById('statusText').textContent = message;
+    }
+
+    function toast(message) {
+      const el = document.getElementById('toast');
+      el.textContent = message;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    function escapeHTML(str = '') {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function generateSermon() {
+      const data = getFormData();
+      if (!data.theme || !data.scripture) {
+        toast('Please enter a theme and main scripture first.');
+        return;
+      }
+
+      const editor = document.getElementById('sermonEditor');
+      editor.innerHTML = buildSermonHTML(data);
+      setStatus('Sermon outline generated. You can now edit, save, or export it.');
+      toast('Sermon outline generated successfully.');
+    }
+
+    function buildSermonHTML(data) {
+      const points = buildPoints(data);
+      const supportingScriptures = suggestSupportingScriptures(data);
+      const title = escapeHTML(data.title);
+      const theme = escapeHTML(data.theme);
+      const scripture = escapeHTML(data.scripture);
+      const notes = data.keyPoints ? `<blockquote><strong>Pastor's Notes:</strong><br>${escapeHTML(data.keyPoints).replace(/\n/g, '<br>')}</blockquote>` : '';
+      const application = data.application || defaultApplication(data);
+
+      return `
+        <h1>${title}</h1>
+        <div>
+          <span class="sermon-tag">${escapeHTML(data.sermonType)}</span>
+          <span class="sermon-tag">${escapeHTML(data.tone)}</span>
+          <span class="sermon-tag">${escapeHTML(data.length)}</span>
+        </div>
+        <div class="sermon-meta">
+          <div><strong>Main Scripture:</strong> ${scripture}</div>
+          <div><strong>Audience:</strong> ${escapeHTML(data.audience)}</div>
+          <div><strong>Theme:</strong> ${theme}</div>
+          <div><strong>Prepared:</strong> ${new Date().toLocaleDateString()}</div>
+        </div>
+
+        <h2>Big Idea</h2>
+        <p>${buildBigIdea(data)}</p>
+
+        <h2>Introduction</h2>
+        <p>Every generation of believers must return to the Word of God and ask, “Lord, what are You saying to Your church today?” The purpose of this message is not only to inform the mind, but to awaken the heart and move the people of God into faithful obedience.</p>
+        <p>In <strong>${scripture}</strong>, we see a divine principle that speaks directly to the condition, calling, and responsibility of the church today.</p>
+
+        ${notes}
+
+        <h2>Biblical Background</h2>
+        <p>This passage should be read in its biblical setting, paying attention to what God was doing, who He was speaking to, and how His people were expected to respond. The text reveals God's heart, exposes human need, and points us toward Christ-centered transformation.</p>
+
+        <h2>Main Sermon Points</h2>
+        ${points.map((point, index) => `
+          <h3>${index + 1}. ${point.heading}</h3>
+          <p><strong>Explanation:</strong> ${point.explanation}</p>
+          <ul>
+            <li><strong>Scriptural Truth:</strong> ${point.truth}</li>
+            <li><strong>Practical Application:</strong> ${point.application}</li>
+            <li><strong>Preaching Emphasis:</strong> ${point.emphasis}</li>
+          </ul>
+        `).join('')}
+
+        <h2>Supporting Scriptures</h2>
+        <ul>
+          ${supportingScriptures.map(ref => `<li>${ref}</li>`).join('')}
+        </ul>
+
+        <h2>Illustration</h2>
+        <p>A church, family, or believer can have activity without alignment. Like a lamp connected to no power source, outward form alone cannot produce lasting light. God calls His people back to the source: His Word, His Spirit, His presence, and His mission.</p>
+
+        <h2>Application for Today</h2>
+        <p>${escapeHTML(application)}</p>
+        <ol>
+          <li>What is God asking me to obey from this message?</li>
+          <li>What priority must I recover in my walk with Christ?</li>
+          <li>How can I help strengthen my church, family, and community this week?</li>
+        </ol>
+
+        <h2>Altar Call / Response</h2>
+        <p>Today is an invitation to return, surrender, and respond. God is not only calling us to hear His Word, but to become doers of the Word. Let every heart say, “Lord, restore me, use me, and align me with Your purpose.”</p>
+
+        <h2>Closing Prayer</h2>
+        <p>Father, in the name of Jesus, thank You for Your Word. Let this message produce conviction, clarity, healing, obedience, and spiritual growth. Strengthen Your church, awaken Your people, and help us walk in Your will. Amen.</p>
+      `;
+    }
+
+    function buildBigIdea(data) {
+      const theme = escapeHTML(data.theme.toLowerCase());
+      if (data.tone.includes('Prophetic')) {
+        return `God is calling His people into divine alignment so that ${theme} becomes more than a statement; it becomes a visible testimony of obedience, power, and transformation.`;
+      }
+      if (data.sermonType === 'Teaching') {
+        return `The biblical truth of ${theme} must be understood clearly, applied faithfully, and lived out consistently by every believer.`;
+      }
+      return `When God's people respond to His Word with faith and obedience, ${theme} becomes a pathway for spiritual renewal and fruitful ministry.`;
+    }
+
+    function buildPoints(data) {
+      const customLines = data.keyPoints
+        .split('\n')
+        .map(line => line.replace(/^[-•\d.\s]+/, '').trim())
+        .filter(Boolean)
+        .slice(0, data.pointsCount);
+
+      const defaults = [
+        'Return to the authority of Scripture',
+        'Recover devotion to prayer and worship',
+        'Rebuild genuine fellowship and unity',
+        'Release every believer into service',
+        'Reach the lost with Spirit-filled witness'
+      ];
+
+      const headings = [...customLines, ...defaults].slice(0, data.pointsCount);
+
+      return headings.map((heading, i) => ({
+        heading: escapeHTML(heading),
+        explanation: explanationFor(i, data),
+        truth: truthFor(i, data),
+        application: applicationFor(i, data),
+        emphasis: emphasisFor(i, data)
+      }));
+    }
+
+    function explanationFor(index, data) {
+      const explanations = [
+        `God's Word gives the church its foundation, direction, correction, and confidence. Without Scripture, ministry becomes opinion-driven instead of Spirit-led.`,
+        `Prayer keeps the believer dependent on God. Worship keeps the heart centered on the glory of God rather than the pressure of circumstances.`,
+        `The people of God are not called to isolation, but to covenant fellowship where love, accountability, generosity, and unity become visible.`,
+        `The church grows when every believer discovers their place, uses their gift, and serves faithfully for the building up of the body of Christ.`,
+        `The mission of the church is not only gathering believers, but sending disciples to carry the gospel with compassion, courage, and power.`
+      ];
+      return explanations[index] || explanations[0];
+    }
+
+    function truthFor(index, data) {
+      const truths = [
+        `Faith is strengthened when the people of God continue steadfastly in biblical truth.`,
+        `Spiritual power flows from a life that remains connected to God in prayer.`,
+        `Unity is not weakness; it is one of the strongest witnesses of a healthy church.`,
+        `God did not save believers to sit only, but to serve with grace and purpose.`,
+        `The gospel must move from the pulpit to the people and from the church to the world.`
+      ];
+      return truths[index] || truths[0];
+    }
+
+    function applicationFor(index, data) {
+      const apps = [
+        `Make Scripture the final authority in your decisions, doctrine, relationships, and ministry priorities.`,
+        `Build a consistent prayer life and bring your family, church, and future before God daily.`,
+        `Choose forgiveness, humility, generosity, and unity over division and spiritual isolation.`,
+        `Identify your spiritual gifts and ask where you can faithfully serve in the house of God.`,
+        `Look for one person this week who needs encouragement, prayer, or the message of salvation.`
+      ];
+      return apps[index] || apps[0];
+    }
+
+    function emphasisFor(index, data) {
+      if (data.tone.includes('Urgent')) return `Preach this with a call to repentance, decision, and immediate response.`;
+      if (data.tone.includes('Teaching')) return `Explain this slowly and connect the point back to the main Scripture.`;
+      if (data.tone.includes('Leadership')) return `Challenge leaders to model this before asking the congregation to follow it.`;
+      return `Encourage the church to believe that God can still restore, renew, and use His people today.`;
+    }
+
+    function suggestSupportingScriptures(data) {
+      const text = `${data.theme} ${data.keyPoints}`.toLowerCase();
+      const refs = new Set([data.scripture]);
+      if (text.includes('church') || text.includes('acts')) ['Acts 2:42-47', 'Acts 4:31-35', 'Ephesians 4:11-16'].forEach(r => refs.add(r));
+      if (text.includes('faith')) ['Hebrews 11:1', 'Romans 10:17', 'James 2:17'].forEach(r => refs.add(r));
+      if (text.includes('prayer')) ['Luke 18:1', '1 Thessalonians 5:17', 'James 5:16'].forEach(r => refs.add(r));
+      if (text.includes('family')) ['Joshua 24:15', 'Psalm 127:1', 'Ephesians 6:1-4'].forEach(r => refs.add(r));
+      if (text.includes('lead')) ['1 Timothy 4:12', 'Hebrews 13:17', '1 Peter 5:2-4'].forEach(r => refs.add(r));
+      scripturesByTheme.forEach(r => refs.size < 7 && refs.add(r));
+      return Array.from(refs).slice(0, 7);
+    }
+
+    function defaultApplication(data) {
+      return `This message calls every listener to examine their heart, return to biblical priorities, and take one clear step of obedience in response to ${data.theme}.`;
+    }
+
+    function saveDraft() {
+      const editor = document.getElementById('sermonEditor');
+      const content = editor.innerHTML.trim();
+      const data = getFormData();
+
+      if (!content) {
+        toast('Generate or type a sermon draft before saving.');
+        return;
+      }
+
+      const drafts = getDrafts();
+      const draft = {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        title: data.title || 'Untitled Sermon',
+        theme: data.theme || 'No theme entered',
+        scripture: data.scripture || 'No scripture entered',
+        audience: data.audience,
+        sermonType: data.sermonType,
+        tone: data.tone,
+        length: data.length,
+        keyPoints: data.keyPoints,
+        application: data.application,
+        content,
+        updatedAt: new Date().toISOString()
+      };
+
+      drafts.unshift(draft);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+      renderDrafts();
+      updateStats();
+      setStatus('Draft saved in this browser.');
+      toast('Draft saved successfully.');
+    }
+
+    function getDrafts() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch { return []; }
+    }
+
+    function renderDrafts(items = getDrafts()) {
+      const list = document.getElementById('draftList');
+      if (!items.length) {
+        list.innerHTML = `<div class="empty-state">No saved sermon drafts yet. Generate a sermon and click Save Draft.</div>`;
+        return;
+      }
+
+      list.innerHTML = items.map(draft => `
+        <div class="draft-card">
+          <strong>${escapeHTML(draft.title)}</strong>
+          <small>${escapeHTML(draft.scripture)} • ${new Date(draft.updatedAt).toLocaleString()}</small>
+          <small>${escapeHTML(draft.theme)}</small>
+          <div class="draft-actions">
+            <button class="btn small primary" onclick="loadDraft('${draft.id}')">Open</button>
+            <button class="btn small" onclick="duplicateDraft('${draft.id}')">Duplicate</button>
+            <button class="btn small danger" onclick="deleteDraft('${draft.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateStats() {
+      document.getElementById('draftCount').textContent = getDrafts().length;
+    }
+
+    function filterDrafts() {
+      const query = document.getElementById('globalSearch').value.toLowerCase().trim();
+      const drafts = getDrafts();
+      if (!query) return renderDrafts(drafts);
+      const filtered = drafts.filter(d => [d.title, d.scripture, d.theme, d.content].join(' ').toLowerCase().includes(query));
+      renderDrafts(filtered);
+    }
+
+    function loadDraft(id) {
+      const draft = getDrafts().find(d => d.id === id);
+      if (!draft) return;
+      document.getElementById('sermonTitle').value = draft.title || '';
+      document.getElementById('theme').value = draft.theme || '';
+      document.getElementById('scripture').value = draft.scripture || '';
+      document.getElementById('audience').value = draft.audience || 'Sunday Worship';
+      document.getElementById('sermonType').value = draft.sermonType || 'Expository';
+      document.getElementById('tone').value = draft.tone || 'Pastoral and Encouraging';
+      document.getElementById('length').value = draft.length || '45 minutes';
+      document.getElementById('keyPoints').value = draft.keyPoints || '';
+      document.getElementById('application').value = draft.application || '';
+      document.getElementById('sermonEditor').innerHTML = draft.content || '';
+      setStatus('Draft opened. You can continue editing.');
+      toast('Draft opened.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function duplicateDraft(id) {
+      const drafts = getDrafts();
+      const draft = drafts.find(d => d.id === id);
+      if (!draft) return;
+      const copy = { ...draft, id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), title: `${draft.title} Copy`, updatedAt: new Date().toISOString() };
+      drafts.unshift(copy);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+      renderDrafts();
+      updateStats();
+      toast('Draft duplicated.');
+    }
+
+    function deleteDraft(id) {
+      const confirmed = confirm('Delete this sermon draft? This cannot be undone.');
+      if (!confirmed) return;
+      const drafts = getDrafts().filter(d => d.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(drafts));
+      renderDrafts();
+      updateStats();
+      toast('Draft deleted.');
+    }
+
+    function clearBuilder() {
+      const confirmed = confirm('Clear the current sermon builder fields and editor?');
+      if (!confirmed) return;
+      document.getElementById('sermonForm').reset();
+      document.getElementById('sermonEditor').innerHTML = '';
+      setStatus('Builder cleared.');
+      toast('Builder cleared.');
+    }
+
+    function loadStarterTemplate(showToast = true) {
+      document.getElementById('sermonEditor').innerHTML = `
+        <h1>Untitled Sermon</h1>
+        <div class="sermon-meta">
+          <div><strong>Main Scripture:</strong> Add Scripture Here</div>
+          <div><strong>Audience:</strong> Sunday Worship</div>
+          <div><strong>Theme:</strong> Add Theme Here</div>
+          <div><strong>Prepared:</strong> ${new Date().toLocaleDateString()}</div>
+        </div>
+        <h2>Introduction</h2>
+        <p>Write the opening thought, story, question, or context for the message.</p>
+        <h2>Main Point 1</h2>
+        <p><strong>Explanation:</strong> Explain the truth from the passage.</p>
+        <h2>Main Point 2</h2>
+        <p><strong>Application:</strong> Show how the listener should respond.</p>
+        <h2>Main Point 3</h2>
+        <p><strong>Encouragement:</strong> Bring the message back to Christ, faith, and obedience.</p>
+        <h2>Conclusion</h2>
+        <p>Summarize the message and call the people to respond.</p>
+        <h2>Closing Prayer</h2>
+        <p>Father, help us receive Your Word and obey it in Jesus' name. Amen.</p>
+      `;
+      setStatus('Starter template loaded. Replace the text or generate a new outline.');
+      if (showToast) toast('Starter template loaded.');
+    }
+
+    function formatSelection(command) {
+      document.execCommand(command, false, null);
+      document.getElementById('sermonEditor').focus();
+    }
+
+    function exportPDF() {
+      const content = document.getElementById('sermonEditor').innerText.trim();
+      if (!content) {
+        toast('Nothing to export yet.');
+        return;
+      }
+      setStatus('Opening print dialog. Choose “Save as PDF” to export.');
+      window.print();
+    }
+
+    function exportWord() {
+      const editor = document.getElementById('sermonEditor');
+      const content = editor.innerHTML.trim();
+      if (!content) {
+        toast('Nothing to export yet.');
+        return;
+      }
+
+      const data = getFormData();
+      const filename = sanitizeFilename(data.title || 'sermon-draft') + '.doc';
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>${escapeHTML(data.title || 'Sermon Draft')}</title>
+          <style>
+            body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.65; color: #111; }
+            h1, h2, h3 { font-family: Arial, sans-serif; }
+            h1 { font-size: 28pt; }
+            h2 { font-size: 18pt; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+            blockquote { border-left: 4px solid #d99b32; padding-left: 14px; color: #333; }
+          </style>
+        </head>
+        <body>${content}</body>
+        </html>`;
+
+      const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      setStatus('Word document downloaded.');
+      toast('Word document exported.');
+    }
+
+    function sanitizeFilename(name) {
+      return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'sermon-draft';
+    }
+  </script>
+</body>
+</html>
