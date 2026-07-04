@@ -84,6 +84,7 @@ function renderPremiumDashboard() {
           <a href="media.html">🎥 Media & Presentation Builder</a>
           <a href="account.html">⚙️ Account Settings</a>
           <a href="research.html">📚 Christian Research Library</a>
+          <a href="podcast-teaching-notes.html">🎙️ Podcast & Teaching Notes</a>
         </div>
 
         <div class="upgrade">
