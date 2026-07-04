@@ -1,23 +1,1496 @@
-<h1>📚 Study Notes</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Notes | Shepherd Library</title>
+  <style>
+    :root {
+      --sidebar: #020716;
+      --sidebar-soft: #0b1024;
+      --primary: #233f99;
+      --primary-dark: #172f7c;
+      --accent: #f5a400;
+      --accent-dark: #e29400;
+      --app-bg: #eef2ff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #5d6b83;
+      --border: #dbe3f1;
+      --success: #059669;
+      --danger: #dc2626;
+      --warning: #b45309;
+      --shadow: 0 20px 45px rgba(16, 24, 40, 0.08);
+      --radius: 22px;
+    }
 
-<input placeholder="Lesson Title">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<textarea rows="15"></textarea>
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--app-bg);
+      color: var(--text);
+    }
 
-<button>Save Study Note</button>
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-<h3>Folders</h3>
+    button, input, select, textarea {
+      font-family: inherit;
+    }
 
-Old Testament
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
 
-New Testament
+    .sidebar {
+      width: 292px;
+      min-height: 100vh;
+      background: var(--sidebar);
+      color: #fff;
+      padding: 32px 28px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+    }
 
-Theology
+    .brand {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 36px;
+      font-weight: 950;
+      font-size: 25px;
+      line-height: 1.15;
+      color: #ffdc63;
+      letter-spacing: -0.04em;
+    }
 
-Leadership
+    .brand span {
+      display: block;
+    }
 
-Discipleship
+    .nav {
+      display: grid;
+      gap: 12px;
+    }
 
-Evangelism
+    .nav a {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 16px;
+      border-radius: 13px;
+      color: rgba(255,255,255,0.78);
+      font-weight: 850;
+      line-height: 1.25;
+      transition: 0.2s ease;
+    }
 
-<a href="dashboard.html">Back Dashboard</a>
+    .nav a:hover,
+    .nav a.active {
+      background: var(--primary);
+      color: #fff;
+      transform: translateX(2px);
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 292px;
+      padding: 32px 34px 42px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .welcome h1 {
+      font-size: clamp(28px, 3vw, 40px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      font-weight: 950;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      font-size: 17px;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    .profile-pill {
+      min-width: 260px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 11px 18px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.04);
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 950;
+      font-size: 19px;
+    }
+
+    .profile-pill strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .profile-pill small {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .hero {
+      background: linear-gradient(110deg, #102041 0%, #233f99 52%, #332781 100%);
+      border-radius: 28px;
+      padding: 38px 36px;
+      color: #fff;
+      display: grid;
+      grid-template-columns: 1.5fr 0.9fr;
+      gap: 34px;
+      align-items: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+    }
+
+    .hero h2 {
+      font-size: clamp(30px, 3.2vw, 43px);
+      letter-spacing: -0.06em;
+      line-height: 1.07;
+      font-weight: 950;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.92);
+      font-size: 18px;
+      line-height: 1.45;
+      max-width: 820px;
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .verse-card {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 20px;
+      padding: 26px;
+      backdrop-filter: blur(8px);
+      min-height: 154px;
+    }
+
+    .verse-card h3 {
+      font-size: 19px;
+      margin-bottom: 18px;
+      font-weight: 950;
+    }
+
+    .verse-card em {
+      display: block;
+      line-height: 1.45;
+      font-size: 16px;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 15px;
+    }
+
+    .verse-card strong {
+      font-size: 17px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e6ecf7;
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 12px 25px rgba(16, 24, 40, 0.04);
+    }
+
+    .stat-card span {
+      color: #607089;
+      font-weight: 850;
+      font-size: 14px;
+    }
+
+    .stat-card strong {
+      display: block;
+      color: var(--primary-dark);
+      font-size: 42px;
+      line-height: 1;
+      margin: 12px 0 8px;
+      letter-spacing: -0.04em;
+    }
+
+    .stat-card small {
+      color: var(--success);
+      font-weight: 850;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.42fr 0.88fr;
+      gap: 26px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid #e4ebf5;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel h2,
+    .panel h3 {
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      font-weight: 950;
+      margin-bottom: 8px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: #23304b;
+      font-weight: 850;
+      font-size: 14px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #cfd9ea;
+      background: #fff;
+      color: #111827;
+      border-radius: 13px;
+      padding: 14px 16px;
+      font-size: 16px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(35, 63, 153, 0.12);
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #26344f;
+      font-weight: 850;
+      margin-top: 6px;
+    }
+
+    .checkbox-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 13px 22px;
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 950;
+      transition: 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #101828;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .btn-secondary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-soft {
+      background: #eef2ff;
+      color: var(--primary-dark);
+      border: 1px solid #d7def3;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .tool-card {
+      border: 1px solid #e0e7f2;
+      background: #f8fafc;
+      border-radius: 18px;
+      padding: 18px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .tool-card:hover {
+      background: #eef2ff;
+      transform: translateY(-2px);
+    }
+
+    .tool-card strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .tool-card small {
+      color: var(--muted);
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .library-controls {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 12px;
+      margin: 22px 0 18px;
+    }
+
+    .notes-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .note-card {
+      border: 1px solid #e0e7f2;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+      transition: 0.2s ease;
+    }
+
+    .note-card:hover {
+      border-color: #bcc9e5;
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.06);
+    }
+
+    .note-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .note-title {
+      font-size: 19px;
+      font-weight: 950;
+      color: #111827;
+      letter-spacing: -0.02em;
+    }
+
+    .note-scripture {
+      color: var(--primary-dark);
+      font-weight: 850;
+      margin-top: 3px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #eef2ff;
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .note-summary {
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 10px 0;
+      white-space: pre-wrap;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 10px 0 12px;
+    }
+
+    .tag {
+      background: #fff7ed;
+      color: #9a5511;
+      border: 1px solid #fed7aa;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .note-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #edf2f7;
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    .mini-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mini-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 11px;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 12px;
+      background: #eef2ff;
+      color: var(--primary-dark);
+    }
+
+    .mini-btn.delete {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .date {
+      color: #7b879a;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .empty {
+      border: 2px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 28px;
+      color: var(--muted);
+      text-align: center;
+      background: #f8fafc;
+      font-weight: 700;
+    }
+
+    .template-box {
+      margin-top: 18px;
+      border-radius: 18px;
+      border: 1px solid #e0e7f2;
+      background: #f8fafc;
+      padding: 18px;
+    }
+
+    .template-box h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 950;
+    }
+
+    .template-box ul {
+      padding-left: 20px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 650;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      background: #111827;
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-weight: 800;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(14px);
+      transition: 0.22s ease;
+      z-index: 50;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1150px) {
+      .hero,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .stats {
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 850px) {
+      .app {
+        display: block;
+      }
+      .sidebar {
+        position: static;
+        width: 100%;
+        min-height: auto;
+        padding: 22px;
+      }
+      .nav {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .main {
+        margin-left: 0;
+        padding: 24px 18px 34px;
+      }
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .profile-pill {
+        width: 100%;
+      }
+      .form-grid,
+      .library-controls,
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav {
+        grid-template-columns: 1fr;
+      }
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      .hero,
+      .panel {
+        padding: 22px;
+      }
+      .sidebar {
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+      .sidebar,
+      .topbar,
+      .hero,
+      .stats,
+      .note-actions,
+      .library-controls,
+      #noteFormPanel,
+      .tools-panel {
+        display: none !important;
+      }
+      .main {
+        margin: 0;
+        padding: 0;
+      }
+      .grid {
+        display: block;
+      }
+      .panel {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+      .note-card {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+        margin-bottom: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <a class="brand" href="index.html" aria-label="Shepherd Library Home">
+        <span>📖</span>
+        <span>Shepherd<br />Library</span>
+      </a>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">🏠 Dashboard</a>
+        <a href="bible-reader.html">📖 Bible Reader</a>
+        <a href="ai-assistant.html">🤖 AI Bible Assistant</a>
+        <a href="sermon-builder.html">📝 Sermon Builder</a>
+        <a href="prayer-journal.html">🙏 Prayer Journal</a>
+        <a href="study-notes.html" class="active">📚 Study Notes</a>
+        <a href="bookmarks.html">⭐ Bookmarks</a>
+        <a href="media.html">🎥 Media & Presentation Builder</a>
+        <a href="research.html">📚 Christian Research Library</a>
+        <a href="podcast-teaching-notes.html">🎙️ Podcast & Teaching Notes</a>
+        <a href="account.html">⚙️ Account Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="welcome">
+          <h1>Study Notes</h1>
+          <p>Organize Bible insights, sermon thoughts, lesson notes, and discipleship study material.</p>
+        </div>
+
+        <div class="profile-pill" aria-label="User account">
+          <div class="avatar">A</div>
+          <div>
+            <strong>African kids Daily life</strong>
+            <small>free Plan</small>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Capture revelation, organize Scripture, and teach with confidence.</h2>
+          <p>Build a personal Bible study library with scripture references, observation notes, application points, tags, and printable teaching notes.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" type="button" onclick="focusNewNote()">Create Study Note</button>
+            <button class="btn btn-secondary" type="button" onclick="printAllNotes()">Print Notes</button>
+            <button class="btn btn-soft" type="button" onclick="exportAllNotes()">Export Library</button>
+          </div>
+        </div>
+        <div class="verse-card">
+          <h3>Study Reminder</h3>
+          <em>“Open thou mine eyes, that I may behold wondrous things out of thy law.”</em>
+          <strong>Psalm 119:18</strong>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="Study notes summary">
+        <article class="stat-card">
+          <span>Total Notes</span>
+          <strong id="totalNotes">0</strong>
+          <small>Personal study library</small>
+        </article>
+        <article class="stat-card">
+          <span>Favorite Notes</span>
+          <strong id="favoriteNotes">0</strong>
+          <small>Marked for quick access</small>
+        </article>
+        <article class="stat-card">
+          <span>Categories</span>
+          <strong id="categoryCount">0</strong>
+          <small>Organized by purpose</small>
+        </article>
+        <article class="stat-card">
+          <span>Last Updated</span>
+          <strong id="lastUpdated" style="font-size:28px; line-height:1.1;">—</strong>
+          <small>Saved automatically</small>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="panel" id="noteFormPanel">
+          <div class="panel-header">
+            <div>
+              <h2>📝 New Study Note</h2>
+              <p>Save Bible notes with structure pastors, teachers, and growing believers can reuse.</p>
+            </div>
+          </div>
+
+          <form id="noteForm" class="form-grid">
+            <input type="hidden" id="editingId" />
+
+            <div class="field">
+              <label for="title">Study Title</label>
+              <input id="title" required placeholder="Example: Walking by Faith" />
+            </div>
+
+            <div class="field">
+              <label for="scripture">Scripture Reference</label>
+              <input id="scripture" placeholder="Example: Hebrews 11:1-6" />
+            </div>
+
+            <div class="field">
+              <label for="category">Category</label>
+              <select id="category">
+                <option>Bible Study</option>
+                <option>Sermon Prep</option>
+                <option>Devotion</option>
+                <option>Discipleship</option>
+                <option>Research</option>
+                <option>Youth Lesson</option>
+                <option>Leadership Training</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="audience">Audience</label>
+              <select id="audience">
+                <option>General Church</option>
+                <option>Pastors & Leaders</option>
+                <option>New Believers</option>
+                <option>Youth & Young Adults</option>
+                <option>Children</option>
+                <option>Small Group</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label for="tags">Tags</label>
+              <input id="tags" placeholder="faith, prayer, holiness, leadership" />
+            </div>
+
+            <div class="field full">
+              <label for="observation">Observation</label>
+              <textarea id="observation" placeholder="What does the text say? Write key words, repeated ideas, people, places, commands, promises, and warnings."></textarea>
+            </div>
+
+            <div class="field full">
+              <label for="interpretation">Interpretation</label>
+              <textarea id="interpretation" placeholder="What does the text mean? Add context, cross references, original audience, and main truth."></textarea>
+            </div>
+
+            <div class="field full">
+              <label for="application">Application</label>
+              <textarea id="application" placeholder="How should believers respond? Add action steps, questions, prayer points, and ministry application."></textarea>
+            </div>
+
+            <div class="field full">
+              <label for="notes">Full Notes / Teaching Thoughts</label>
+              <textarea id="notes" placeholder="Add sermon thoughts, illustrations, quotes, lesson outline, group discussion questions, or pastoral reflections."></textarea>
+            </div>
+
+            <div class="field full">
+              <label class="checkbox-row" for="favorite">
+                <input id="favorite" type="checkbox" />
+                Mark this note as favorite
+              </label>
+            </div>
+
+            <div class="btn-row full">
+              <button class="btn btn-primary" type="submit" id="saveBtn">Save Study Note</button>
+              <button class="btn btn-secondary" type="button" onclick="insertStudyTemplate()">Insert Study Template</button>
+              <button class="btn btn-soft" type="button" onclick="clearForm()">Clear Form</button>
+            </div>
+          </form>
+        </article>
+
+        <aside class="panel tools-panel">
+          <h3>📌 Study Tools</h3>
+          <p>Use these quick helpers to prepare better Bible lessons and personal study notes.</p>
+
+          <div class="tools-grid">
+            <div class="tool-card" onclick="insertInductiveTemplate()">
+              <strong>🔎 Inductive Study</strong>
+              <small>Observation, interpretation, and application structure.</small>
+            </div>
+            <div class="tool-card" onclick="insertTeachingQuestions()">
+              <strong>❓ Study Questions</strong>
+              <small>Add questions for Bible study, small groups, or youth class.</small>
+            </div>
+            <div class="tool-card" onclick="insertSermonBridge()">
+              <strong>🗣️ Sermon Bridge</strong>
+              <small>Turn notes into main points and preaching application.</small>
+            </div>
+            <div class="tool-card" onclick="insertPrayerResponse()">
+              <strong>🙏 Prayer Response</strong>
+              <small>Add prayer points and personal response.</small>
+            </div>
+          </div>
+
+          <div class="template-box">
+            <h4>Suggested Study Flow</h4>
+            <ul>
+              <li>Read the passage slowly two or three times.</li>
+              <li>Write what the text says before adding opinions.</li>
+              <li>Find the main truth God is revealing.</li>
+              <li>Apply the truth personally and practically.</li>
+              <li>Save, print, or export your note for teaching.</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel" style="margin-top: 26px;">
+        <div class="panel-header">
+          <div>
+            <h2>📚 My Study Notes Library</h2>
+            <p>Search, edit, print, duplicate, delete, and export your saved notes. Notes are saved in this browser using local storage.</p>
+          </div>
+          <button class="btn btn-primary" type="button" onclick="exportAllNotesAsWord()">Export Word</button>
+        </div>
+
+        <div class="library-controls">
+          <input id="searchInput" placeholder="Search by title, scripture, tags, or notes..." oninput="renderNotes()" />
+          <select id="filterCategory" onchange="renderNotes()">
+            <option value="all">All Categories</option>
+            <option>Bible Study</option>
+            <option>Sermon Prep</option>
+            <option>Devotion</option>
+            <option>Discipleship</option>
+            <option>Research</option>
+            <option>Youth Lesson</option>
+            <option>Leadership Training</option>
+          </select>
+        </div>
+
+        <div class="btn-row" style="margin-top:0; margin-bottom:18px;">
+          <button class="btn btn-soft" type="button" onclick="loadSampleNotes()">Load Sample Notes</button>
+          <button class="btn btn-soft" type="button" onclick="exportAllNotes()">Export JSON</button>
+          <button class="btn btn-soft" type="button" onclick="exportAllNotesAsText()">Export Text</button>
+          <button class="btn btn-danger" type="button" onclick="clearAllNotes()">Clear All</button>
+        </div>
+
+        <div id="notesList" class="notes-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast">Saved</div>
+
+  <script>
+    const STORAGE_KEY = "shepherdLibraryStudyNotesV1";
+
+    const els = {
+      form: document.getElementById("noteForm"),
+      editingId: document.getElementById("editingId"),
+      title: document.getElementById("title"),
+      scripture: document.getElementById("scripture"),
+      category: document.getElementById("category"),
+      audience: document.getElementById("audience"),
+      tags: document.getElementById("tags"),
+      observation: document.getElementById("observation"),
+      interpretation: document.getElementById("interpretation"),
+      application: document.getElementById("application"),
+      notes: document.getElementById("notes"),
+      favorite: document.getElementById("favorite"),
+      saveBtn: document.getElementById("saveBtn"),
+      notesList: document.getElementById("notesList"),
+      searchInput: document.getElementById("searchInput"),
+      filterCategory: document.getElementById("filterCategory"),
+      totalNotes: document.getElementById("totalNotes"),
+      favoriteNotes: document.getElementById("favoriteNotes"),
+      categoryCount: document.getElementById("categoryCount"),
+      lastUpdated: document.getElementById("lastUpdated"),
+      toast: document.getElementById("toast")
+    };
+
+    function getNotes() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
+    }
+
+    function setNotes(notes) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      updateStats(notes);
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      setTimeout(() => els.toast.classList.remove("show"), 1800);
+    }
+
+    function formatDate(value) {
+      if (!value) return "—";
+      return new Date(value).toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function updateStats(notes = getNotes()) {
+      const favorites = notes.filter(note => note.favorite).length;
+      const categories = new Set(notes.map(note => note.category).filter(Boolean)).size;
+      const newest = [...notes].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))[0];
+
+      els.totalNotes.textContent = notes.length;
+      els.favoriteNotes.textContent = favorites;
+      els.categoryCount.textContent = categories;
+      els.lastUpdated.textContent = newest ? formatDate(newest.updatedAt) : "—";
+    }
+
+    function focusNewNote() {
+      document.getElementById("noteFormPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => els.title.focus(), 450);
+    }
+
+    function clearForm() {
+      els.form.reset();
+      els.editingId.value = "";
+      els.saveBtn.textContent = "Save Study Note";
+    }
+
+    function noteFromForm() {
+      const now = new Date().toISOString();
+      const editingId = els.editingId.value;
+      const existing = getNotes().find(note => note.id === editingId);
+
+      return {
+        id: editingId || crypto.randomUUID(),
+        title: els.title.value.trim(),
+        scripture: els.scripture.value.trim(),
+        category: els.category.value,
+        audience: els.audience.value,
+        tags: els.tags.value.split(",").map(tag => tag.trim()).filter(Boolean),
+        observation: els.observation.value.trim(),
+        interpretation: els.interpretation.value.trim(),
+        application: els.application.value.trim(),
+        notes: els.notes.value.trim(),
+        favorite: els.favorite.checked,
+        createdAt: existing?.createdAt || now,
+        updatedAt: now
+      };
+    }
+
+    els.form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      if (!els.title.value.trim()) {
+        showToast("Please add a study title.");
+        els.title.focus();
+        return;
+      }
+
+      const note = noteFromForm();
+      const notes = getNotes();
+      const editingIndex = notes.findIndex(item => item.id === note.id);
+
+      if (editingIndex >= 0) {
+        notes[editingIndex] = note;
+        showToast("Study note updated.");
+      } else {
+        notes.unshift(note);
+        showToast("Study note saved.");
+      }
+
+      setNotes(notes);
+      clearForm();
+      renderNotes();
+    });
+
+    function renderNotes() {
+      const query = els.searchInput.value.toLowerCase().trim();
+      const category = els.filterCategory.value;
+      const notes = getNotes();
+
+      const filtered = notes.filter(note => {
+        const searchable = [
+          note.title,
+          note.scripture,
+          note.category,
+          note.audience,
+          ...(note.tags || []),
+          note.observation,
+          note.interpretation,
+          note.application,
+          note.notes
+        ].join(" ").toLowerCase();
+
+        const matchesQuery = !query || searchable.includes(query);
+        const matchesCategory = category === "all" || note.category === category;
+        return matchesQuery && matchesCategory;
+      });
+
+      if (!filtered.length) {
+        els.notesList.innerHTML = `
+          <div class="empty">
+            No study notes found. Create your first note or adjust your search filter.
+          </div>
+        `;
+        updateStats(notes);
+        return;
+      }
+
+      els.notesList.innerHTML = filtered.map(note => noteCard(note)).join("");
+      updateStats(notes);
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function noteCard(note) {
+      const tags = (note.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+      const summary = note.application || note.observation || note.notes || "No summary added yet.";
+
+      return `
+        <article class="note-card">
+          <div class="note-top">
+            <div>
+              <div class="note-title">${note.favorite ? "⭐ " : ""}${escapeHtml(note.title)}</div>
+              <div class="note-scripture">${escapeHtml(note.scripture || "No scripture reference added")}</div>
+            </div>
+            <span class="badge">${escapeHtml(note.category || "Study")}</span>
+          </div>
+
+          <p class="note-summary">${escapeHtml(summary).slice(0, 320)}${summary.length > 320 ? "..." : ""}</p>
+          <div class="tags">${tags || `<span class="tag">${escapeHtml(note.audience || "General")}</span>`}</div>
+
+          <div class="note-actions">
+            <span class="date">Updated ${formatDate(note.updatedAt)} · ${escapeHtml(note.audience || "General Church")}</span>
+            <div class="mini-actions">
+              <button class="mini-btn" type="button" onclick="viewNote('${note.id}')">View</button>
+              <button class="mini-btn" type="button" onclick="editNote('${note.id}')">Edit</button>
+              <button class="mini-btn" type="button" onclick="duplicateNote('${note.id}')">Duplicate</button>
+              <button class="mini-btn" type="button" onclick="printNote('${note.id}')">Print</button>
+              <button class="mini-btn" type="button" onclick="exportNoteAsWord('${note.id}')">Word</button>
+              <button class="mini-btn delete" type="button" onclick="deleteNote('${note.id}')">Delete</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function findNote(id) {
+      return getNotes().find(note => note.id === id);
+    }
+
+    function editNote(id) {
+      const note = findNote(id);
+      if (!note) return;
+
+      els.editingId.value = note.id;
+      els.title.value = note.title || "";
+      els.scripture.value = note.scripture || "";
+      els.category.value = note.category || "Bible Study";
+      els.audience.value = note.audience || "General Church";
+      els.tags.value = (note.tags || []).join(", ");
+      els.observation.value = note.observation || "";
+      els.interpretation.value = note.interpretation || "";
+      els.application.value = note.application || "";
+      els.notes.value = note.notes || "";
+      els.favorite.checked = Boolean(note.favorite);
+      els.saveBtn.textContent = "Update Study Note";
+      focusNewNote();
+    }
+
+    function duplicateNote(id) {
+      const note = findNote(id);
+      if (!note) return;
+
+      const now = new Date().toISOString();
+      const copy = {
+        ...note,
+        id: crypto.randomUUID(),
+        title: `${note.title} Copy`,
+        createdAt: now,
+        updatedAt: now
+      };
+      const notes = getNotes();
+      notes.unshift(copy);
+      setNotes(notes);
+      renderNotes();
+      showToast("Study note duplicated.");
+    }
+
+    function deleteNote(id) {
+      const note = findNote(id);
+      if (!note) return;
+      const confirmed = confirm(`Delete this study note?\n\n${note.title}`);
+      if (!confirmed) return;
+      const notes = getNotes().filter(item => item.id !== id);
+      setNotes(notes);
+      renderNotes();
+      showToast("Study note deleted.");
+    }
+
+    function clearAllNotes() {
+      if (!getNotes().length) {
+        showToast("No notes to clear.");
+        return;
+      }
+      const confirmed = confirm("This will delete all saved study notes in this browser. Continue?");
+      if (!confirmed) return;
+      setNotes([]);
+      renderNotes();
+      showToast("All study notes cleared.");
+    }
+
+    function noteToHtml(note) {
+      const tags = (note.tags || []).join(", ");
+      return `
+        <h1>${escapeHtml(note.title)}</h1>
+        <p><strong>Scripture:</strong> ${escapeHtml(note.scripture || "")}</p>
+        <p><strong>Category:</strong> ${escapeHtml(note.category || "")} | <strong>Audience:</strong> ${escapeHtml(note.audience || "")}</p>
+        <p><strong>Tags:</strong> ${escapeHtml(tags)}</p>
+        <hr />
+        <h2>Observation</h2><p>${escapeHtml(note.observation || "").replaceAll("\n", "<br />")}</p>
+        <h2>Interpretation</h2><p>${escapeHtml(note.interpretation || "").replaceAll("\n", "<br />")}</p>
+        <h2>Application</h2><p>${escapeHtml(note.application || "").replaceAll("\n", "<br />")}</p>
+        <h2>Full Notes</h2><p>${escapeHtml(note.notes || "").replaceAll("\n", "<br />")}</p>
+        <p><small>Created ${formatDate(note.createdAt)} · Updated ${formatDate(note.updatedAt)}</small></p>
+      `;
+    }
+
+    function viewNote(id) {
+      const note = findNote(id);
+      if (!note) return;
+
+      const win = window.open("", "_blank");
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>${escapeHtml(note.title)}</title>
+          <style>
+            body { font-family: Arial, sans-serif; color:#111827; line-height:1.6; max-width:900px; margin:40px auto; padding:0 22px; }
+            h1 { color:#172f7c; font-size:34px; }
+            h2 { color:#233f99; margin-top:26px; }
+            p { white-space: normal; }
+            .actions { margin: 24px 0; display:flex; gap:10px; }
+            button { border:0; border-radius:999px; padding:12px 18px; font-weight:800; cursor:pointer; background:#f5a400; }
+          </style>
+        </head>
+        <body>
+          <div class="actions"><button onclick="window.print()">Print Note</button></div>
+          ${noteToHtml(note)}
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
+    function printNote(id) {
+      viewNote(id);
+      setTimeout(() => showToast("Print window opened."), 300);
+    }
+
+    function printAllNotes() {
+      const notes = getNotes();
+      if (!notes.length) {
+        showToast("No notes to print.");
+        return;
+      }
+
+      const win = window.open("", "_blank");
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Shepherd Library Study Notes</title>
+          <style>
+            body { font-family: Arial, sans-serif; color:#111827; line-height:1.6; max-width:950px; margin:40px auto; padding:0 22px; }
+            h1 { color:#172f7c; }
+            h2 { color:#233f99; }
+            article { border-bottom:1px solid #ddd; padding:22px 0; break-inside:avoid; }
+            button { border:0; border-radius:999px; padding:12px 18px; font-weight:800; cursor:pointer; background:#f5a400; margin-bottom:20px; }
+          </style>
+        </head>
+        <body>
+          <button onclick="window.print()">Print All Notes</button>
+          <h1>Shepherd Library Study Notes</h1>
+          ${notes.map(note => `<article>${noteToHtml(note)}</article>`).join("")}
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function safeFilename(value) {
+      return (value || "study-note").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    }
+
+    function noteToPlainText(note) {
+      return `
+${note.title}
+Scripture: ${note.scripture || ""}
+Category: ${note.category || ""}
+Audience: ${note.audience || ""}
+Tags: ${(note.tags || []).join(", ")}
+Created: ${formatDate(note.createdAt)}
+Updated: ${formatDate(note.updatedAt)}
+
+OBSERVATION
+${note.observation || ""}
+
+INTERPRETATION
+${note.interpretation || ""}
+
+APPLICATION
+${note.application || ""}
+
+FULL NOTES
+${note.notes || ""}
+`.trim();
+    }
+
+    function exportAllNotes() {
+      const notes = getNotes();
+      if (!notes.length) {
+        showToast("No notes to export.");
+        return;
+      }
+      downloadFile("shepherd-library-study-notes.json", JSON.stringify(notes, null, 2), "application/json");
+      showToast("JSON library exported.");
+    }
+
+    function exportAllNotesAsText() {
+      const notes = getNotes();
+      if (!notes.length) {
+        showToast("No notes to export.");
+        return;
+      }
+      const content = notes.map(noteToPlainText).join("\n\n----------------------------------------\n\n");
+      downloadFile("shepherd-library-study-notes.txt", content, "text/plain");
+      showToast("Text library exported.");
+    }
+
+    function exportNoteAsWord(id) {
+      const note = findNote(id);
+      if (!note) return;
+      const html = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>${escapeHtml(note.title)}</title></head>
+        <body>${noteToHtml(note)}</body></html>
+      `;
+      downloadFile(`${safeFilename(note.title)}.doc`, html, "application/msword");
+      showToast("Word document exported.");
+    }
+
+    function exportAllNotesAsWord() {
+      const notes = getNotes();
+      if (!notes.length) {
+        showToast("No notes to export.");
+        return;
+      }
+      const html = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>Shepherd Library Study Notes</title></head>
+        <body>
+          <h1>Shepherd Library Study Notes</h1>
+          ${notes.map(note => `<hr />${noteToHtml(note)}`).join("")}
+        </body></html>
+      `;
+      downloadFile("shepherd-library-study-notes.doc", html, "application/msword");
+      showToast("Word library exported.");
+    }
+
+    function appendToTextarea(textarea, content) {
+      const current = textarea.value.trim();
+      textarea.value = current ? `${current}\n\n${content}` : content;
+      textarea.focus();
+    }
+
+    function insertStudyTemplate() {
+      appendToTextarea(els.notes, `Teaching Outline:
+1. Introduction / Big Idea:
+2. Historical or Biblical Context:
+3. Main Truth:
+4. Supporting Scriptures:
+5. Illustration:
+6. Life Application:
+7. Discussion Questions:
+8. Prayer Response:`);
+      showToast("Study template inserted.");
+    }
+
+    function insertInductiveTemplate() {
+      els.observation.value ||= "Who is speaking? Who is the audience? What words or ideas repeat? What command, promise, warning, or example appears in the text?";
+      els.interpretation.value ||= "What did this passage mean to the original audience? How does the surrounding context explain the meaning? What truth does this reveal about God, humanity, sin, grace, or obedience?";
+      els.application.value ||= "What must I believe, repent of, obey, practice, teach, or pray because of this passage?";
+      showToast("Inductive study helper added.");
+    }
+
+    function insertTeachingQuestions() {
+      appendToTextarea(els.notes, `Bible Study Questions:
+1. What stands out to you from this passage?
+2. What does this reveal about God's character?
+3. What does this passage confront in our lives today?
+4. What is one practical step of obedience?
+5. How can the church live this truth together?`);
+      showToast("Study questions added.");
+    }
+
+    function insertSermonBridge() {
+      appendToTextarea(els.notes, `Sermon Bridge:
+Main Point 1:
+Explanation:
+Illustration:
+Application:
+
+Main Point 2:
+Explanation:
+Illustration:
+Application:
+
+Closing Call to Action:`);
+      showToast("Sermon bridge added.");
+    }
+
+    function insertPrayerResponse() {
+      appendToTextarea(els.application, `Prayer Response:
+Lord, open my heart to understand Your Word. Help me obey this truth, teach it with clarity, and live it with humility. Show me what must change and give me grace to walk in Your will.`);
+      showToast("Prayer response added.");
+    }
+
+    function loadSampleNotes() {
+      const notes = getNotes();
+      if (notes.length && !confirm("Add sample notes to your existing library?")) return;
+
+      const now = new Date().toISOString();
+      const samples = [
+        {
+          id: crypto.randomUUID(),
+          title: "Returning to the Church of the Book of Acts",
+          scripture: "Acts 2:42-47; Acts 4:31-35",
+          category: "Bible Study",
+          audience: "General Church",
+          tags: ["church", "discipleship", "prayer", "fellowship"],
+          observation: "The early church continued steadfastly in doctrine, fellowship, breaking of bread, and prayers. Their life together was marked by unity, generosity, worship, and evangelism.",
+          interpretation: "Spiritual power was connected to devotion, unity, prayer, and obedience to the apostles' teaching. The church was not only a service; it was a Spirit-filled community.",
+          application: "Modern believers must recover devotion to Scripture, prayer, genuine fellowship, generosity, and evangelism empowered by the Holy Spirit.",
+          notes: "Discussion: Which priorities have modern churches gained or lost? How can local churches cultivate spiritual vitality today?",
+          favorite: true,
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          id: crypto.randomUUID(),
+          title: "Walking by Faith",
+          scripture: "Hebrews 11:1-6",
+          category: "Devotion",
+          audience: "New Believers",
+          tags: ["faith", "trust", "obedience"],
+          observation: "Faith is described as substance and evidence. The elders obtained a good report by faith, and without faith it is impossible to please God.",
+          interpretation: "Faith is not empty wishing. It is confidence in God, His promises, His character, and His reward for those who diligently seek Him.",
+          application: "Choose one promise of God to trust this week. Pray, obey, and take the next faithful step even when the full picture is not visible.",
+          notes: "Teaching idea: Use Abraham as an example of obeying God before knowing every detail.",
+          favorite: false,
+          createdAt: now,
+          updatedAt: now
+        }
+      ];
+
+      setNotes([...samples, ...notes]);
+      renderNotes();
+      showToast("Sample notes added.");
+    }
+
+    renderNotes();
+  </script>
+</body>
+</html>
