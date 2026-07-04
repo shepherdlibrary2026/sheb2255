@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Christian Research Library | Shepherd Library</title>
+
+  <!-- Shepherd Library Styles -->
+  <link rel="stylesheet" href="app.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="sidebar.css" />
+  <link rel="stylesheet" href="cards.css" />
+  <link rel="stylesheet" href="buttons.css" />
+  <link rel="stylesheet" href="forms.css" />
+  <link rel="stylesheet" href="responsive.css" />
+
+  <!-- Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-dark: #5b21b6;
+      --primary-soft: #ede9fe;
+      --gold: #f59e0b;
+      --gold-soft: #fef3c7;
+      --dark: #101828;
+      --text: #344054;
+      --muted: #667085;
+      --border: #eaecf0;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --success: #039855;
+      --danger: #d92d20;
+      --shadow: 0 18px 45px rgba(16, 24, 40, 0.10);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f4f6fb;
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 292px;
+      min-height: 100vh;
+      position: fixed;
+      inset: 0 auto 0 0;
+      background: linear-gradient(180deg, #111827 0%, #1f143d 55%, #2e1065 100%);
+      color: #ffffff;
+      padding: 24px 18px;
+      overflow-y: auto;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 8px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 20px;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--gold), #fde68a);
+      color: #422006;
+      font-size: 24px;
+      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.35);
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      line-height: 1.2;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      display: block;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.68);
+      margin-top: 3px;
+    }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.45);
+      margin: 22px 12px 10px;
+      font-weight: 700;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 13px;
+      border-radius: 14px;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 14px;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-link.active {
+      box-shadow: inset 3px 0 0 var(--gold);
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 292px;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 7px;
+      font-weight: 600;
+    }
+
+    .page-title {
+      font-size: clamp(28px, 3vw, 42px);
+      color: var(--dark);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin: 0;
+    }
+
+    .page-subtitle {
+      max-width: 780px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 17px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s ease;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 12px 24px rgba(124, 58, 237, 0.22);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 34px rgba(124, 58, 237, 0.30);
+    }
+
+    .btn-light {
+      background: #ffffff;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .research-hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.35), transparent 30%),
+        linear-gradient(135deg, #2e1065 0%, #4c1d95 45%, #111827 100%);
+      padding: 34px;
+      min-height: 310px;
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .research-hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      right: -130px;
+      bottom: -140px;
+      background: rgba(255, 255, 255, 0.12);
+      filter: blur(1px);
+    }
+
+    .hero-badge {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+
+    .research-hero h2 {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(31px, 4vw, 56px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+    }
+
+    .research-hero p {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.7;
+      font-size: 16px;
+      margin: 18px 0 28px;
+    }
+
+    .hero-search {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px;
+      max-width: 760px;
+      box-shadow: 0 20px 55px rgba(17, 24, 39, 0.22);
+    }
+
+    .hero-search input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      padding: 13px 16px;
+      font-size: 15px;
+      border-radius: 999px;
+      color: var(--dark);
+      min-width: 120px;
+    }
+
+    .hero-search button {
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), #f97316);
+      color: #fff;
+      padding: 13px 20px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .verse-card {
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, #fff 0%, #fff7ed 100%);
+      border: 1px solid #fed7aa;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .verse-card .icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--gold-soft);
+      font-size: 26px;
+    }
+
+    .verse-card h3 {
+      font-size: 19px;
+      color: var(--dark);
+      margin: 0 0 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .verse-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .verse-reference {
+      padding: 12px 14px;
+      border-radius: 15px;
+      background: #fff;
+      border: 1px solid #fed7aa;
+      color: #92400e;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: 0 10px 28px rgba(16, 24, 40, 0.05);
+    }
+
+    .stat-card span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 15px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .stat-card h3 {
+      margin: 0;
+      color: var(--dark);
+      font-size: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .stat-card p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 12px 34px rgba(16, 24, 40, 0.06);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 24px 24px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title h2 {
+      margin: 0;
+      color: var(--dark);
+      letter-spacing: -0.04em;
+      font-size: 23px;
+    }
+
+    .panel-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-weight: 800;
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .filter-tab:hover,
+    .filter-tab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .resource-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .resource-card {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr) auto;
+      gap: 16px;
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--border);
+      transition: 0.2s ease;
+    }
+
+    .resource-card:last-child {
+      border-bottom: 0;
+    }
+
+    .resource-card:hover {
+      background: var(--surface-soft);
+    }
+
+    .resource-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 25px;
+      background: var(--primary-soft);
+    }
+
+    .resource-card[data-category="Bible"] .resource-icon {
+      background: #ecfdf3;
+    }
+
+    .resource-card[data-category="Theology"] .resource-icon {
+      background: #eff6ff;
+    }
+
+    .resource-card[data-category="Sermon"] .resource-icon {
+      background: #fff7ed;
+    }
+
+    .resource-card[data-category="Church"] .resource-icon {
+      background: #fdf2fa;
+    }
+
+    .resource-body h3 {
+      margin: 0 0 8px;
+      color: var(--dark);
+      letter-spacing: -0.03em;
+      font-size: 18px;
+    }
+
+    .resource-body p {
+      margin: 0 0 13px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #f2f4f7;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .resource-action {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .mini-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--dark);
+      cursor: pointer;
+      transition: 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .mini-btn:hover {
+      background: var(--dark);
+      color: #fff;
+      border-color: var(--dark);
+    }
+
+    .side-column {
+      display: grid;
+      gap: 22px;
+    }
+
+    .tool-card,
+    .collection-card,
+    .notes-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 12px 34px rgba(16, 24, 40, 0.06);
+      padding: 24px;
+    }
+
+    .tool-card h2,
+    .collection-card h2,
+    .notes-card h2 {
+      margin: 0 0 7px;
+      color: var(--dark);
+      font-size: 21px;
+      letter-spacing: -0.04em;
+    }
+
+    .tool-card > p,
+    .collection-card > p,
+    .notes-card > p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .prompt-box {
+      display: grid;
+      gap: 10px;
+    }
+
+    textarea,
+    select,
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px 14px;
+      outline: none;
+      color: var(--dark);
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      transition: 0.2s ease;
+    }
+
+    textarea:focus,
+    select:focus,
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.10);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.55;
+    }
+
+    .collection-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .collection-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+    }
+
+    .collection-item strong {
+      color: var(--dark);
+      font-size: 14px;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .collection-item span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .count-pill {
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .note-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .note-item {
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 34px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .empty-state.show {
+      display: block;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 12px;
+      width: 46px;
+      height: 46px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 24, 40, 0.45);
+      z-index: 10;
+    }
+
+    @media (max-width: 1180px) {
+      .hero-grid,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .side-column {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .notes-card {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: 0.25s ease;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay.show {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .mobile-menu-btn {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .main-content {
+        padding: 18px;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+
+      .stats-grid,
+      .side-column {
+        grid-template-columns: 1fr;
+      }
+
+      .research-hero {
+        padding: 25px;
+      }
+
+      .hero-search {
+        border-radius: 22px;
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .hero-search input,
+      .hero-search button {
+        width: 100%;
+      }
+
+      .resource-card {
+        grid-template-columns: 1fr;
+      }
+
+      .resource-icon {
+        width: 52px;
+        height: 52px;
+      }
+
+      .resource-action {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo">📚</div>
+        <div>
+          <h1>Shepherd Library</h1>
+          <span>AI Bible Study Platform</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section-title">Main Tools</div>
+      <nav class="nav-list" aria-label="Main Navigation">
+        <a href="dashboard.html" class="nav-link">🏠 Dashboard</a>
+        <a href="bible-reader.html" class="nav-link">📖 Bible Reader</a>
+        <a href="ai-assistant.html" class="nav-link">🤖 AI Bible Assistant</a>
+        <a href="sermon-builder.html" class="nav-link">📝 AI Sermon Builder</a>
+        <a href="study-notes.html" class="nav-link">🎓 Bible Study Creator</a>
+        <a href="research.html" class="nav-link active">📚 Christian Research Library</a>
+      </nav>
+
+      <div class="sidebar-section-title">Ministry</div>
+      <nav class="nav-list" aria-label="Ministry Navigation">
+        <a href="prayer-journal.html" class="nav-link">🙏 Prayer Journal</a>
+        <a href="church-resources.html" class="nav-link">⛪ Church Resource Center</a>
+        <a href="team.html" class="nav-link">👥 Team Collaboration</a>
+        <a href="sermon-calendar.html" class="nav-link">📅 Sermon Calendar</a>
+        <a href="media.html" class="nav-link">🎥 Media & Presentation Builder</a>
+        <a href="podcast.html" class="nav-link">🎙️ Podcast & Teaching Notes</a>
+      </nav>
+
+      <div class="sidebar-section-title">Account</div>
+      <nav class="nav-list" aria-label="Account Navigation">
+        <a href="bookmarks.html" class="nav-link">🔖 Bookmarks</a>
+        <a href="settings.html" class="nav-link">⚙️ Settings</a>
+        <a href="index.html" class="nav-link">🚪 Sign Out</a>
+      </nav>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open sidebar">☰</button>
+        <div>
+          <div class="breadcrumb">Dashboard / Library / Christian Research</div>
+          <h1 class="page-title">Christian Research Library</h1>
+          <p class="page-subtitle">
+            Search, organize, and study biblical topics, theological doctrines, sermon references,
+            church leadership resources, and practical ministry research in one premium workspace.
+          </p>
+        </div>
+        <div class="top-actions">
+          <a href="bookmarks.html" class="btn btn-light">🔖 Saved Research</a>
+          <a href="sermon-builder.html" class="btn btn-primary">✨ Build Sermon</a>
+        </div>
+      </header>
+
+      <section class="hero-grid">
+        <div class="research-hero">
+          <div class="hero-badge">📚 Research Center for Pastors, Teachers & Bible Students</div>
+          <h2>Study deeper. Teach stronger. Lead with biblical clarity.</h2>
+          <p>
+            Use Shepherd Library to gather scriptures, build outlines, compare themes, save notes,
+            and prepare teachings rooted in the Word of God.
+          </p>
+
+          <form class="hero-search" id="researchSearchForm">
+            <input
+              id="researchSearch"
+              type="text"
+              placeholder="Search topics: faith, leadership, prayer, Acts church, spiritual gifts..."
+              aria-label="Search research library"
+            />
+            <button type="submit">Search Library</button>
+          </form>
+        </div>
+
+        <aside class="verse-card">
+          <div>
+            <div class="icon">🕊️</div>
+            <h3>Research with spiritual purpose</h3>
+            <p>
+              Biblical research should not only inform the mind. It should strengthen faith,
+              shape character, and equip the church for the work of ministry.
+            </p>
+          </div>
+          <div class="verse-reference">2 Timothy 2:15 • Acts 17:11 • Ezra 7:10</div>
+        </aside>
+      </section>
+
+      <section class="stats-grid" aria-label="Research Library Stats">
+        <div class="stat-card">
+          <span>📖</span>
+          <h3>120+</h3>
+          <p>Bible Topics</p>
+        </div>
+        <div class="stat-card">
+          <span>🧠</span>
+          <h3>75+</h3>
+          <p>Theology Notes</p>
+        </div>
+        <div class="stat-card">
+          <span>📝</span>
+          <h3>60+</h3>
+          <p>Sermon Starters</p>
+        </div>
+        <div class="stat-card">
+          <span>⛪</span>
+          <h3>40+</h3>
+          <p>Church Resources</p>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <h2>Featured Research Resources</h2>
+              <p>Filter by category or search by keyword to quickly find ministry-ready materials.</p>
+            </div>
+
+            <div class="filter-tabs" role="tablist" aria-label="Research filters">
+              <button class="filter-tab active" data-filter="All" type="button">All</button>
+              <button class="filter-tab" data-filter="Bible" type="button">Bible</button>
+              <button class="filter-tab" data-filter="Theology" type="button">Theology</button>
+              <button class="filter-tab" data-filter="Sermon" type="button">Sermons</button>
+              <button class="filter-tab" data-filter="Church" type="button">Church</button>
+            </div>
+          </div>
+
+          <div class="resource-list" id="resourceList">
+            <article class="resource-card" data-category="Bible" data-keywords="acts early church fellowship prayer scripture evangelism holy spirit">
+              <div class="resource-icon">📖</div>
+              <div class="resource-body">
+                <h3>Returning to the Church of the Book of Acts</h3>
+                <p>
+                  A complete topic guide on spiritual devotion, prayer, fellowship, generosity,
+                  evangelism, and Holy Spirit empowerment in the early church.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Acts 2:42–47</span>
+                  <span class="tag">Acts 4:31–35</span>
+                  <span class="tag">Church Growth</span>
+                </div>
+              </div>
+              <div class="resource-action">
+                <button class="mini-btn" type="button">Open</button>
+                <button class="mini-btn" type="button">Save</button>
+              </div>
+            </article>
+
+            <article class="resource-card" data-category="Theology" data-keywords="god doctrine attributes holiness love omnipotence trinity faith christianity">
+              <div class="resource-icon">🧠</div>
+              <div class="resource-body">
+                <h3>The Doctrine of God: Who God Is</h3>
+                <p>
+                  A theological study on the nature, attributes, holiness, love, sovereignty,
+                  faithfulness, and revealed character of God in Scripture.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Exodus 34:6–7</span>
+                  <span class="tag">Psalm 90:2</span>
+                  <span class="tag">Theology</span>
+                </div>
+              </div>
+              <div class="resource-action">
+                <button class="mini-btn" type="button">Open</button>
+                <button class="mini-btn" type="button">Save</button>
+              </div>
+            </article>
+
+            <article class="resource-card" data-category="Sermon" data-keywords="sermon divine turnaround exodus faith deliverance breakthrough red sea preaching outline">
+              <div class="resource-icon">📝</div>
+              <div class="resource-body">
+                <h3>The Power of Divine Turnaround</h3>
+                <p>
+                  Sermon research and outline starter focused on God’s ability to reverse impossible
+                  situations and lead His people from fear into victory.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Exodus 14:13</span>
+                  <span class="tag">Breakthrough</span>
+                  <span class="tag">Sermon Outline</span>
+                </div>
+              </div>
+              <div class="resource-action">
+                <button class="mini-btn" type="button">Open</button>
+                <button class="mini-btn" type="button">Save</button>
+              </div>
+            </article>
+
+            <article class="resource-card" data-category="Church" data-keywords="church leadership discipleship ministry volunteers growth dying healthy church culture pastor">
+              <div class="resource-icon">⛪</div>
+              <div class="resource-body">
+                <h3>Growing Church or Dying Church?</h3>
+                <p>
+                  A church health research guide covering discipleship, leadership, evangelism,
+                  spiritual vitality, volunteer culture, and ministry accountability.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Ephesians 4:11–16</span>
+                  <span class="tag">Leadership</span>
+                  <span class="tag">Church Health</span>
+                </div>
+              </div>
+              <div class="resource-action">
+                <button class="mini-btn" type="button">Open</button>
+                <button class="mini-btn" type="button">Save</button>
+              </div>
+            </article>
+
+            <article class="resource-card" data-category="Bible" data-keywords="prayer faith intercession luke peter strengthen brothers perseverance spiritual warfare">
+              <div class="resource-icon">🙏</div>
+              <div class="resource-body">
+                <h3>When Jesus Prays for Your Faith</h3>
+                <p>
+                  A Bible study resource on Luke 22:32, spiritual recovery, perseverance,
+                  strengthening others, and the intercession of Christ.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Luke 22:32</span>
+                  <span class="tag">Faith</span>
+                  <span class="tag">Restoration</span>
+                </div>
+              </div>
+              <div class="resource-action">
+                <button class="mini-btn" type="button">Open</button>
+                <button class="mini-btn" type="button">Save</button>
+              </div>
+            </article>
+
+            <article class="resource-card" data-category="Theology" data-keywords="holy spirit gifts 1 corinthians 12 church service body of christ ministry gifts">
+              <div class="resource-icon">🔥</div>
+              <div class="resource-body">
+                <h3>Spiritual Gifts and the Body of Christ</h3>
+                <p>
+                  A teaching guide on the gifts of the Spirit, unity in the body, service,
+                  ministry responsibility, and biblical order in the church.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">1 Corinthians 12</span>
+                  <span class="tag">Holy Spirit</span>
+                  <span class="tag">Service</span>
+                </div>
+              </div>
+              <div class="resource-action">
+                <button class="mini-btn" type="button">Open</button>
+                <button class="mini-btn" type="button">Save</button>
+              </div>
+            </article>
+          </div>
+
+          <div class="empty-state" id="emptyState">
+            No research resources match your search yet. Try a different keyword or category.
+          </div>
+        </div>
+
+        <aside class="side-column">
+          <div class="tool-card">
+            <h2>AI Research Prompt</h2>
+            <p>Use this box to prepare a research request for your AI Bible Assistant.</p>
+            <div class="prompt-box">
+              <select id="researchType" aria-label="Research type">
+                <option value="Bible study">Bible study</option>
+                <option value="Sermon research">Sermon research</option>
+                <option value="Theology topic">Theology topic</option>
+                <option value="Church leadership">Church leadership</option>
+              </select>
+              <textarea id="aiPrompt" placeholder="Example: Create a Bible study about returning to the church of the Book of Acts with scriptures, key points, and discussion questions."></textarea>
+              <button class="btn btn-primary" type="button" id="copyPromptBtn">Copy Research Prompt</button>
+            </div>
+          </div>
+
+          <div class="collection-card">
+            <h2>Research Collections</h2>
+            <p>Quick folders for organizing your study and sermon preparation.</p>
+            <div class="collection-list">
+              <div class="collection-item">
+                <div>
+                  <strong>Bible Study Topics</strong>
+                  <span>Lessons for teaching and discipleship</span>
+                </div>
+                <div class="count-pill">32</div>
+              </div>
+              <div class="collection-item">
+                <div>
+                  <strong>Sermon Outlines</strong>
+                  <span>Preaching ideas and sermon starters</span>
+                </div>
+                <div class="count-pill">18</div>
+              </div>
+              <div class="collection-item">
+                <div>
+                  <strong>Church Leadership</strong>
+                  <span>Training, growth, and volunteer guides</span>
+                </div>
+                <div class="count-pill">14</div>
+              </div>
+              <div class="collection-item">
+                <div>
+                  <strong>Prayer & Fasting</strong>
+                  <span>Devotional and revival resources</span>
+                </div>
+                <div class="count-pill">21</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="notes-card">
+            <h2>Study Reminders</h2>
+            <p>Helpful principles for every research session.</p>
+            <div class="note-list">
+              <div class="note-item">Always begin with Scripture before commentary.</div>
+              <div class="note-item">Compare the verse context, chapter, book, and covenant setting.</div>
+              <div class="note-item">Turn research into application for the local church.</div>
+              <div class="note-item">Save your strongest scriptures for sermon building.</div>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const filterTabs = document.querySelectorAll(".filter-tab");
+    const resourceCards = document.querySelectorAll(".resource-card");
+    const searchInput = document.getElementById("researchSearch");
+    const searchForm = document.getElementById("researchSearchForm");
+    const emptyState = document.getElementById("emptyState");
+    const copyPromptBtn = document.getElementById("copyPromptBtn");
+    const aiPrompt = document.getElementById("aiPrompt");
+    const researchType = document.getElementById("researchType");
+
+    let activeFilter = "All";
+
+    function toggleSidebar() {
+      sidebar.classList.toggle("open");
+      overlay.classList.toggle("show");
+    }
+
+    mobileMenuBtn.addEventListener("click", toggleSidebar);
+    overlay.addEventListener("click", toggleSidebar);
+
+    function filterResources() {
+      const searchTerm = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      resourceCards.forEach((card) => {
+        const category = card.dataset.category;
+        const keywords = card.dataset.keywords || "";
+        const title = card.querySelector("h3").textContent.toLowerCase();
+        const description = card.querySelector("p").textContent.toLowerCase();
+
+        const categoryMatch = activeFilter === "All" || category === activeFilter;
+        const searchMatch =
+          searchTerm === "" ||
+          title.includes(searchTerm) ||
+          description.includes(searchTerm) ||
+          keywords.toLowerCase().includes(searchTerm);
+
+        if (categoryMatch && searchMatch) {
+          card.style.display = "grid";
+          visibleCount += 1;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      emptyState.classList.toggle("show", visibleCount === 0);
+    }
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        filterTabs.forEach((item) => item.classList.remove("active"));
+        tab.classList.add("active");
+        activeFilter = tab.dataset.filter;
+        filterResources();
+      });
+    });
+
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      filterResources();
+    });
+
+    searchInput.addEventListener("input", filterResources);
+
+    copyPromptBtn.addEventListener("click", async () => {
+      const type = researchType.value;
+      const prompt = aiPrompt.value.trim() || "Create a complete biblical research guide with scriptures, historical context, theological insight, sermon points, and practical church application.";
+      const fullPrompt = `${type}: ${prompt}`;
+
+      try {
+        await navigator.clipboard.writeText(fullPrompt);
+        copyPromptBtn.textContent = "Copied!";
+        setTimeout(() => {
+          copyPromptBtn.textContent = "Copy Research Prompt";
+        }, 1600);
+      } catch (error) {
+        copyPromptBtn.textContent = "Copy not available";
+        setTimeout(() => {
+          copyPromptBtn.textContent = "Copy Research Prompt";
+        }, 1600);
+      }
+    });
+
+    document.querySelectorAll(".resource-card .mini-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const action = button.textContent.trim();
+        const title = button.closest(".resource-card").querySelector("h3").textContent;
+
+        if (action === "Save") {
+          button.textContent = "Saved";
+          button.style.background = "#ecfdf3";
+          button.style.color = "#027a48";
+          button.style.borderColor = "#abefc6";
+        } else {
+          alert(`Opening: ${title}`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
