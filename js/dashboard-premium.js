@@ -82,7 +82,10 @@ function renderPremiumDashboard() {
           <a href="#">📚 Study Notes</a>
           <a href="#">⭐ Bookmarks</a>
           <a href="media.html">🎥 Media & Presentation Builder</a>
-          <a href="account.html">⚙️ Account Settings</a>
+          <a href="account-settings.html" class="nav-item">
+    <span class="icon">⚙️</span>
+    <span>Account Settings</span>
+</a>
           <a href="research.html">📚 Christian Research Library</a>
           <a href="podcast-teaching-notes.html">🎙️ Podcast & Teaching Notes</a>
           <a href="bible-reader.html">📖 Bible Reader</a>
