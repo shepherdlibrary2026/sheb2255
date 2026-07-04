@@ -1,21 +1,524 @@
-<h1>🤖 AI Bible Assistant</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<textarea placeholder="Ask any Bible question..." rows="8" style="width:100%;"></textarea>
+  <title>AI Bible Assistant | The Shepherd's Library</title>
 
-<br><br>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/responsive.css">
 
-<button>Ask AI</button>
+  <style>
+    body {
+      background: #eef2ff;
+    }
 
-<h3>Examples</h3>
+    .ai-layout {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      min-height: 100vh;
+    }
 
-• Explain Romans 8
+    .ai-main {
+      padding: 34px;
+    }
 
-• Build a sermon on Faith
+    .ai-hero {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a, #312e81);
+      color: white;
+      border-radius: 32px;
+      padding: 36px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+      align-items: center;
+      box-shadow: 0 25px 70px rgba(15, 23, 42, 0.18);
+    }
 
-• Give Bible study questions
+    .ai-hero h1 {
+      font-size: 42px;
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
 
-• Compare Old and New Covenant
+    .ai-hero p {
+      color: #dbeafe;
+      font-size: 18px;
+    }
 
-• Find verses on healing
+    .ai-hero-card {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 24px;
+      padding: 24px;
+    }
 
-<a href="dashboard.html">Back Dashboard</a>
+    .ai-hero-card h3 {
+      color: #fde68a;
+      margin-bottom: 12px;
+    }
+
+    .ai-hero-card p {
+      font-size: 15px;
+      color: #dbeafe;
+    }
+
+    .ai-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+    }
+
+    .chat-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 28px;
+      box-shadow: 0 10px 30px rgba(15,23,42,.06);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 24px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+    }
+
+    .chat-header h2 {
+      color: #0f172a;
+    }
+
+    .chat-status {
+      background: #dcfce7;
+      color: #15803d;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .chat-window {
+      min-height: 520px;
+      max-height: 620px;
+      overflow-y: auto;
+      padding: 26px;
+      background: #ffffff;
+    }
+
+    .message {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .message-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #1e3a8a;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .assistant .message-avatar {
+      background: #f59e0b;
+      color: #111827;
+    }
+
+    .message-content {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 16px 18px;
+      border-radius: 18px;
+      max-width: 85%;
+    }
+
+    .assistant .message-content {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .message-content h4 {
+      margin-bottom: 8px;
+      color: #1e3a8a;
+    }
+
+    .message-content p {
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    .chat-input {
+      padding: 22px;
+      border-top: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .chat-input textarea {
+      min-height: 110px;
+      margin-bottom: 12px;
+    }
+
+    .chat-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .side-panel {
+      display: grid;
+      gap: 24px;
+    }
+
+    .prompt-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15,23,42,.05);
+    }
+
+    .prompt-card h3 {
+      color: #1e3a8a;
+      margin-bottom: 14px;
+    }
+
+    .prompt-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .prompt-btn {
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 14px;
+      border-radius: 14px;
+      text-align: left;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .prompt-btn:hover {
+      background: #1e3a8a;
+      color: white;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .tool-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      font-weight: 900;
+      color: #1e3a8a;
+    }
+
+    .history-item {
+      padding: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .history-item h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .history-item p {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media(max-width: 1100px) {
+      .ai-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .ai-hero,
+      .ai-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .message-content {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="ai-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="dashboard.html" class="sidebar-logo">
+        <div class="logo-icon">📖</div>
+        <div class="logo-text">
+          <h2>Shepherd</h2>
+          <span>AI Ministry Tools</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Ministry Tools</div>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link">🏠 Dashboard</a>
+        <a href="bible-reader.html" class="sidebar-link">📖 Bible Reader</a>
+        <a href="ai-assistant.html" class="sidebar-link active">🤖 AI Assistant</a>
+        <a href="sermon-builder.html" class="sidebar-link">📝 Sermon Builder</a>
+        <a href="prayer-journal.html" class="sidebar-link">🙏 Prayer Journal</a>
+        <a href="study-notes.html" class="sidebar-link">📚 Study Notes</a>
+        <a href="media.html" class="sidebar-link">🎥 Media Builder</a>
+        <a href="account.html" class="sidebar-link">⚙️ Account</a>
+      </nav>
+    </div>
+
+    <div class="sidebar-upgrade">
+      <h3>Unlock Pastor AI</h3>
+      <p>Generate sermon outlines, Bible studies, teaching notes, and ministry resources.</p>
+      <button onclick="window.location.href='pricing.html'">Upgrade</button>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </aside>
+
+  <main class="ai-main">
+
+    <section class="ai-hero">
+      <div>
+        <span class="badge">🤖 AI Bible Assistant</span>
+        <h1>Ask Bible questions with clarity and confidence.</h1>
+        <p>
+          Get help explaining Scripture, preparing sermons, creating Bible studies,
+          comparing biblical themes, and organizing ministry teaching material.
+        </p>
+      </div>
+
+      <div class="ai-hero-card">
+        <h3>Faithful Study Reminder</h3>
+        <p>
+          AI is a study assistant, not a replacement for Scripture, prayer, sound doctrine,
+          or pastoral discernment. Always review responses carefully before teaching.
+        </p>
+      </div>
+    </section>
+
+    <section class="ai-grid">
+
+      <div class="chat-card">
+        <div class="chat-header">
+          <div>
+            <h2>AI Bible Chat</h2>
+            <p class="text-muted">Ask a question, request an outline, or study a passage.</p>
+          </div>
+
+          <span class="chat-status">Online</span>
+        </div>
+
+        <div class="chat-window" id="chatWindow">
+          <div class="message assistant">
+            <div class="message-avatar">AI</div>
+            <div class="message-content">
+              <h4>Welcome to The Shepherd’s AI Bible Assistant</h4>
+              <p>
+                Ask me to explain a Bible passage, create sermon points, build a Bible study lesson,
+                find supporting scriptures, or prepare ministry teaching notes.
+              </p>
+            </div>
+          </div>
+
+          <div class="message assistant">
+            <div class="message-avatar">AI</div>
+            <div class="message-content">
+              <h4>Example</h4>
+              <p>
+                Try asking: “Create a sermon outline from Romans 8:28” or
+                “Explain Acts 2:42–47 from a church growth perspective.”
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <textarea id="userPrompt" placeholder="Ask a Bible question, request a sermon outline, or create a Bible study lesson..."></textarea>
+
+          <div class="chat-actions">
+            <button class="btn btn-primary" onclick="sendMessage()">Ask Assistant</button>
+            <button class="btn btn-secondary" onclick="clearChat()">Clear Chat</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+
+        <div class="prompt-card">
+          <h3>Quick Prompts</h3>
+
+          <div class="prompt-list">
+            <button class="prompt-btn" onclick="usePrompt('Explain John 3:16 in a simple and theological way.')">
+              Explain John 3:16
+            </button>
+
+            <button class="prompt-btn" onclick="usePrompt('Create a sermon outline on faith using Hebrews 11.')">
+              Create Sermon on Faith
+            </button>
+
+            <button class="prompt-btn" onclick="usePrompt('Create Bible study questions from Acts 2:42-47.')">
+              Bible Study from Acts 2
+            </button>
+
+            <button class="prompt-btn" onclick="usePrompt('Find scriptures about prayer and spiritual growth.')">
+              Verses About Prayer
+            </button>
+
+            <button class="prompt-btn" onclick="usePrompt('Create a youth Bible lesson about identity in Christ.')">
+              Youth Lesson
+            </button>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <h3>AI Ministry Tools</h3>
+
+          <div class="tool-grid">
+            <div class="tool-box">📝 Sermons</div>
+            <div class="tool-box">📚 Lessons</div>
+            <div class="tool-box">🙏 Prayers</div>
+            <div class="tool-box">📖 Studies</div>
+            <div class="tool-box">🎓 Theology</div>
+            <div class="tool-box">⛪ Church</div>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <h3>Recent Conversations</h3>
+
+          <div class="history-item">
+            <h4>Romans 8 Study</h4>
+            <p>Theme: Hope, suffering, and victory.</p>
+          </div>
+
+          <div class="history-item">
+            <h4>Acts Church Model</h4>
+            <p>Early church devotion and fellowship.</p>
+          </div>
+
+          <div class="history-item">
+            <h4>Sermon on Prayer</h4>
+            <p>Building a stronger prayer life.</p>
+          </div>
+        </div>
+
+      </aside>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+
+<script>
+  async function protectPage() {
+    const { data } = await supabaseClient.auth.getSession();
+
+    if (!data.session) {
+      window.location.href = "login.html";
+    }
+  }
+
+  protectPage();
+
+  function usePrompt(text) {
+    document.getElementById("userPrompt").value = text;
+  }
+
+  function sendMessage() {
+    const prompt = document.getElementById("userPrompt").value.trim();
+    const chatWindow = document.getElementById("chatWindow");
+
+    if (!prompt) {
+      alert("Please enter a Bible question or ministry request.");
+      return;
+    }
+
+    chatWindow.innerHTML += `
+      <div class="message user">
+        <div class="message-avatar">You</div>
+        <div class="message-content">
+          <h4>Your Question</h4>
+          <p>${prompt}</p>
+        </div>
+      </div>
+    `;
+
+    chatWindow.innerHTML += `
+      <div class="message assistant">
+        <div class="message-avatar">AI</div>
+        <div class="message-content">
+          <h4>Assistant Response</h4>
+          <p>
+            This is where your real AI response will appear once you connect this page
+            to your AI backend or API. For now, the interface is ready and the chat flow is working.
+          </p>
+          <p>
+            Suggested next step: connect this prompt to your server-side AI function,
+            save conversations to Supabase, and display the response here.
+          </p>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("userPrompt").value = "";
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function clearChat() {
+    document.getElementById("chatWindow").innerHTML = `
+      <div class="message assistant">
+        <div class="message-avatar">AI</div>
+        <div class="message-content">
+          <h4>Chat Cleared</h4>
+          <p>You can start a new Bible study or ministry conversation now.</p>
+        </div>
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>
