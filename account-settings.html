@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Settings | Shepherd Library</title>
+  <style>
+    :root{
+      --sidebar:#050a1e; --bg:#f4f6ff; --card:#ffffff; --primary:#2f45a8; --primary2:#42339b;
+      --accent:#ffb62e; --text:#111827; --muted:#667085; --line:#e5e7f2; --danger:#ef4444; --success:#16a34a;
+      --shadow:0 18px 45px rgba(18,25,61,.10); --radius:24px;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    a{text-decoration:none;color:inherit}.app{display:flex;min-height:100vh}.sidebar{width:292px;background:var(--sidebar);color:#fff;padding:28px;position:fixed;inset:0 auto 0 0;overflow-y:auto}
+    .brand{display:flex;align-items:flex-start;gap:10px;font-size:27px;line-height:1.2;font-weight:900;color:#ffe86a;margin-bottom:34px}.nav{display:grid;gap:15px}.nav a{padding:16px 18px;border-radius:14px;color:#d8dce8;font-weight:800;display:flex;gap:7px;align-items:center}.nav a.active,.nav a:hover{background:#2d469d;color:#fff}.upgrade{margin-top:34px;background:linear-gradient(135deg,#27479e,#423196);padding:24px 22px;border-radius:22px}.upgrade h3{margin:0 0 9px;color:#ffe86a;font-size:19px}.upgrade p{margin:0 0 18px;color:#fff;font-size:14px}.btn{border:0;border-radius:999px;padding:13px 22px;font-weight:900;cursor:pointer}.btn-light{background:#fff;color:#2d469d}.logout{margin-top:21px;background:#e9efff;color:#2d469d}
+    main{margin-left:292px;width:calc(100% - 292px);padding:34px}.hero{background:linear-gradient(135deg,#162b78,#4b35b5);color:#fff;border-radius:30px;padding:34px;box-shadow:var(--shadow);display:flex;justify-content:space-between;gap:20px;align-items:center}.hero h1{margin:0 0 10px;font-size:38px}.hero p{margin:0;color:#e7e9ff;max-width:760px}.hero .badge{background:rgba(255,255,255,.15);padding:12px 18px;border-radius:999px;font-weight:800;color:#ffe86a}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-top:24px}.card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid rgba(229,231,242,.8)}.card h2{margin:0 0 18px;font-size:22px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.field label{display:block;font-size:13px;color:var(--muted);font-weight:800;margin-bottom:8px}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;font:inherit;background:#fbfcff}textarea{min-height:105px;resize:vertical}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.btn-primary{background:#f4a51c;color:#fff}.btn-dark{background:#11265f;color:#fff}.btn-danger{background:var(--danger);color:#fff}.btn-soft{background:#eef2ff;color:#2d469d}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.toggle{width:52px;height:30px;border-radius:999px;background:#d6dbea;position:relative;cursor:pointer;transition:.2s}.toggle:before{content:"";position:absolute;width:24px;height:24px;top:3px;left:3px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.18)}.toggle.on{background:#2d469d}.toggle.on:before{left:25px}.plan{background:linear-gradient(135deg,#fff8e6,#eef2ff);border:1px solid #ffe3a1}.price{font-size:34px;font-weight:900;color:#2d469d}.features{display:grid;gap:10px;margin:16px 0;color:#344054;font-weight:700}.bar{height:12px;background:#edf0fb;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;background:linear-gradient(90deg,#2d469d,#f4a51c);border-radius:99px}.small{font-size:13px;color:var(--muted)}.chips{display:flex;gap:10px;flex-wrap:wrap}.chip{padding:11px 14px;border-radius:999px;background:#eef2ff;color:#2d469d;font-weight:800;cursor:pointer}.chip.active{background:#2d469d;color:#fff}.activity{width:100%;border-collapse:collapse;font-size:14px}.activity th,.activity td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}.activity th{color:#667085;font-size:12px;text-transform:uppercase}.toast{position:fixed;right:24px;bottom:24px;background:#06102f;color:#fff;padding:14px 18px;border-radius:16px;box-shadow:var(--shadow);display:none;z-index:10}.dark-mode{--bg:#0b1028;--card:#111a3a;--text:#f8fafc;--muted:#c7cce0;--line:#263057}.dark-mode input,.dark-mode select,.dark-mode textarea{background:#0d1531;color:#fff;border-color:#263057}
+    @media(max-width:900px){.sidebar{position:relative;width:100%;height:auto}.app{display:block}main{margin-left:0;width:100%;padding:18px}.grid,.form-grid{grid-template-columns:1fr}.hero{display:block}.hero h1{font-size:30px}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><span>📖</span><span>Shepherd<br>Library</span></div>
+    <nav class="nav">
+      <a href="dashboard.html">🏠 Dashboard</a><a href="bible-reader.html">📖 Bible Reader</a><a href="ai-assistant.html">🤖 AI Bible Assistant</a><a href="sermon-builder.html">📝 Sermon Builder</a><a href="prayer-journal.html">🙏 Prayer Journal</a><a href="study-notes.html">📚 Study Notes</a><a href="bookmarks.html">⭐ Bookmarks</a><a class="active" href="account-settings.html">⚙️ Account Settings</a>
+    </nav>
+    <div class="upgrade"><h3>Upgrade to Pastor</h3><p>Unlock advanced sermon tools, unlimited study notes, and AI ministry resources.</p><button class="btn btn-light" onclick="upgradePlan()">Upgrade</button></div>
+    <button class="btn logout" onclick="logout()">Logout</button>
+  </aside>
+
+  <main>
+    <section class="hero">
+      <div><h1>⚙️ Account Settings</h1><p>Manage your Shepherd Library profile, Bible preferences, security, subscription, notifications, and ministry workspace.</p></div>
+      <div class="badge" id="planBadge">Free Plan</div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Profile Information</h2>
+        <div class="form-grid">
+          <div class="field"><label>Full Name</label><input id="name" placeholder="Cyrus W. Gueh Sr."></div>
+          <div class="field"><label>Email</label><input id="email" type="email" placeholder="you@example.com"></div>
+          <div class="field"><label>Phone</label><input id="phone" placeholder="515-000-0000"></div>
+          <div class="field"><label>Church Name</label><input id="church" placeholder="Your church name"></div>
+          <div class="field"><label>Ministry Role</label><select id="role"><option>Pastor</option><option>Youth Pastor</option><option>Ministry Leader</option><option>Teacher</option><option>Member</option></select></div>
+          <div class="field"><label>Time Zone</label><select id="timezone"><option>America/Chicago</option><option>America/New_York</option><option>America/Los_Angeles</option><option>UTC</option></select></div>
+        </div>
+        <div class="field" style="margin-top:16px"><label>Bio / Ministry Focus</label><textarea id="bio" placeholder="Tell us about your ministry focus..."></textarea></div>
+        <div class="actions"><button class="btn btn-primary" onclick="saveProfile()">Save Changes</button><button class="btn btn-soft" onclick="loadProfile()">Reset</button></div>
+      </section>
+
+      <section class="card plan">
+        <h2>Subscription</h2><div class="small">Current Plan</div><div class="price" id="currentPlan">Free</div>
+        <div class="features"><span>✓ Bible Reader</span><span>✓ Prayer Journal</span><span>✓ Study Notes</span><span>✓ Bookmarks</span></div>
+        <button class="btn btn-primary" onclick="upgradePlan()">Upgrade to Pastor Pro</button>
+      </section>
+
+      <section class="card">
+        <h2>Security</h2>
+        <div class="form-grid"><div class="field"><label>Current Password</label><input type="password" id="currentPassword"></div><div class="field"><label>New Password</label><input type="password" id="newPassword"></div><div class="field"><label>Confirm New Password</label><input type="password" id="confirmPassword"></div></div>
+        <div class="row"><div><b>Two-Factor Authentication</b><div class="small">Add extra protection to your account.</div></div><div class="toggle" data-key="twoFactor"></div></div>
+        <div class="row"><div><b>Email Verification</b><div class="small">Require verified email before login changes.</div></div><div class="toggle on" data-key="emailVerify"></div></div>
+        <div class="actions"><button class="btn btn-dark" onclick="updatePassword()">Update Password</button><button class="btn btn-soft" onclick="showToast('Backup codes generated')">Generate Backup Codes</button></div>
+      </section>
+
+      <section class="card">
+        <h2>Notifications</h2>
+        <div id="notifications"></div><div class="actions"><button class="btn btn-primary" onclick="saveToggles()">Save Notifications</button></div>
+      </section>
+
+      <section class="card">
+        <h2>Appearance</h2>
+        <div class="row"><div><b>Dark Mode</b><div class="small">Switch dashboard appearance.</div></div><div class="toggle" id="darkToggle"></div></div>
+        <label class="small">Accent Color</label><div class="chips" id="accentChips"><span class="chip active">Blue</span><span class="chip">Purple</span><span class="chip">Gold</span><span class="chip">Green</span></div>
+        <br><label class="small">Font Size</label><div class="chips" id="fontChips"><span class="chip">Small</span><span class="chip active">Medium</span><span class="chip">Large</span></div>
+      </section>
+
+      <section class="card">
+        <h2>Bible Preferences</h2>
+        <div class="form-grid"><div class="field"><label>Default Translation</label><select id="translation"><option>KJV</option><option>NKJV</option><option>ESV</option><option>NIV</option><option>NLT</option><option>NASB</option></select></div><div class="field"><label>Reading Plan</label><select id="readingPlan"><option>One Year Bible</option><option>Chronological</option><option>New Testament</option><option>Psalms & Proverbs</option></select></div></div>
+        <div class="actions"><button class="btn btn-primary" onclick="saveBiblePrefs()">Save Bible Preferences</button></div>
+      </section>
+
+      <section class="card">
+        <h2>AI Assistant Settings</h2>
+        <div class="field"><label>Response Style</label><select id="aiStyle"><option>Pastor</option><option>Teacher</option><option>Bible Scholar</option><option>Simple Language</option></select></div>
+        <div class="field"><label>Creativity Level</label><input id="creativity" type="range" min="1" max="10" value="5"></div>
+        <div class="row"><div><b>Always include Scripture References</b></div><div class="toggle on" data-key="scriptures"></div></div>
+        <div class="actions"><button class="btn btn-primary" onclick="saveAISettings()">Save AI Settings</button></div>
+      </section>
+
+      <section class="card">
+        <h2>Storage Usage</h2>
+        <p class="small">2.4 GB used of 10 GB</p>
+        <p><b>Study Notes</b></p><div class="bar"><span style="width:44%"></span></div>
+        <p><b>Prayer Journal</b></p><div class="bar"><span style="width:28%"></span></div>
+        <p><b>Media Files</b></p><div class="bar"><span style="width:62%"></span></div>
+      </section>
+
+      <section class="card">
+        <h2>Connected Accounts</h2>
+        <div class="row"><b>Google</b><button class="btn btn-soft" onclick="connectAccount('Google')">Connect</button></div>
+        <div class="row"><b>Microsoft</b><button class="btn btn-soft" onclick="connectAccount('Microsoft')">Connect</button></div>
+        <div class="row"><b>Dropbox</b><button class="btn btn-soft" onclick="connectAccount('Dropbox')">Connect</button></div>
+        <div class="row"><b>OneDrive</b><button class="btn btn-soft" onclick="connectAccount('OneDrive')">Connect</button></div>
+      </section>
+
+      <section class="card">
+        <h2>Data Export</h2><p class="small">Download your saved sermons, notes, prayers, and bookmarks.</p>
+        <div class="actions"><button class="btn btn-dark" onclick="exportData('json')">Export JSON</button><button class="btn btn-dark" onclick="window.print()">Print / Save PDF</button><button class="btn btn-soft" onclick="exportData('doc')">Export Word</button></div>
+      </section>
+
+      <section class="card">
+        <h2>Recent Login Activity</h2>
+        <table class="activity"><thead><tr><th>Device</th><th>Browser</th><th>Location</th><th>Status</th></tr></thead><tbody><tr><td>iPhone</td><td>Safari</td><td>Des Moines, IA</td><td>Active</td></tr><tr><td>Desktop</td><td>Chrome</td><td>Des Moines, IA</td><td>Success</td></tr></tbody></table>
+      </section>
+
+      <section class="card" style="grid-column:1/-1;border:1px solid #fecaca">
+        <h2>Danger Zone</h2><p class="small">Use these options carefully.</p>
+        <div class="actions"><button class="btn btn-soft" onclick="showToast('Signed out everywhere')">Sign Out Everywhere</button><button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button></div>
+      </section>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+  const notificationItems=['Email Notifications','Sermon Reminders','Bible Reading Reminder','Prayer Reminder','Weekly Ministry Digest','AI Assistant Updates'];
+  const notifBox=document.getElementById('notifications'); notificationItems.forEach((n,i)=>notifBox.innerHTML+=`<div class="row"><div><b>${n}</b></div><div class="toggle ${i<4?'on':''}" data-key="${n}"></div></div>`);
+  document.addEventListener('click',e=>{ if(e.target.classList.contains('toggle')){e.target.classList.toggle('on'); saveToggles();} if(e.target.classList.contains('chip')){[...e.target.parentElement.children].forEach(c=>c.classList.remove('active')); e.target.classList.add('active'); localStorage.setItem(e.target.parentElement.id,e.target.textContent); showToast('Preference saved');}});
+  document.getElementById('darkToggle').onclick=()=>{document.body.classList.toggle('dark-mode');localStorage.setItem('darkMode',document.body.classList.contains('dark-mode'));};
+  function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2600)}
+  function saveProfile(){const profile={name:name.value,email:email.value,phone:phone.value,church:church.value,role:role.value,timezone:timezone.value,bio:bio.value};localStorage.setItem('shepherdProfile',JSON.stringify(profile));showToast('Profile saved successfully');}
+  function loadProfile(){const p=JSON.parse(localStorage.getItem('shepherdProfile')||'{}');['name','email','phone','church','role','timezone','bio'].forEach(k=>{if(p[k])document.getElementById(k).value=p[k]});}
+  function updatePassword(){if(newPassword.value.length<6)return showToast('Password must be at least 6 characters'); if(newPassword.value!==confirmPassword.value)return showToast('Passwords do not match'); showToast('Password updated locally. Connect Supabase for real auth.');}
+  function saveToggles(){const settings={};document.querySelectorAll('.toggle[data-key]').forEach(t=>settings[t.dataset.key]=t.classList.contains('on'));localStorage.setItem('shepherdToggles',JSON.stringify(settings));}
+  function saveBiblePrefs(){localStorage.setItem('biblePrefs',JSON.stringify({translation:translation.value,readingPlan:readingPlan.value}));showToast('Bible preferences saved');}
+  function saveAISettings(){localStorage.setItem('aiSettings',JSON.stringify({style:aiStyle.value,creativity:creativity.value,scriptures:document.querySelector('[data-key="scriptures"]').classList.contains('on')}));showToast('AI settings saved');}
+  function upgradePlan(){localStorage.setItem('shepherdPlan','Pastor Pro');currentPlan.textContent='Pastor Pro';planBadge.textContent='Pastor Pro';showToast('Plan upgraded to Pastor Pro');}
+  function connectAccount(name){showToast(name+' connection ready for OAuth setup');}
+  function exportData(type){const data={profile:JSON.parse(localStorage.getItem('shepherdProfile')||'{}'),biblePrefs:JSON.parse(localStorage.getItem('biblePrefs')||'{}'),aiSettings:JSON.parse(localStorage.getItem('aiSettings')||'{}')}; const blob=new Blob([type==='json'?JSON.stringify(data,null,2):'Shepherd Library Account Export\n\n'+JSON.stringify(data,null,2)],{type:'text/plain'}); const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='shepherd-account-export.'+(type==='json'?'json':'doc');a.click();}
+  function deleteAccount(){if(confirm('Are you sure you want to delete local account data?')){localStorage.clear();showToast('Local account data deleted');setTimeout(()=>location.reload(),1000)}}
+  function logout(){showToast('Logged out. Connect this button to your auth system.')} loadProfile(); if(localStorage.getItem('darkMode')==='true')document.body.classList.add('dark-mode'); if(localStorage.getItem('shepherdPlan')){currentPlan.textContent=localStorage.getItem('shepherdPlan');planBadge.textContent=localStorage.getItem('shepherdPlan')}
+</script>
+</body>
+</html>
