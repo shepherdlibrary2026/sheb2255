@@ -3,522 +3,1281 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>AI Bible Assistant | The Shepherd's Library</title>
-
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/buttons.css">
-  <link rel="stylesheet" href="css/cards.css">
-  <link rel="stylesheet" href="css/forms.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/responsive.css">
-
+  <title>AI Bible Assistant | Shepherd Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    body {
-      background: #eef2ff;
+    :root {
+      --sidebar: #020617;
+      --sidebar-soft: #081124;
+      --primary: #213f96;
+      --primary-dark: #10245f;
+      --primary-2: #312e81;
+      --orange: #f59e0b;
+      --orange-dark: #d97706;
+      --green: #0ea53a;
+      --bg: #eef2ff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #5b6b85;
+      --line: #d7deee;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      --radius: 20px;
     }
 
-    .ai-layout {
-      display: grid;
-      grid-template-columns: 290px 1fr;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
     }
 
-    .ai-main {
-      padding: 34px;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    .ai-hero {
-      background: linear-gradient(135deg, #0f172a, #1e3a8a, #312e81);
-      color: white;
-      border-radius: 32px;
-      padding: 36px;
-      margin-bottom: 28px;
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 290px;
+      background: var(--sidebar);
+      color: #e5e7eb;
+      padding: 32px 28px;
+      position: fixed;
+      inset: 0 auto 0 0;
+      overflow-y: auto;
+      border-right: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: #fff2a8;
+      font-size: 26px;
+      font-weight: 900;
+      line-height: 1.18;
+      margin-bottom: 34px;
+      letter-spacing: -0.03em;
+    }
+
+    .nav {
       display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 24px;
+      gap: 11px;
+    }
+
+    .nav-link {
+      display: flex;
       align-items: center;
-      box-shadow: 0 25px 70px rgba(15, 23, 42, 0.18);
+      gap: 10px;
+      padding: 15px 16px;
+      border-radius: 13px;
+      color: #cbd5e1;
+      font-weight: 800;
+      font-size: 15px;
+      line-height: 1.35;
+      transition: 0.18s ease;
     }
 
-    .ai-hero h1 {
-      font-size: 42px;
-      margin-bottom: 12px;
-      line-height: 1.1;
+    .nav-link:hover,
+    .nav-link.active {
+      background: var(--primary);
+      color: #fff;
+      transform: translateX(2px);
     }
 
-    .ai-hero p {
-      color: #dbeafe;
+    .nav-icon {
+      width: 22px;
+      display: inline-flex;
+      justify-content: center;
       font-size: 18px;
     }
 
-    .ai-hero-card {
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: 24px;
-      padding: 24px;
+    .main {
+      margin-left: 290px;
+      width: calc(100% - 290px);
+      padding: 31px 34px 50px;
     }
 
-    .ai-hero-card h3 {
-      color: #fde68a;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: 2px;
+      font-size: 15px;
+    }
+
+    .page-title {
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 900;
+      letter-spacing: -0.055em;
+      color: #0f172a;
+      line-height: 1;
+    }
+
+    .account-pill {
+      background: #fff;
+      border: 1px solid rgba(15,23,42,0.08);
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 11px 18px 11px 12px;
+      min-width: 258px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      font-size: 19px;
+      flex: none;
+    }
+
+    .account-name {
+      font-weight: 900;
+      font-size: 15px;
+      line-height: 1.1;
+    }
+
+    .account-plan {
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    .hero {
+      border-radius: 26px;
+      background: linear-gradient(120deg, #111b3f 0%, #233f98 56%, #302978 100%);
+      color: #fff;
+      padding: 39px 36px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(285px, 0.85fr);
+      gap: 32px;
+      align-items: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+    }
+
+    .hero h2 {
+      font-size: clamp(30px, 3.1vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      max-width: 740px;
+      color: #edf2ff;
+      font-size: 17px;
+      line-height: 1.5;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .hero-actions,
+    .row-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 13px 23px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: .18s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(.98);
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: #0f172a;
+      box-shadow: 0 12px 26px rgba(245, 158, 11, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: var(--orange-dark);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-dark {
+      background: #0f172a;
+      color: #fff;
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--line);
+    }
+
+    .btn-small {
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+
+    .verse-card {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      padding: 25px 25px 24px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .verse-card h3 {
+      font-size: 18px;
+      margin-bottom: 17px;
+      font-weight: 900;
+    }
+
+    .verse-card em {
+      display: block;
+      color: #fff;
+      line-height: 1.55;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+
+    .verse-card strong {
+      font-weight: 900;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 21px;
+      margin-bottom: 29px;
+    }
+
+    .stat-card,
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(15,23,42,0.07);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    }
+
+    .stat-card {
+      padding: 25px 26px;
+      min-height: 125px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 13px;
       margin-bottom: 12px;
     }
 
-    .ai-hero-card p {
-      font-size: 15px;
-      color: #dbeafe;
+    .stat-number {
+      color: #17358c;
+      font-size: 40px;
+      line-height: .95;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      margin-bottom: 10px;
     }
 
-    .ai-grid {
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 24px;
-    }
-
-    .chat-card {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 28px;
-      box-shadow: 0 10px 30px rgba(15,23,42,.06);
-      overflow: hidden;
-    }
-
-    .chat-header {
-      padding: 24px;
-      border-bottom: 1px solid #e2e8f0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #f8fafc;
-    }
-
-    .chat-header h2 {
-      color: #0f172a;
-    }
-
-    .chat-status {
-      background: #dcfce7;
-      color: #15803d;
-      padding: 8px 14px;
-      border-radius: 999px;
+    .stat-sub {
+      color: var(--green);
       font-weight: 900;
       font-size: 13px;
     }
 
-    .chat-window {
-      min-height: 520px;
-      max-height: 620px;
-      overflow-y: auto;
-      padding: 26px;
-      background: #ffffff;
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(360px, .65fr);
+      gap: 24px;
+      align-items: start;
     }
 
-    .message {
+    .card {
+      padding: 28px 28px 30px;
+      overflow: hidden;
+    }
+
+    .card-header {
       display: flex;
-      gap: 14px;
-      margin-bottom: 22px;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 21px;
     }
 
-    .message-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #1e3a8a;
-      color: white;
+    .card-title {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      color: #0f172a;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      flex-shrink: 0;
+      gap: 7px;
+      margin-bottom: 7px;
     }
 
-    .assistant .message-avatar {
-      background: #f59e0b;
-      color: #111827;
+    .card-desc {
+      color: var(--muted);
+      line-height: 1.5;
+      font-weight: 500;
     }
 
-    .message-content {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 16px 18px;
+    .assistant-card {
+      min-height: 780px;
+    }
+
+    .assistant-layout {
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .assistant-panel {
+      border: 1px solid var(--line);
       border-radius: 18px;
-      max-width: 85%;
+      background: #f8faff;
+      padding: 16px;
     }
 
-    .assistant .message-content {
-      background: #eef2ff;
-      border-color: #c7d2fe;
-    }
-
-    .message-content h4 {
-      margin-bottom: 8px;
-      color: #1e3a8a;
-    }
-
-    .message-content p {
-      color: #475569;
-      line-height: 1.7;
-    }
-
-    .chat-input {
-      padding: 22px;
-      border-top: 1px solid #e2e8f0;
-      background: #f8fafc;
-    }
-
-    .chat-input textarea {
-      min-height: 110px;
+    .panel-title {
+      font-size: 14px;
+      color: #152d72;
+      font-weight: 900;
       margin-bottom: 12px;
     }
 
-    .chat-actions {
+    .field {
+      margin-bottom: 13px;
+    }
+
+    .field label {
+      display: block;
+      color: #334155;
+      font-size: 12px;
+      font-weight: 900;
+      margin: 0 0 7px 2px;
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 13px;
+      background: #fff;
+      outline: none;
+      padding: 13px 14px;
+      color: #0f172a;
+      transition: .15s ease;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(33, 63, 150, 0.12);
+    }
+
+    .textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .quick-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .quick-prompt {
+      width: 100%;
+      border: 1px solid #dbe3f2;
+      background: #fff;
+      color: #334155;
+      border-radius: 13px;
+      text-align: left;
+      padding: 11px 12px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .quick-prompt:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f4f7ff;
+    }
+
+    .chat-wrap {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      overflow: hidden;
+      min-height: 690px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-top {
+      background: #f8faff;
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
 
-    .side-panel {
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #334155;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+      background: var(--green);
+      box-shadow: 0 0 0 4px rgba(14, 165, 58, 0.14);
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+      max-height: 570px;
+      overflow-y: auto;
+      background:
+        radial-gradient(circle at top left, rgba(33, 63, 150, 0.05), transparent 35%),
+        #ffffff;
+    }
+
+    .message {
+      display: grid;
+      gap: 8px;
+      max-width: 92%;
+    }
+
+    .message.user {
+      margin-left: auto;
+      justify-items: end;
+    }
+
+    .message-label {
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .bubble {
+      border-radius: 18px;
+      padding: 16px 17px;
+      line-height: 1.6;
+      color: #24344d;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .assistant .bubble {
+      background: #f1f5ff;
+      border: 1px solid #dce6fb;
+      border-top-left-radius: 6px;
+    }
+
+    .user .bubble {
+      background: var(--primary);
+      color: #fff;
+      border-top-right-radius: 6px;
+    }
+
+    .chat-input-area {
+      border-top: 1px solid var(--line);
+      padding: 15px;
+      background: #f8faff;
+    }
+
+    .ask-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .question-input {
+      min-height: 68px;
+      max-height: 180px;
+    }
+
+    .resource-card {
+      margin-top: 24px;
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .resource-link {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fff;
+      display: block;
+      transition: .18s ease;
+    }
+
+    .resource-link:hover {
+      border-color: var(--primary);
+      box-shadow: 0 12px 22px rgba(33, 63, 150, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .resource-link strong {
+      display: block;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: #0f172a;
+    }
+
+    .resource-link span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      display: block;
+      font-weight: 600;
+    }
+
+    .side-stack {
       display: grid;
       gap: 24px;
     }
 
-    .prompt-card {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 10px 30px rgba(15,23,42,.05);
-    }
-
-    .prompt-card h3 {
-      color: #1e3a8a;
-      margin-bottom: 14px;
-    }
-
-    .prompt-list {
+    .topic-list {
       display: grid;
       gap: 12px;
     }
 
-    .prompt-btn {
-      border: 1px solid #e2e8f0;
-      background: #f8fafc;
-      color: #0f172a;
-      padding: 14px;
-      border-radius: 14px;
-      text-align: left;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .25s;
-    }
-
-    .prompt-btn:hover {
-      background: #1e3a8a;
-      color: white;
-    }
-
-    .tool-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .tool-box {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
+    .topic-item {
+      border: 1px solid var(--line);
+      background: #fff;
       border-radius: 16px;
-      padding: 16px;
-      text-align: center;
+      padding: 15px;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .topic-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(33, 63, 150, 0.07);
+    }
+
+    .topic-item strong {
+      display: block;
       font-weight: 900;
-      color: #1e3a8a;
+      margin-bottom: 5px;
     }
 
-    .history-item {
+    .topic-item span {
+      color: var(--muted);
+      line-height: 1.4;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .notes-box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #f8faff;
       padding: 14px;
-      border-bottom: 1px solid #e2e8f0;
+      min-height: 220px;
     }
 
-    .history-item:last-child {
-      border-bottom: none;
+    .saved-notes {
+      display: grid;
+      gap: 10px;
+      margin-top: 13px;
+      max-height: 250px;
+      overflow-y: auto;
     }
 
-    .history-item h4 {
-      font-size: 15px;
-      margin-bottom: 4px;
+    .note-item {
+      background: #fff;
+      border: 1px solid #dce4f3;
+      border-radius: 14px;
+      padding: 12px;
     }
 
-    .history-item p {
+    .note-item strong {
+      display: block;
+      color: #0f172a;
+      font-size: 13px;
+      margin-bottom: 5px;
+      font-weight: 900;
+    }
+
+    .note-item p {
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    .empty-state {
       color: #64748b;
       font-size: 13px;
+      line-height: 1.5;
+      font-weight: 600;
+      padding: 8px 2px;
     }
 
-    @media(max-width: 1100px) {
-      .ai-layout {
+    .mini-note {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .code-box {
+      background: #07111f;
+      color: #dbeafe;
+      border-radius: 15px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.65;
+      overflow-x: auto;
+      margin-top: 13px;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 0;
+      background: #fff;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 900;
+      color: var(--primary);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    @media (max-width: 1200px) {
+      .hero,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .app-shell {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 24px 18px 40px;
+      }
+
+      .topbar,
+      .card-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .account-pill {
+        min-width: auto;
+        width: 100%;
+      }
+
+      .hero {
+        padding: 30px 23px;
+      }
+
+      .assistant-layout,
+      .link-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .ask-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .stats {
         grid-template-columns: 1fr;
       }
 
       .sidebar {
-        display: none;
+        padding: 24px 18px;
       }
 
-      .ai-hero,
-      .ai-grid {
-        grid-template-columns: 1fr;
+      .card {
+        padding: 22px 18px;
+      }
+    }
+
+    @media print {
+      .sidebar,
+      .topbar,
+      .hero-actions,
+      .assistant-panel,
+      .chat-input-area,
+      .side-stack,
+      .resource-card,
+      .stats,
+      .card-header .row-actions {
+        display: none !important;
       }
 
-      .message-content {
-        max-width: 100%;
+      .main {
+        margin: 0;
+        width: 100%;
+        padding: 0;
+      }
+
+      .hero,
+      .card,
+      .chat-wrap {
+        box-shadow: none;
+        border: 0;
+      }
+
+      .hero {
+        color: #000;
+        background: #fff;
+        padding: 0 0 20px;
+      }
+
+      .grid,
+      .assistant-layout {
+        display: block;
+      }
+
+      .chat-messages {
+        max-height: none;
+        overflow: visible;
       }
     }
   </style>
 </head>
-
 <body>
-
-<div class="ai-layout">
-
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <a href="dashboard.html" class="sidebar-logo">
-        <div class="logo-icon">📖</div>
-        <div class="logo-text">
-          <h2>Shepherd</h2>
-          <span>AI Ministry Tools</span>
-        </div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <span>📖</span>
+        <span>Shepherd<br>Library</span>
       </a>
-    </div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-title">Ministry Tools</div>
-
-      <nav class="sidebar-nav">
-        <a href="dashboard.html" class="sidebar-link">🏠 Dashboard</a>
-        <a href="bible-reader.html" class="sidebar-link">📖 Bible Reader</a>
-        <a href="ai-assistant.html" class="sidebar-link active">🤖 AI Assistant</a>
-        <a href="sermon-builder.html" class="sidebar-link">📝 Sermon Builder</a>
-        <a href="prayer-journal.html" class="sidebar-link">🙏 Prayer Journal</a>
-        <a href="study-notes.html" class="sidebar-link">📚 Study Notes</a>
-        <a href="media.html" class="sidebar-link">🎥 Media Builder</a>
-        <a href="account.html" class="sidebar-link">⚙️ Account</a>
+      <nav class="nav" aria-label="Dashboard navigation">
+        <a href="index.html" class="nav-link"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
+        <a href="bible-reader.html" class="nav-link"><span class="nav-icon">📖</span><span>Bible Reader</span></a>
+        <a href="ai-assistant.html" class="nav-link active"><span class="nav-icon">🤖</span><span>AI Bible Assistant</span></a>
+        <a href="sermon-builder.html" class="nav-link"><span class="nav-icon">📝</span><span>Sermon Builder</span></a>
+        <a href="prayer-journal.html" class="nav-link"><span class="nav-icon">🙏</span><span>Prayer Journal</span></a>
+        <a href="study-notes.html" class="nav-link"><span class="nav-icon">📚</span><span>Study Notes</span></a>
+        <a href="bookmarks.html" class="nav-link"><span class="nav-icon">⭐</span><span>Bookmarks</span></a>
+        <a href="media.html" class="nav-link"><span class="nav-icon">🎥</span><span>Media & Presentation Builder</span></a>
+        <a href="account.html" class="nav-link"><span class="nav-icon">⚙️</span><span>Account Settings</span></a>
+        <a href="research.html" class="nav-link"><span class="nav-icon">📚</span><span>Christian Research Library</span></a>
+        <a href="podcast-teaching-notes.html" class="nav-link"><span class="nav-icon">🎙️</span><span>Podcast & Teaching Notes</span></a>
       </nav>
-    </div>
+    </aside>
 
-    <div class="sidebar-upgrade">
-      <h3>Unlock Pastor AI</h3>
-      <p>Generate sermon outlines, Bible studies, teaching notes, and ministry resources.</p>
-      <button onclick="window.location.href='pricing.html'">Upgrade</button>
-    </div>
-
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </aside>
-
-  <main class="ai-main">
-
-    <section class="ai-hero">
-      <div>
-        <span class="badge">🤖 AI Bible Assistant</span>
-        <h1>Ask Bible questions with clarity and confidence.</h1>
-        <p>
-          Get help explaining Scripture, preparing sermons, creating Bible studies,
-          comparing biblical themes, and organizing ministry teaching material.
-        </p>
-      </div>
-
-      <div class="ai-hero-card">
-        <h3>Faithful Study Reminder</h3>
-        <p>
-          AI is a study assistant, not a replacement for Scripture, prayer, sound doctrine,
-          or pastoral discernment. Always review responses carefully before teaching.
-        </p>
-      </div>
-    </section>
-
-    <section class="ai-grid">
-
-      <div class="chat-card">
-        <div class="chat-header">
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title">AI Bible Assistant</h1>
+          <p class="eyebrow">Ask Bible questions, understand Scripture, and prepare ministry notes.</p>
+        </div>
+        <div class="account-pill" aria-label="Account plan">
+          <div class="avatar">A</div>
           <div>
-            <h2>AI Bible Chat</h2>
-            <p class="text-muted">Ask a question, request an outline, or study a passage.</p>
+            <div class="account-name">African kids Daily life</div>
+            <div class="account-plan">free Plan</div>
           </div>
-
-          <span class="chat-status">Online</span>
         </div>
+      </header>
 
-        <div class="chat-window" id="chatWindow">
-          <div class="message assistant">
-            <div class="message-avatar">AI</div>
-            <div class="message-content">
-              <h4>Welcome to The Shepherd’s AI Bible Assistant</h4>
-              <p>
-                Ask me to explain a Bible passage, create sermon points, build a Bible study lesson,
-                find supporting scriptures, or prepare ministry teaching notes.
-              </p>
+      <section class="hero">
+        <div>
+          <h2>Understand the Bible with clarity and confidence.</h2>
+          <p>Use your AI-powered Bible assistant to answer Bible questions, explain difficult passages, build sermon ideas, create lesson notes, and guide new believers step by step.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="focusQuestion()">Ask a Bible Question</button>
+            <button class="btn btn-light" onclick="loadPrompt('Explain salvation in a simple way for a new believer with Bible verses.')">New Believer Help</button>
+            <button class="btn btn-secondary" onclick="loadPrompt('Build a sermon outline on faith with introduction, 3 points, scriptures, illustration, and application.')">Create Sermon Help</button>
+          </div>
+        </div>
+        <aside class="verse-card">
+          <h3>Verse of the Day</h3>
+          <em>“Study to shew thyself approved unto God...”</em>
+          <strong>2 Timothy 2:15</strong>
+        </aside>
+      </section>
+
+      <section class="stats" aria-label="Assistant features">
+        <div class="stat-card">
+          <div class="stat-label">Bible Questions</div>
+          <div class="stat-number" id="questionCount">0</div>
+          <div class="stat-sub">Answered with scripture</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Saved Answers</div>
+          <div class="stat-number" id="noteCount">0</div>
+          <div class="stat-sub">Personal library</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Study Modes</div>
+          <div class="stat-number">5</div>
+          <div class="stat-sub">Pastor to beginner</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Current Plan</div>
+          <div class="stat-number">free</div>
+          <div class="stat-sub">Upgrade anytime</div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div>
+          <article class="card assistant-card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">🤖 Ask the AI Bible Assistant</h2>
+                <p class="card-desc">Built for pastors, young believers, Bible teachers, youth leaders, and anyone who wants to understand God’s Word.</p>
+              </div>
+              <div class="row-actions">
+                <button class="btn btn-light btn-small" onclick="saveLastAnswer()">Save Answer</button>
+                <button class="btn btn-light btn-small" onclick="window.print()">Print</button>
+                <button class="btn btn-dark btn-small" onclick="exportNotes()">Export Notes</button>
+              </div>
             </div>
-          </div>
 
-          <div class="message assistant">
-            <div class="message-avatar">AI</div>
-            <div class="message-content">
-              <h4>Example</h4>
-              <p>
-                Try asking: “Create a sermon outline from Romans 8:28” or
-                “Explain Acts 2:42–47 from a church growth perspective.”
-              </p>
+            <div class="assistant-layout">
+              <aside class="assistant-panel">
+                <h3 class="panel-title">Study Settings</h3>
+                <div class="field">
+                  <label for="audience">Who is this for?</label>
+                  <select id="audience" class="select">
+                    <option value="Pastor / preacher">Pastor / Preacher</option>
+                    <option value="New believer">New Believer</option>
+                    <option value="Bible study teacher">Bible Study Teacher</option>
+                    <option value="Youth leader">Youth Leader</option>
+                    <option value="General believer">General Believer</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="answerStyle">Answer style</label>
+                  <select id="answerStyle" class="select">
+                    <option value="Simple explanation">Simple Explanation</option>
+                    <option value="Deep Bible study">Deep Bible Study</option>
+                    <option value="Sermon outline">Sermon Outline</option>
+                    <option value="Devotional">Devotional</option>
+                    <option value="Teaching notes">Teaching Notes</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="translation">Bible translation</label>
+                  <select id="translation" class="select">
+                    <option>KJV</option>
+                    <option>NKJV</option>
+                    <option>ESV</option>
+                    <option>NIV</option>
+                    <option>NLT</option>
+                  </select>
+                </div>
+
+                <h3 class="panel-title" style="margin-top:18px;">Quick Questions</h3>
+                <div class="quick-list">
+                  <button class="quick-prompt" onclick="loadPrompt('What does John 3:16 mean for a new believer?')">What does John 3:16 mean?</button>
+                  <button class="quick-prompt" onclick="loadPrompt('Explain the Holy Spirit with Bible references.')">Who is the Holy Spirit?</button>
+                  <button class="quick-prompt" onclick="loadPrompt('Give me a Bible study on prayer with scriptures and discussion questions.')">Bible study on prayer</button>
+                  <button class="quick-prompt" onclick="loadPrompt('Create a sermon outline on forgiveness with scriptures and application.')">Sermon on forgiveness</button>
+                  <button class="quick-prompt" onclick="loadPrompt('Explain the book of Romans in a simple overview.')">Explain Romans simply</button>
+                </div>
+              </aside>
+
+              <div class="chat-wrap">
+                <div class="chat-top">
+                  <div class="status"><span class="status-dot"></span><span>Ready to help with Bible understanding</span></div>
+                  <button class="btn btn-light btn-small" onclick="clearChat()">Clear Chat</button>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                  <div class="message assistant">
+                    <div class="message-label">Shepherd AI Bible Assistant</div>
+                    <div class="bubble">Welcome! Ask me any Bible question or topic. I can help explain verses, create sermon outlines, prepare Bible studies, answer questions for new believers, and organize your notes for ministry.</div>
+                  </div>
+                </div>
+
+                <div class="chat-input-area">
+                  <div class="ask-row">
+                    <textarea id="questionInput" class="textarea question-input" placeholder="Example: What does Romans 8:28 mean? How can I teach salvation to new believers? Create a sermon outline on faith..."></textarea>
+                    <button class="btn btn-primary" onclick="askAssistant()">Ask AI</button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </article>
+
+          <article class="card resource-card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Helpful Shepherd Library Resources</h2>
+                <p class="card-desc">Move from AI answers into deeper Bible study, sermon preparation, and saved notes.</p>
+              </div>
+            </div>
+            <div class="link-grid">
+              <a class="resource-link" href="bible-reader.html"><strong>📖 Bible Reader</strong><span>Read the 66 books of the Bible with chapters and verses.</span></a>
+              <a class="resource-link" href="sermon-builder.html"><strong>📝 Sermon Builder</strong><span>Turn an answer into a preaching outline or saved draft.</span></a>
+              <a class="resource-link" href="study-notes.html"><strong>📚 Study Notes</strong><span>Save lessons, references, research notes, and questions.</span></a>
+            </div>
+          </article>
         </div>
 
-        <div class="chat-input">
-          <textarea id="userPrompt" placeholder="Ask a Bible question, request a sermon outline, or create a Bible study lesson..."></textarea>
+        <aside class="side-stack">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">📌 Popular Bible Topics</h2>
+                <p class="card-desc">Click a topic to ask the assistant.</p>
+              </div>
+            </div>
+            <div class="topic-list">
+              <div class="topic-item" onclick="loadPrompt('Teach me about salvation with clear Bible verses and a simple explanation.')"><strong>Salvation</strong><span>Grace, faith, repentance, and new life in Christ.</span></div>
+              <div class="topic-item" onclick="loadPrompt('Explain prayer and how believers should pray according to Scripture.')"><strong>Prayer</strong><span>How to talk to God and build a prayer life.</span></div>
+              <div class="topic-item" onclick="loadPrompt('Give me a Bible study on faith with scriptures, examples, and applications.')"><strong>Faith</strong><span>Trusting God in difficult seasons.</span></div>
+              <div class="topic-item" onclick="loadPrompt('Explain the church in the book of Acts and what today’s church can learn.')"><strong>The Church</strong><span>Acts model, fellowship, teaching, prayer, and evangelism.</span></div>
+              <div class="topic-item" onclick="loadPrompt('Create teaching notes on spiritual growth for new believers.')"><strong>Spiritual Growth</strong><span>Discipleship, holiness, and Christian maturity.</span></div>
+            </div>
+          </article>
 
-          <div class="chat-actions">
-            <button class="btn btn-primary" onclick="sendMessage()">Ask Assistant</button>
-            <button class="btn btn-secondary" onclick="clearChat()">Clear Chat</button>
-          </div>
-        </div>
-      </div>
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">💾 Saved Answers</h2>
+                <p class="card-desc">Save helpful answers and export them later.</p>
+              </div>
+            </div>
+            <div class="notes-box">
+              <div class="row-actions">
+                <button class="btn btn-secondary btn-small" onclick="saveLastAnswer()">Save Latest</button>
+                <button class="btn btn-light btn-small" onclick="clearNotes()">Clear Notes</button>
+              </div>
+              <div class="saved-notes" id="savedNotes"></div>
+            </div>
+          </article>
 
-      <aside class="side-panel">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">🔌 Connect Real AI</h2>
+                <p class="card-desc">Your frontend is ready. Connect this page to your backend AI endpoint.</p>
+              </div>
+            </div>
+            <div class="mini-note">Do not place your OpenAI, Anthropic, or other AI API key inside this HTML file. Keep API keys on the server/backend.</div>
+            <pre class="code-box">POST /api/bible-assistant
+{
+  "question": "...",
+  "audience": "Pastor",
+  "style": "Sermon outline",
+  "translation": "KJV"
+}</pre>
+          </article>
+        </aside>
+      </section>
+    </main>
+  </div>
 
-        <div class="prompt-card">
-          <h3>Quick Prompts</h3>
+  <script>
+    const STORAGE_KEY = "shepherd_ai_bible_notes";
+    const COUNT_KEY = "shepherd_ai_bible_question_count";
+    let lastAnswer = "";
+    let lastQuestion = "";
 
-          <div class="prompt-list">
-            <button class="prompt-btn" onclick="usePrompt('Explain John 3:16 in a simple and theological way.')">
-              Explain John 3:16
-            </button>
+    const chatMessages = document.getElementById("chatMessages");
+    const questionInput = document.getElementById("questionInput");
+    const savedNotes = document.getElementById("savedNotes");
+    const noteCount = document.getElementById("noteCount");
+    const questionCount = document.getElementById("questionCount");
 
-            <button class="prompt-btn" onclick="usePrompt('Create a sermon outline on faith using Hebrews 11.')">
-              Create Sermon on Faith
-            </button>
-
-            <button class="prompt-btn" onclick="usePrompt('Create Bible study questions from Acts 2:42-47.')">
-              Bible Study from Acts 2
-            </button>
-
-            <button class="prompt-btn" onclick="usePrompt('Find scriptures about prayer and spiritual growth.')">
-              Verses About Prayer
-            </button>
-
-            <button class="prompt-btn" onclick="usePrompt('Create a youth Bible lesson about identity in Christ.')">
-              Youth Lesson
-            </button>
-          </div>
-        </div>
-
-        <div class="prompt-card">
-          <h3>AI Ministry Tools</h3>
-
-          <div class="tool-grid">
-            <div class="tool-box">📝 Sermons</div>
-            <div class="tool-box">📚 Lessons</div>
-            <div class="tool-box">🙏 Prayers</div>
-            <div class="tool-box">📖 Studies</div>
-            <div class="tool-box">🎓 Theology</div>
-            <div class="tool-box">⛪ Church</div>
-          </div>
-        </div>
-
-        <div class="prompt-card">
-          <h3>Recent Conversations</h3>
-
-          <div class="history-item">
-            <h4>Romans 8 Study</h4>
-            <p>Theme: Hope, suffering, and victory.</p>
-          </div>
-
-          <div class="history-item">
-            <h4>Acts Church Model</h4>
-            <p>Early church devotion and fellowship.</p>
-          </div>
-
-          <div class="history-item">
-            <h4>Sermon on Prayer</h4>
-            <p>Building a stronger prayer life.</p>
-          </div>
-        </div>
-
-      </aside>
-
-    </section>
-
-  </main>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/config.js"></script>
-<script src="js/auth.js"></script>
-
-<script>
-  async function protectPage() {
-    const { data } = await supabaseClient.auth.getSession();
-
-    if (!data.session) {
-      window.location.href = "login.html";
-    }
-  }
-
-  protectPage();
-
-  function usePrompt(text) {
-    document.getElementById("userPrompt").value = text;
-  }
-
-  function sendMessage() {
-    const prompt = document.getElementById("userPrompt").value.trim();
-    const chatWindow = document.getElementById("chatWindow");
-
-    if (!prompt) {
-      alert("Please enter a Bible question or ministry request.");
-      return;
+    function focusQuestion() {
+      questionInput.focus();
     }
 
-    chatWindow.innerHTML += `
-      <div class="message user">
-        <div class="message-avatar">You</div>
-        <div class="message-content">
-          <h4>Your Question</h4>
-          <p>${prompt}</p>
+    function loadPrompt(text) {
+      questionInput.value = text;
+      questionInput.focus();
+    }
+
+    function addMessage(role, text) {
+      const message = document.createElement("div");
+      message.className = `message ${role}`;
+      const label = role === "user" ? "You" : "Shepherd AI Bible Assistant";
+      message.innerHTML = `<div class="message-label">${label}</div><div class="bubble"></div>`;
+      message.querySelector(".bubble").textContent = text;
+      chatMessages.appendChild(message);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function askAssistant() {
+      const question = questionInput.value.trim();
+      if (!question) {
+        questionInput.focus();
+        return;
+      }
+
+      const audience = document.getElementById("audience").value;
+      const answerStyle = document.getElementById("answerStyle").value;
+      const translation = document.getElementById("translation").value;
+
+      lastQuestion = question;
+      addMessage("user", question);
+      questionInput.value = "";
+      addMessage("assistant", "Studying the question and preparing a Bible-centered answer...");
+
+      const loadingBubble = chatMessages.lastElementChild.querySelector(".bubble");
+
+      try {
+        const apiAnswer = await callBibleAssistantAPI({ question, audience, answerStyle, translation });
+        lastAnswer = apiAnswer;
+        loadingBubble.textContent = apiAnswer;
+      } catch (error) {
+        const fallback = buildFallbackAnswer(question, audience, answerStyle, translation);
+        lastAnswer = fallback;
+        loadingBubble.textContent = fallback;
+      }
+
+      incrementQuestionCount();
+    }
+
+    async function callBibleAssistantAPI(payload) {
+      const response = await fetch("/api/bible-assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error("AI backend not connected yet.");
+      const data = await response.json();
+      return data.answer || data.message || "No answer returned from the AI backend.";
+    }
+
+    function buildFallbackAnswer(question, audience, answerStyle, translation) {
+      const q = question.toLowerCase();
+      let scriptures = "2 Timothy 2:15; Psalm 119:105; Romans 15:4";
+      let focus = "God’s Word gives light, instruction, correction, and hope for every believer.";
+
+      if (q.includes("salvation") || q.includes("saved")) {
+        scriptures = "John 3:16; Romans 10:9-10; Ephesians 2:8-9; Acts 4:12";
+        focus = "Salvation is God’s gift through Jesus Christ. We are saved by grace through faith, not by human works.";
+      } else if (q.includes("prayer")) {
+        scriptures = "Matthew 6:9-13; Philippians 4:6-7; 1 Thessalonians 5:17; James 5:16";
+        focus = "Prayer is fellowship with God. It includes worship, surrender, confession, thanksgiving, petition, and trust.";
+      } else if (q.includes("faith")) {
+        scriptures = "Hebrews 11:1; Romans 10:17; Mark 11:22-24; 2 Corinthians 5:7";
+        focus = "Faith is trusting God’s character, obeying His Word, and walking by what He says even before we see the result.";
+      } else if (q.includes("holy spirit") || q.includes("spirit")) {
+        scriptures = "John 14:26; Acts 1:8; Romans 8:14; Galatians 5:22-23";
+        focus = "The Holy Spirit teaches, empowers, comforts, convicts, guides, and produces Christlike fruit in believers.";
+      } else if (q.includes("church") || q.includes("acts")) {
+        scriptures = "Acts 2:42-47; Acts 4:31-35; Ephesians 4:11-16; 1 Corinthians 12";
+        focus = "The biblical church is devoted to Scripture, prayer, fellowship, generosity, evangelism, and every believer serving with spiritual gifts.";
+      } else if (q.includes("forgiv")) {
+        scriptures = "Matthew 6:14-15; Ephesians 4:32; Colossians 3:13; Luke 23:34";
+        focus = "Forgiveness releases bitterness, reflects God’s mercy, and allows believers to walk in obedience and healing.";
+      }
+
+      if (answerStyle === "Sermon outline") {
+        return `Audience: ${audience}\nStyle: ${answerStyle}\nTranslation: ${translation}\n\nSermon Title: Biblical Understanding for Today\n\nMain Thought:\n${focus}\n\nKey Scriptures:\n${scriptures}\n\nIntroduction:\nThe Bible is not only a religious book; it is God’s revealed truth for life, faith, ministry, and spiritual growth. Every topic must be understood through Scripture, not personal opinion alone.\n\nPoint 1: Start with what Scripture clearly says.\nApplication: Read the passage carefully, observe the context, and let the Bible explain the Bible.\n\nPoint 2: Look for Christ-centered meaning.\nApplication: Ask how this truth points us to God’s character, Christ’s work, and the believer’s response.\n\nPoint 3: Move from information to transformation.\nApplication: The goal is not only to know more, but to obey God more faithfully.\n\nDiscussion Question:\nHow should this truth change the way we live, pray, serve, and treat others this week?`;
+      }
+
+      if (answerStyle === "Devotional") {
+        return `Audience: ${audience}\nStyle: ${answerStyle}\nTranslation: ${translation}\n\nScripture Focus:\n${scriptures}\n\nDevotional Thought:\n${focus}\n\nGod does not give His Word to confuse His people. He gives His Word to guide, correct, strengthen, and draw us closer to Him. When we approach Scripture with humility, prayer, and a willing heart, the Bible becomes light for our path and food for our soul.\n\nPersonal Application:\nTake time today to ask: “Lord, what are You teaching me, and how should I obey?”\n\nPrayer:\nFather, open my understanding to Your Word. Help me not only hear the truth, but live it with faith and obedience. In Jesus’ name, amen.`;
+      }
+
+      if (answerStyle === "Teaching notes") {
+        return `Audience: ${audience}\nStyle: ${answerStyle}\nTranslation: ${translation}\n\nTopic Summary:\n${focus}\n\nKey Scriptures:\n${scriptures}\n\nTeaching Aim:\nHelp learners understand the biblical truth clearly and apply it in daily life.\n\nLesson Points:\n1. Define the topic from Scripture.\n2. Read the main Bible passages in context.\n3. Explain what the passage meant to the original audience.\n4. Apply the truth to today’s believer.\n5. End with reflection, prayer, and action.\n\nClass Questions:\n- What does this reveal about God?\n- What does this reveal about people?\n- What command, promise, warning, or example do we see?\n- How can we practice this truth this week?`;
+      }
+
+      return `Audience: ${audience}\nStyle: ${answerStyle}\nTranslation: ${translation}\n\nAnswer:\n${focus}\n\nHelpful Scriptures:\n${scriptures}\n\nSimple Explanation:\nWhen studying this topic, begin by reading the main scriptures carefully. Look at the verses before and after the passage so you understand the context. Then ask what the passage teaches about God, humanity, sin, grace, obedience, and spiritual growth.\n\nFor new believers, keep the explanation simple and practical. For pastors and teachers, build the lesson around the text, support it with related scriptures, and end with clear application.\n\nApplication:\nDo not only ask, “What does this mean?” Also ask, “How should this change my heart, my choices, my prayer life, and my service to God?”`;
+    }
+
+    function saveLastAnswer() {
+      if (!lastAnswer) {
+        alert("Ask a Bible question first, then save the answer.");
+        return;
+      }
+
+      const notes = getNotes();
+      notes.unshift({
+        question: lastQuestion || "Saved Bible Answer",
+        answer: lastAnswer,
+        date: new Date().toLocaleString()
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      renderNotes();
+    }
+
+    function getNotes() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function renderNotes() {
+      const notes = getNotes();
+      noteCount.textContent = notes.length;
+      if (!notes.length) {
+        savedNotes.innerHTML = '<div class="empty-state">No saved answers yet. Ask a question and click “Save Answer.”</div>';
+        return;
+      }
+
+      savedNotes.innerHTML = notes.map(note => `
+        <div class="note-item">
+          <strong>${escapeHtml(note.question).slice(0, 72)}${note.question.length > 72 ? "..." : ""}</strong>
+          <p>${escapeHtml(note.date)}</p>
         </div>
-      </div>
-    `;
+      `).join("");
+    }
 
-    chatWindow.innerHTML += `
-      <div class="message assistant">
-        <div class="message-avatar">AI</div>
-        <div class="message-content">
-          <h4>Assistant Response</h4>
-          <p>
-            This is where your real AI response will appear once you connect this page
-            to your AI backend or API. For now, the interface is ready and the chat flow is working.
-          </p>
-          <p>
-            Suggested next step: connect this prompt to your server-side AI function,
-            save conversations to Supabase, and display the response here.
-          </p>
-        </div>
-      </div>
-    `;
+    function clearNotes() {
+      if (!confirm("Clear all saved AI Bible answers?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      renderNotes();
+    }
 
-    document.getElementById("userPrompt").value = "";
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  }
+    function exportNotes() {
+      const notes = getNotes();
+      if (!notes.length) {
+        alert("No saved notes to export yet.");
+        return;
+      }
 
-  function clearChat() {
-    document.getElementById("chatWindow").innerHTML = `
-      <div class="message assistant">
-        <div class="message-avatar">AI</div>
-        <div class="message-content">
-          <h4>Chat Cleared</h4>
-          <p>You can start a new Bible study or ministry conversation now.</p>
-        </div>
-      </div>
-    `;
-  }
-</script>
+      const content = notes.map((note, index) => {
+        return `SHEPHERD LIBRARY AI BIBLE ASSISTANT NOTE ${index + 1}\nDate: ${note.date}\nQuestion: ${note.question}\n\n${note.answer}\n\n----------------------------------------\n`;
+      }).join("\n");
 
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "shepherd-ai-bible-assistant-notes.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearChat() {
+      chatMessages.innerHTML = `<div class="message assistant"><div class="message-label">Shepherd AI Bible Assistant</div><div class="bubble">Chat cleared. Ask a new Bible question, choose your study settings, or click a popular topic to begin.</div></div>`;
+      lastAnswer = "";
+      lastQuestion = "";
+    }
+
+    function incrementQuestionCount() {
+      const current = Number(localStorage.getItem(COUNT_KEY) || 0) + 1;
+      localStorage.setItem(COUNT_KEY, String(current));
+      questionCount.textContent = current;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    questionInput.addEventListener("keydown", function(event) {
+      if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+        askAssistant();
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      questionCount.textContent = localStorage.getItem(COUNT_KEY) || "0";
+      renderNotes();
+    });
+  </script>
 </body>
 </html>
