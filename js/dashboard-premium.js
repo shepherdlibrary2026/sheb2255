@@ -389,3 +389,5 @@ async function loadNotes() {
     </div>
   `).join("");
 }
+
+<link rel="stylesheet" href="css/responsive.css">
