@@ -86,6 +86,7 @@ function renderPremiumDashboard() {
           <a href="research.html">📚 Christian Research Library</a>
           <a href="podcast-teaching-notes.html">🎙️ Podcast & Teaching Notes</a>
           <a href="bible-reader.html">📖 Bible Reader</a>
+          <a href="prayer-journal.html">Prayer Journal</a>
         </div>
 
         <div class="upgrade">
