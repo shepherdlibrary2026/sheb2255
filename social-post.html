@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Social Post Creator | Shepherd Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #08172f;
+      --navy-2: #10244a;
+      --royal: #1f2f86;
+      --purple: #4f46e5;
+      --orange: #f59e0b;
+      --orange-dark: #d97706;
+      --lavender: #f3f0ff;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e7e5f6;
+      --green: #16a34a;
+      --red: #dc2626;
+      --shadow: 0 22px 60px rgba(15, 23, 42, 0.12);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--lavender);
+      color: var(--text);
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, var(--navy), #061126 70%, #050b18);
+      color: #fff;
+      padding: 26px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--orange), #fde68a);
+      display: grid;
+      place-items: center;
+      color: var(--navy);
+      font-weight: 900;
+      font-size: 22px;
+      box-shadow: 0 12px 28px rgba(245,158,11,0.25);
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      line-height: 1.1;
+      margin: 0;
+      letter-spacing: -0.03em;
+    }
+
+    .brand span {
+      color: #facc15;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-section-title {
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin: 24px 12px 10px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #dbeafe;
+      text-decoration: none;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 6px;
+      transition: 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      transform: translateX(3px);
+    }
+
+    .nav-link.active {
+      border: 1px solid rgba(245,158,11,.35);
+      box-shadow: inset 4px 0 0 var(--orange);
+    }
+
+    .main {
+      padding: 28px;
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 18px;
+    }
+
+    .page-title h2 {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 40px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: #111827;
+    }
+
+    .page-title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 15px;
+      padding: 12px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--orange); color: #111827; box-shadow: 0 14px 28px rgba(245,158,11,.25); }
+    .btn-primary:hover { background: var(--orange-dark); color: #fff; }
+    .btn-secondary { background: var(--navy-2); color: #fff; }
+    .btn-soft { background: #fff; color: var(--navy); border: 1px solid var(--line); }
+    .btn-danger { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
+
+    .hero {
+      position: relative;
+      border-radius: 32px;
+      padding: 34px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(245,158,11,.45), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(79,70,229,.55), transparent 32%),
+        linear-gradient(135deg, #111b46, #293294 50%, #553c9a);
+      color: #fff;
+      box-shadow: var(--shadow);
+      margin-bottom: 26px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: .3;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 930px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero h3 {
+      font-size: clamp(30px, 4.4vw, 56px);
+      line-height: .96;
+      margin: 0;
+      letter-spacing: -0.07em;
+    }
+
+    .hero p {
+      margin: 16px 0 0;
+      max-width: 760px;
+      color: #e0e7ff;
+      font-size: 17px;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 20px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-card strong { font-size: 24px; display: block; }
+    .stat-card span { color: #dbeafe; font-size: 13px; font-weight: 700; }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(360px, 1.08fr) minmax(340px, .92fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .card-header h4 { margin: 0; font-size: 20px; letter-spacing: -0.03em; }
+    .card-header p { margin: 5px 0 0; color: var(--muted); font-size: 13px; font-weight: 600; }
+    .card-body { padding: 24px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #dddaf1;
+      border-radius: 16px;
+      padding: 13px 14px;
+      font: inherit;
+      outline: none;
+      background: #fbfbff;
+      color: var(--text);
+      transition: .18s ease;
+    }
+
+    textarea { min-height: 118px; resize: vertical; line-height: 1.55; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 4px rgba(79,70,229,.11);
+      background: #fff;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+    .chip {
+      border: 1px solid var(--line);
+      background: #f8f7ff;
+      border-radius: 999px;
+      padding: 8px 11px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy-2);
+      cursor: pointer;
+      transition: .18s ease;
+    }
+    .chip:hover, .chip.active { background: #eef2ff; border-color: #c7d2fe; color: var(--purple); }
+
+    .platform-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .platform-tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 16px;
+      padding: 13px 9px;
+      font-weight: 900;
+      cursor: pointer;
+      color: var(--navy-2);
+      transition: .18s ease;
+    }
+    .platform-tab.active { background: var(--navy-2); color: #fff; border-color: var(--navy-2); }
+
+    .output-area {
+      background: linear-gradient(180deg, #ffffff, #fbfbff);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      min-height: 370px;
+      position: relative;
+    }
+
+    .post-preview {
+      white-space: pre-wrap;
+      line-height: 1.72;
+      font-size: 15.5px;
+      color: #1f2937;
+    }
+
+    .empty-state {
+      height: 330px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 20px;
+    }
+    .empty-icon { font-size: 50px; margin-bottom: 12px; }
+    .empty-state h5 { margin: 0 0 8px; color: var(--navy); font-size: 18px; }
+    .empty-state p { margin: 0; line-height: 1.6; font-weight: 500; }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .templates {
+      display: grid;
+      gap: 12px;
+    }
+
+    .template-card {
+      border: 1px solid var(--line);
+      border-radius: 19px;
+      padding: 16px;
+      cursor: pointer;
+      transition: .18s ease;
+      background: #fff;
+    }
+    .template-card:hover {
+      transform: translateY(-2px);
+      border-color: #c7d2fe;
+      box-shadow: 0 12px 30px rgba(15,23,42,.08);
+    }
+    .template-card strong { display: block; margin-bottom: 6px; color: var(--navy); }
+    .template-card span { color: var(--muted); line-height: 1.5; font-size: 13px; font-weight: 500; }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .mini-card {
+      background: #f8f7ff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .mini-card strong { display: block; font-size: 20px; color: var(--navy); }
+    .mini-card span { display: block; color: var(--muted); font-size: 12px; font-weight: 700; margin-top: 4px; }
+
+    .saved-list { display: grid; gap: 12px; }
+    .saved-item {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid var(--line);
+      background: #fbfbff;
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .saved-item strong { display: block; font-size: 14px; margin-bottom: 3px; }
+    .saved-item span { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      background: var(--navy);
+      color: #fff;
+      padding: 13px 16px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: .25s ease;
+      z-index: 99;
+      font-weight: 800;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 1100px) {
+      .app-shell { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .content-grid { grid-template-columns: 1fr; }
+      .stats, .platform-tabs { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 720px) {
+      .main { padding: 18px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .hero { padding: 24px; border-radius: 24px; }
+      .form-grid, .mini-grid, .stats { grid-template-columns: 1fr; }
+      .platform-tabs { grid-template-columns: 1fr 1fr; }
+      .card-header { flex-direction: column; align-items: flex-start; }
+      .top-actions { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">SL</div>
+        <div>
+          <h1>Shepherd Library</h1>
+          <span>Ministry AI Suite</span>
+        </div>
+      </div>
+
+      <div class="nav-section-title">Main Tools</div>
+      <a class="nav-link" href="dashboard.html">🏠 Dashboard</a>
+      <a class="nav-link" href="bible-reader.html">📖 Bible Reader</a>
+      <a class="nav-link" href="ai-assistant.html">🤖 AI Bible Assistant</a>
+      <a class="nav-link" href="sermon-builder.html">📝 Sermon Builder</a>
+      <a class="nav-link" href="study-notes.html">🎓 Study Notes</a>
+      <a class="nav-link" href="research.html">📚 Research Library</a>
+      <a class="nav-link" href="prayer-journal.html">🙏 Prayer Journal</a>
+
+      <div class="nav-section-title">Creative Studio</div>
+      <a class="nav-link" href="media.html">🎥 Media Builder</a>
+      <a class="nav-link active" href="social-post.html">📱 Social Post AI</a>
+      <a class="nav-link" href="announcement-maker.html">📢 Announcements</a>
+      <a class="nav-link" href="thumbnail-creator.html">🖼️ Thumbnails</a>
+      <a class="nav-link" href="slide-designer.html">📊 Slide Designer</a>
+      <a class="nav-link" href="verse-graphic.html">✨ Verse Graphics</a>
+
+      <div class="nav-section-title">Workspace</div>
+      <a class="nav-link" href="bookmarks.html">🔖 Bookmarks</a>
+      <a class="nav-link" href="account-settings.html">⚙️ Account Settings</a>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title">
+          <h2>AI Social Post Creator</h2>
+          <p>Create polished ministry posts, captions, hashtags, and calls-to-action in seconds.</p>
+        </div>
+        <div class="top-actions">
+          <a class="btn btn-soft" href="dashboard.html">← Back to Dashboard</a>
+          <button class="btn btn-secondary" onclick="clearForm()">Reset</button>
+          <button class="btn btn-primary" onclick="generatePost()">✨ Generate Post</button>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-content">
+          <div class="badge">📱 Premium AI Content Studio</div>
+          <h3>Turn ministry ideas into ready-to-post social content.</h3>
+          <p>Built for pastors, churches, ministry teams, creators, and Christian organizations. Generate Facebook posts, Instagram captions, LinkedIn updates, X posts, event promos, sermon highlights, and scripture-based encouragement.</p>
+          <div class="stats">
+            <div class="stat-card"><strong>4</strong><span>Platform presets</span></div>
+            <div class="stat-card"><strong>12+</strong><span>Content angles</span></div>
+            <div class="stat-card"><strong>AI</strong><span>Caption assistant</span></div>
+            <div class="stat-card"><strong>1-click</strong><span>Copy & export</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h4>Create Your Social Post</h4>
+              <p>Add your message, platform, tone, audience, and Scripture reference.</p>
+            </div>
+            <span class="badge" style="color:#111827;background:#fff7ed;border-color:#fed7aa;">Live Builder</span>
+          </div>
+          <div class="card-body">
+            <div class="platform-tabs" id="platformTabs">
+              <button class="platform-tab active" data-platform="Facebook">Facebook</button>
+              <button class="platform-tab" data-platform="Instagram">Instagram</button>
+              <button class="platform-tab" data-platform="LinkedIn">LinkedIn</button>
+              <button class="platform-tab" data-platform="X / Twitter">X / Twitter</button>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group full">
+                <label for="topic">Post Topic / Main Message</label>
+                <textarea id="topic" placeholder="Example: Invite people to our Sunday worship service, theme is Divine Turnaround, Exodus 14:13."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="postType">Post Type</label>
+                <select id="postType">
+                  <option>Church Event Promotion</option>
+                  <option>Sermon Recap</option>
+                  <option>Bible Verse Encouragement</option>
+                  <option>Announcement</option>
+                  <option>Testimony Post</option>
+                  <option>Volunteer Recruitment</option>
+                  <option>Giving / Fundraising</option>
+                  <option>Leadership Thought</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tone">Tone</label>
+                <select id="tone">
+                  <option>Warm and Inspirational</option>
+                  <option>Professional and Clear</option>
+                  <option>Bold and Evangelistic</option>
+                  <option>Youthful and Energetic</option>
+                  <option>Pastoral and Encouraging</option>
+                  <option>Urgent and Action-Focused</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="audience">Audience</label>
+                <select id="audience">
+                  <option>Church Members</option>
+                  <option>New Believers</option>
+                  <option>Pastors and Leaders</option>
+                  <option>Youth and Young Adults</option>
+                  <option>Local Community</option>
+                  <option>Online Ministry Followers</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="scripture">Scripture Reference</label>
+                <input id="scripture" placeholder="Example: Romans 15:5-6" />
+              </div>
+
+              <div class="form-group">
+                <label for="cta">Call-to-Action</label>
+                <input id="cta" placeholder="Example: Join us this Sunday at 12:30 PM" />
+              </div>
+
+              <div class="form-group">
+                <label for="length">Length</label>
+                <select id="length">
+                  <option>Short</option>
+                  <option selected>Medium</option>
+                  <option>Long</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
+                <label>Fast Ideas</label>
+                <div class="chips">
+                  <button class="chip" onclick="fillIdea('Invite the community to Sunday worship and encourage families to come experience God together.')">Sunday Invite</button>
+                  <button class="chip" onclick="fillIdea('Share a sermon recap about faith, obedience, and trusting God during difficult seasons.')">Sermon Recap</button>
+                  <button class="chip" onclick="fillIdea('Encourage believers to return to prayer, Scripture, fellowship, and the power of the Holy Spirit.')">Bible Study</button>
+                  <button class="chip" onclick="fillIdea('Promote a church anniversary celebration with praise, worship, gratitude, and community fellowship.')">Anniversary</button>
+                  <button class="chip" onclick="fillIdea('Create a youth-focused post calling young people to stir up their gifts and live boldly for Christ.')">Youth Night</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="generatePost()">✨ Generate AI Social Post</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h4>Generated Post</h4>
+              <p>Copy, save, export, or regenerate for a different platform.</p>
+            </div>
+            <button class="btn btn-soft" onclick="savePost()">💾 Save</button>
+          </div>
+          <div class="card-body">
+            <div class="output-area">
+              <div id="output" class="empty-state">
+                <div>
+                  <div class="empty-icon">📲</div>
+                  <h5>Your post will appear here</h5>
+                  <p>Fill out the builder and click generate to create a ready-to-use social media post.</p>
+                </div>
+              </div>
+            </div>
+            <div class="toolbar">
+              <button class="btn btn-secondary" onclick="copyPost()">📋 Copy Post</button>
+              <button class="btn btn-soft" onclick="downloadPost()">⬇️ Export TXT</button>
+              <button class="btn btn-soft" onclick="generatePost(true)">🔁 Regenerate</button>
+              <button class="btn btn-danger" onclick="clearOutput()">Clear</button>
+            </div>
+            <div class="mini-grid">
+              <div class="mini-card"><strong id="charCount">0</strong><span>Characters</span></div>
+              <div class="mini-card"><strong id="hashtagCount">0</strong><span>Hashtags</span></div>
+              <div class="mini-card"><strong id="platformName">Facebook</strong><span>Platform</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h4>Premium Templates</h4>
+              <p>Click a template to start faster.</p>
+            </div>
+          </div>
+          <div class="card-body templates">
+            <div class="template-card" onclick="loadTemplate('event')">
+              <strong>⛪ Church Event Promo</strong>
+              <span>Invite members and the community to worship services, revivals, anniversaries, Bible study, or outreach.</span>
+            </div>
+            <div class="template-card" onclick="loadTemplate('verse')">
+              <strong>📖 Scripture Encouragement</strong>
+              <span>Create a short devotional caption with a Bible verse, reflection, and faith-building encouragement.</span>
+            </div>
+            <div class="template-card" onclick="loadTemplate('sermon')">
+              <strong>🎙️ Sermon Highlight</strong>
+              <span>Turn sermon points into a powerful summary post with practical application and hashtags.</span>
+            </div>
+            <div class="template-card" onclick="loadTemplate('leader')">
+              <strong>👥 Leadership Message</strong>
+              <span>Write a professional ministry leadership post for pastors, church teams, and volunteers.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h4>Saved Drafts</h4>
+              <p>Stored locally in this browser for quick reuse.</p>
+            </div>
+            <button class="btn btn-soft" onclick="renderSaved()">Refresh</button>
+          </div>
+          <div class="card-body">
+            <div id="savedList" class="saved-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast">Saved</div>
+
+  <script>
+    let currentPlatform = 'Facebook';
+
+    const platformTabs = document.querySelectorAll('.platform-tab');
+    platformTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        platformTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentPlatform = tab.dataset.platform;
+        document.getElementById('platformName').textContent = currentPlatform.replace(' / Twitter', '');
+      });
+    });
+
+    function fillIdea(text) {
+      document.getElementById('topic').value = text;
+      showToast('Idea added');
+    }
+
+    function loadTemplate(type) {
+      const templates = {
+        event: {
+          topic: 'Invite our church members and local community to a powerful worship service focused on faith, prayer, and spiritual renewal.',
+          postType: 'Church Event Promotion',
+          tone: 'Warm and Inspirational',
+          audience: 'Local Community',
+          scripture: 'Psalm 122:1',
+          cta: 'Join us this Sunday and bring your family.'
+        },
+        verse: {
+          topic: 'Encourage believers to trust God even when the season feels uncertain because His promises are still true.',
+          postType: 'Bible Verse Encouragement',
+          tone: 'Pastoral and Encouraging',
+          audience: 'Online Ministry Followers',
+          scripture: 'Proverbs 3:5-6',
+          cta: 'Share this with someone who needs encouragement today.'
+        },
+        sermon: {
+          topic: 'Share a sermon recap about not allowing negative experiences to define the brighter future God has prepared.',
+          postType: 'Sermon Recap',
+          tone: 'Bold and Evangelistic',
+          audience: 'Church Members',
+          scripture: '1 Chronicles 4:9-10',
+          cta: 'Watch the full message and apply the Word this week.'
+        },
+        leader: {
+          topic: 'Encourage ministry leaders and volunteers to serve with excellence, humility, unity, and faithfulness.',
+          postType: 'Leadership Thought',
+          tone: 'Professional and Clear',
+          audience: 'Pastors and Leaders',
+          scripture: 'Ephesians 4:11-16',
+          cta: 'Tag a leader who is making a difference.'
+        }
+      };
+      const t = templates[type];
+      Object.keys(t).forEach(key => document.getElementById(key).value = t[key]);
+      showToast('Template loaded');
+    }
+
+    function generatePost(isRegenerate = false) {
+      const topic = document.getElementById('topic').value.trim();
+      const postType = document.getElementById('postType').value;
+      const tone = document.getElementById('tone').value;
+      const audience = document.getElementById('audience').value;
+      const scripture = document.getElementById('scripture').value.trim();
+      const cta = document.getElementById('cta').value.trim();
+      const length = document.getElementById('length').value;
+
+      if (!topic) {
+        showToast('Add a topic first');
+        document.getElementById('topic').focus();
+        return;
+      }
+
+      const platformIntro = {
+        Facebook: '✨ Here is something on my heart today:',
+        Instagram: '✨ Faith reminder for today:',
+        LinkedIn: 'A leadership reflection for ministry-minded people:',
+        'X / Twitter': 'Faith thought:'
+      };
+
+      const hashtagSets = {
+        Facebook: '#ShepherdLibrary #FaithCommunity #ChurchOnline #ChristianEncouragement #MinistryTools',
+        Instagram: '#FaithPost #ChristianCreative #ChurchMedia #BibleTruth #JesusChrist #MinistryLife #ShepherdLibrary',
+        LinkedIn: '#ChristianLeadership #MinistryLeadership #FaithBasedLeadership #ChurchGrowth #ShepherdLibrary',
+        'X / Twitter': '#Faith #Church #Bible #Jesus #ShepherdLibrary'
+      };
+
+      const shortPost = `${platformIntro[currentPlatform]}\n\n${topic}\n\n${scripture ? '📖 Scripture: ' + scripture + '\n\n' : ''}${cta ? '👉 ' + cta + '\n\n' : ''}${hashtagSets[currentPlatform]}`;
+
+      const mediumPost = `${platformIntro[currentPlatform]}\n\n${topic}\n\nThis is a reminder that God is still working, still speaking, and still calling His people to walk by faith. Whether you are a pastor, leader, new believer, or someone searching for hope, there is a message here for you.\n\n${scripture ? '📖 Key Scripture: ' + scripture + '\n\n' : ''}${cta ? '👉 ' + cta + '\n\n' : ''}${hashtagSets[currentPlatform]}`;
+
+      const longPost = `${platformIntro[currentPlatform]}\n\n${topic}\n\nIn every season, the people of God need encouragement, direction, and a clear reminder of what truly matters. We are called to keep our eyes on Christ, stay rooted in Scripture, grow in prayer, and serve one another with love.\n\nThis post is created for ${audience.toLowerCase()} with a ${tone.toLowerCase()} tone. Let it encourage faith, strengthen commitment, and inspire action.\n\n${scripture ? '📖 Scripture Focus: ' + scripture + '\n\n' : ''}${cta ? '👉 Next Step: ' + cta + '\n\n' : ''}${hashtagSets[currentPlatform]}`;
+
+      let result = length === 'Short' ? shortPost : length === 'Long' ? longPost : mediumPost;
+
+      if (currentPlatform === 'X / Twitter' && result.length > 280) {
+        result = `${topic}\n\n${scripture ? scripture + '\n' : ''}${cta ? cta + '\n' : ''}#Faith #Church #Bible`;
+      }
+
+      if (isRegenerate) {
+        result = result.replace('Here is something on my heart today:', 'A fresh word of encouragement:')
+          .replace('Faith reminder for today:', 'Save this reminder:')
+          .replace('A leadership reflection for ministry-minded people:', 'A ministry leadership reminder:');
+      }
+
+      document.getElementById('output').className = 'post-preview';
+      document.getElementById('output').textContent = result;
+      updateMetrics(result);
+      showToast('Post generated');
+
+      // REAL AI CONNECTION NOTE:
+      // Replace the generator above with a call to your backend API route, for example:
+      // fetch('/api/generate-social-post', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ topic, postType, tone, audience, scripture, cta, length, platform: currentPlatform }) })
+      // Your backend should call OpenAI, save the post to Supabase, then return { post: '...' }.
+    }
+
+    function updateMetrics(text) {
+      document.getElementById('charCount').textContent = text.length;
+      const hashtags = text.match(/#[\w]+/g) || [];
+      document.getElementById('hashtagCount').textContent = hashtags.length;
+      document.getElementById('platformName').textContent = currentPlatform.replace(' / Twitter', '');
+    }
+
+    async function copyPost() {
+      const text = getPostText();
+      if (!text) return showToast('Nothing to copy');
+      await navigator.clipboard.writeText(text);
+      showToast('Copied to clipboard');
+    }
+
+    function downloadPost() {
+      const text = getPostText();
+      if (!text) return showToast('Nothing to export');
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `shepherd-social-post-${Date.now()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showToast('Post exported');
+    }
+
+    function savePost() {
+      const text = getPostText();
+      if (!text) return showToast('Nothing to save');
+      const saved = JSON.parse(localStorage.getItem('shepherdSocialPosts') || '[]');
+      saved.unshift({
+        id: Date.now(),
+        platform: currentPlatform,
+        title: document.getElementById('postType').value,
+        text,
+        date: new Date().toLocaleDateString()
+      });
+      localStorage.setItem('shepherdSocialPosts', JSON.stringify(saved.slice(0, 12)));
+      renderSaved();
+      showToast('Draft saved');
+    }
+
+    function renderSaved() {
+      const saved = JSON.parse(localStorage.getItem('shepherdSocialPosts') || '[]');
+      const list = document.getElementById('savedList');
+      if (!saved.length) {
+        list.innerHTML = '<div class="empty-state" style="height:160px;"><div><div class="empty-icon">💾</div><h5>No saved drafts yet</h5><p>Generated posts you save will appear here.</p></div></div>';
+        return;
+      }
+      list.innerHTML = saved.map(item => `
+        <div class="saved-item">
+          <div>
+            <strong>${escapeHtml(item.title)} · ${escapeHtml(item.platform)}</strong>
+            <span>${escapeHtml(item.date)} · ${item.text.length} characters</span>
+          </div>
+          <button class="icon-btn" onclick="loadSaved(${item.id})" title="Load">↗</button>
+        </div>
+      `).join('');
+    }
+
+    function loadSaved(id) {
+      const saved = JSON.parse(localStorage.getItem('shepherdSocialPosts') || '[]');
+      const item = saved.find(x => x.id === id);
+      if (!item) return;
+      document.getElementById('output').className = 'post-preview';
+      document.getElementById('output').textContent = item.text;
+      updateMetrics(item.text);
+      showToast('Draft loaded');
+    }
+
+    function getPostText() {
+      const output = document.getElementById('output');
+      return output.classList.contains('post-preview') ? output.textContent.trim() : '';
+    }
+
+    function clearOutput() {
+      document.getElementById('output').className = 'empty-state';
+      document.getElementById('output').innerHTML = '<div><div class="empty-icon">📲</div><h5>Your post will appear here</h5><p>Fill out the builder and click generate to create a ready-to-use social media post.</p></div>';
+      updateMetrics('');
+      showToast('Output cleared');
+    }
+
+    function clearForm() {
+      ['topic','scripture','cta'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('postType').selectedIndex = 0;
+      document.getElementById('tone').selectedIndex = 0;
+      document.getElementById('audience').selectedIndex = 0;
+      document.getElementById('length').value = 'Medium';
+      clearOutput();
+      showToast('Builder reset');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[tag]));
+    }
+
+    renderSaved();
+  </script>
+</body>
+</html>
