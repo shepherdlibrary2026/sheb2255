@@ -85,6 +85,7 @@ function renderPremiumDashboard() {
           <a href="account.html">⚙️ Account Settings</a>
           <a href="research.html">📚 Christian Research Library</a>
           <a href="podcast-teaching-notes.html">🎙️ Podcast & Teaching Notes</a>
+          <a href="bible-reader.html">📖 Bible Reader</a>
         </div>
 
         <div class="upgrade">
