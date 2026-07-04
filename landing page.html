@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Shepherd's Library | Bible Study & Ministry Dashboard</title>
+  <meta name="description" content="The Shepherd's Library helps pastors, ministry leaders, Bible teachers, and believers prepare sermons, study Scripture, organize notes, and grow deeper in God's Word." />
+  <style>
+    :root {
+      --navy: #0b1328;
+      --navy-2: #111a35;
+      --blue: #193c8f;
+      --royal: #243f9e;
+      --purple: #2d2b79;
+      --orange: #f28b2e;
+      --gold: #ffe773;
+      --lavender: #f5f6fc;
+      --card: #ffffff;
+      --muted: #65708a;
+      --text: #111827;
+      --line: #e5e9f4;
+      --shadow: 0 24px 70px rgba(17, 24, 39, 0.16);
+      --soft-shadow: 0 14px 36px rgba(17, 24, 39, 0.10);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--lavender);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img, svg {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* Top navigation matches the real project landing dashboard screenshot */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(229, 233, 244, 0.9);
+      box-shadow: 0 8px 24px rgba(11, 19, 40, 0.04);
+    }
+
+    .nav {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 900;
+      color: #15347f;
+      letter-spacing: -0.04em;
+      font-size: clamp(1.25rem, 2vw, 1.65rem);
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #ffffff, #e9eefb);
+      box-shadow: inset 0 0 0 1px #d5dcef;
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      list-style: none;
+      font-weight: 800;
+      color: #111827;
+      font-size: 0.95rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-weight: 800;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 28px;
+      border-radius: 999px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 900;
+      font-size: 1rem;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: #243f9e;
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(36, 63, 158, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: #1d358b;
+      box-shadow: 0 18px 38px rgba(36, 63, 158, 0.32);
+    }
+
+    .btn-light {
+      background: #fff;
+      color: #15347f;
+      box-shadow: 0 16px 30px rgba(8, 14, 35, 0.14);
+    }
+
+    .btn-dark {
+      background: #1d4ea5;
+      color: #fff;
+      box-shadow: 0 16px 30px rgba(29, 78, 165, 0.22);
+    }
+
+    .btn-orange {
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 16px 32px rgba(242, 139, 46, 0.26);
+    }
+
+    .mobile-toggle {
+      display: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #15347f;
+      font-size: 1.35rem;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.14), transparent 28%),
+        radial-gradient(circle at 85% 18%, rgba(83, 118, 255, 0.24), transparent 34%),
+        linear-gradient(120deg, #31449a 0%, #2c2d80 48%, #1d2740 100%);
+      color: #fff;
+      padding: 104px 0 0;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 120px;
+      background: var(--lavender);
+      z-index: 1;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 22px;
+      margin-bottom: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      background: rgba(255, 255, 255, 0.10);
+      color: var(--gold);
+      font-weight: 900;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    }
+
+    .hero h1 {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: clamp(3.2rem, 7vw, 6rem);
+      line-height: 0.98;
+      letter-spacing: -0.075em;
+      font-weight: 1000;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 36px auto 0;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: clamp(1.05rem, 1.5vw, 1.45rem);
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      margin-top: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-preview {
+      width: min(980px, 100%);
+      margin: 64px auto 0;
+      border-radius: 26px 26px 0 0;
+      overflow: hidden;
+      background: #eef2f9;
+      box-shadow: var(--shadow);
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+    }
+
+    .browser-bar {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 22px;
+      background: #edf1f8;
+      border-bottom: 1px solid #dce3ef;
+    }
+
+    .dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #c7d1df;
+    }
+
+    .preview-body {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 375px;
+      background: #fff;
+    }
+
+    .preview-sidebar {
+      background: var(--navy);
+      color: #fff;
+      padding: 34px 28px;
+    }
+
+    .preview-title {
+      font-size: 1.15rem;
+      line-height: 1.35;
+      color: var(--gold);
+      font-weight: 1000;
+      margin-bottom: 34px;
+    }
+
+    .preview-menu {
+      display: grid;
+      gap: 14px;
+      color: #dce7ff;
+      font-weight: 800;
+      font-size: 0.98rem;
+    }
+
+    .preview-menu span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border-radius: 13px;
+    }
+
+    .preview-menu span:first-child {
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
+    }
+
+    .preview-main {
+      background: #f7f8fd;
+      padding: 34px;
+    }
+
+    .preview-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .stat-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 24px;
+      min-height: 132px;
+      box-shadow: 0 10px 18px rgba(17, 24, 39, 0.04);
+    }
+
+    .stat-card h4 {
+      color: #66738f;
+      font-size: 0.96rem;
+      margin-bottom: 12px;
+      font-weight: 900;
+    }
+
+    .stat-card strong {
+      color: #17358a;
+      font-size: 2rem;
+      line-height: 1;
+      font-weight: 1000;
+    }
+
+    .preview-grid {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 20px;
+    }
+
+    .mini-panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 18px rgba(17, 24, 39, 0.04);
+    }
+
+    .mini-panel h4 {
+      color: #102453;
+      font-size: 1.05rem;
+      font-weight: 1000;
+      margin-bottom: 12px;
+    }
+
+    .fake-line {
+      height: 11px;
+      border-radius: 99px;
+      background: #e1e7f3;
+      margin: 11px 0;
+    }
+
+    .fake-line.short {
+      width: 64%;
+    }
+
+    .progress {
+      height: 12px;
+      border-radius: 99px;
+      background: #e6eaf5;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 76%;
+      background: linear-gradient(90deg, var(--orange), #ffd36a);
+    }
+
+    .section {
+      padding: 96px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 48px;
+    }
+
+    .eyebrow {
+      color: var(--orange);
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: .8rem;
+      margin-bottom: 12px;
+    }
+
+    .section h2 {
+      color: #102453;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+      font-weight: 1000;
+    }
+
+    .section-header p {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 1.12rem;
+      font-weight: 600;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .feature-card, .solution-card, .pricing-card, .faq-item, .contact-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .feature-card {
+      padding: 30px;
+      min-height: 270px;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 48px rgba(17, 24, 39, 0.14);
+    }
+
+    .icon-bubble {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: #edf2ff;
+      color: #17358a;
+      font-size: 1.7rem;
+      margin-bottom: 22px;
+    }
+
+    .feature-card h3, .solution-card h3, .pricing-card h3 {
+      color: #102453;
+      font-size: 1.28rem;
+      margin-bottom: 10px;
+      font-weight: 1000;
+      letter-spacing: -0.02em;
+    }
+
+    .feature-card p, .solution-card p, .pricing-card p, .faq-content p, .contact-card p {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .solutions {
+      background: #fff;
+    }
+
+    .solutions-layout {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .solution-hero-card {
+      background: linear-gradient(145deg, #13214b, #233f9b);
+      border-radius: 32px;
+      color: #fff;
+      padding: 42px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .solution-hero-card::before {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.11);
+      right: -90px;
+      top: -90px;
+    }
+
+    .solution-hero-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .solution-hero-card h2 {
+      color: #fff;
+      font-size: clamp(2rem, 3.4vw, 3.1rem);
+    }
+
+    .solution-hero-card p {
+      color: rgba(255, 255, 255, 0.84);
+      margin-top: 18px;
+      font-weight: 600;
+      font-size: 1.08rem;
+    }
+
+    .check-list {
+      margin-top: 30px;
+      display: grid;
+      gap: 14px;
+      list-style: none;
+      font-weight: 800;
+    }
+
+    .check-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .solution-card {
+      padding: 24px;
+    }
+
+    .demo {
+      padding-top: 100px;
+    }
+
+    .demo-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+
+    .demo-content {
+      padding: 48px;
+    }
+
+    .demo-content h2 {
+      text-align: left;
+    }
+
+    .demo-content p {
+      margin-top: 18px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 1.08rem;
+    }
+
+    .demo-visual {
+      background: linear-gradient(145deg, #eff3ff, #ffffff);
+      padding: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sermon-card {
+      width: 100%;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    .sermon-card .tag {
+      display: inline-flex;
+      padding: 7px 12px;
+      border-radius: 99px;
+      background: #fff2e5;
+      color: #ba5e11;
+      font-weight: 900;
+      font-size: .8rem;
+      margin-bottom: 14px;
+    }
+
+    .sermon-card h3 {
+      font-size: 1.5rem;
+      line-height: 1.15;
+      color: #102453;
+      font-weight: 1000;
+      margin-bottom: 16px;
+    }
+
+    .outline-list {
+      display: grid;
+      gap: 12px;
+      list-style: none;
+      color: #24324f;
+      font-weight: 700;
+    }
+
+    .outline-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px;
+      border-radius: 14px;
+      background: #f7f8fd;
+    }
+
+    .pricing {
+      background: #fff;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      padding: 34px;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid #243f9e;
+      transform: translateY(-10px);
+      box-shadow: 0 30px 70px rgba(36, 63, 158, 0.18);
+    }
+
+    .popular {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #fff2e5;
+      color: #b85f12;
+      font-weight: 1000;
+      font-size: .75rem;
+    }
+
+    .price {
+      margin: 18px 0;
+      color: #102453;
+      font-size: 3rem;
+      font-weight: 1000;
+      letter-spacing: -0.05em;
+    }
+
+    .price span {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .pricing-card ul {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin: 24px 0 30px;
+      color: #34405a;
+      font-weight: 700;
+    }
+
+    .pricing-card li {
+      display: flex;
+      gap: 10px;
+    }
+
+    .faq-layout {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .faq-item {
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      border: 0;
+      background: #fff;
+      color: #102453;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      text-align: left;
+      font-size: 1.05rem;
+      font-weight: 1000;
+      cursor: pointer;
+    }
+
+    .faq-question span:last-child {
+      color: #243f9e;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .faq-content {
+      display: none;
+      padding: 0 26px 24px;
+    }
+
+    .faq-item.active .faq-content {
+      display: block;
+    }
+
+    .cta {
+      padding: 96px 0;
+      background: linear-gradient(120deg, #102453, #243f9e 55%, #2d2b79);
+      color: #fff;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before, .cta::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .cta::before {
+      top: -130px;
+      left: -80px;
+    }
+
+    .cta::after {
+      right: -120px;
+      bottom: -140px;
+    }
+
+    .cta .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta h2 {
+      color: #fff;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+      font-weight: 1000;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .cta p {
+      max-width: 680px;
+      margin: 22px auto 34px;
+      color: rgba(255,255,255,.86);
+      font-weight: 600;
+      font-size: 1.15rem;
+    }
+
+    .contact {
+      padding-bottom: 110px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .contact-card {
+      padding: 32px;
+    }
+
+    .contact-card h3 {
+      color: #102453;
+      font-size: 1.45rem;
+      font-weight: 1000;
+      margin-bottom: 12px;
+    }
+
+    .contact-info {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+      color: #34405a;
+      font-weight: 800;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: #24324f;
+      font-weight: 900;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      min-height: 52px;
+      padding: 14px 16px;
+      font: inherit;
+      font-weight: 600;
+      outline: none;
+      color: #111827;
+      background: #f9fbff;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #243f9e;
+      box-shadow: 0 0 0 4px rgba(36, 63, 158, 0.10);
+      background: #fff;
+    }
+
+    .footer {
+      background: var(--navy);
+      color: #dce7ff;
+      padding: 42px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .footer .brand {
+      color: #fff;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-weight: 800;
+      font-size: .95rem;
+    }
+
+    @media (max-width: 980px) {
+      .mobile-toggle {
+        display: grid;
+        place-items: center;
+      }
+
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .topbar.open .nav-links,
+      .topbar.open .nav-actions {
+        display: flex;
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        background: #fff;
+        border: 1px solid var(--line);
+        box-shadow: var(--soft-shadow);
+      }
+
+      .topbar.open .nav-links {
+        top: 82px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 14px;
+        border-radius: 20px 20px 0 0;
+      }
+
+      .topbar.open .nav-links a {
+        display: block;
+        padding: 13px 10px;
+      }
+
+      .topbar.open .nav-actions {
+        top: 408px;
+        justify-content: space-between;
+        border-top: 0;
+        border-radius: 0 0 20px 20px;
+        padding: 16px;
+      }
+
+      .hero {
+        padding-top: 78px;
+      }
+
+      .preview-body {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-sidebar {
+        display: none;
+      }
+
+      .feature-grid,
+      .pricing-grid,
+      .solutions-layout,
+      .demo-card,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card.featured {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .nav {
+        min-height: 72px;
+      }
+
+      .brand {
+        font-size: 1.18rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.55rem, 15vw, 4rem);
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .hero-actions,
+      .cta .hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .dashboard-preview {
+        margin-top: 44px;
+      }
+
+      .preview-main {
+        padding: 22px;
+      }
+
+      .preview-cards,
+      .preview-grid,
+      .solution-grid,
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 72px 0;
+      }
+
+      .demo-content,
+      .solution-hero-card,
+      .pricing-card,
+      .contact-card {
+        padding: 26px;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar" id="topbar">
+    <nav class="nav container" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="The Shepherd's Library home">
+        <span class="brand-mark">📖</span>
+        <span>The Shepherd's Library</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#demo">🎥 Demo</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#solutions">Solutions</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html">Login</a>
+        <a class="btn btn-primary" href="signup.html">Start Free</a>
+      </div>
+
+      <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Open menu">☰</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-inner">
+        <div class="hero-badge">✨ AI-powered Bible study for pastors and believers</div>
+        <h1>Build sermons, study Scripture, and grow deeper in God’s Word.</h1>
+        <p>
+          The Shepherd's Library helps pastors, ministry leaders, Bible teachers, and believers prepare sermons,
+          organize notes, study the Bible, and use AI responsibly for Christian growth.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-light" href="signup.html">Create Free Account</a>
+          <a class="btn btn-dark" href="#features">Explore Features</a>
+        </div>
+
+        <div class="dashboard-preview" aria-label="Shepherd dashboard preview">
+          <div class="browser-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          </div>
+          <div class="preview-body">
+            <aside class="preview-sidebar">
+              <div class="preview-title">Shepherd<br />Dashboard</div>
+              <div class="preview-menu">
+                <span>📖 Bible Reader</span>
+                <span>🤖 AI Assistant</span>
+                <span>📝 Sermon Builder</span>
+                <span>🙏 Prayer Journal</span>
+                <span>📚 Research Library</span>
+              </div>
+            </aside>
+            <div class="preview-main">
+              <div class="preview-cards">
+                <div class="stat-card">
+                  <h4>Sermons Created</h4>
+                  <strong>24</strong>
+                </div>
+                <div class="stat-card">
+                  <h4>Study Notes</h4>
+                  <strong>118</strong>
+                </div>
+                <div class="stat-card">
+                  <h4>Prayer Entries</h4>
+                  <strong>36</strong>
+                </div>
+              </div>
+              <div class="preview-grid">
+                <div class="mini-panel">
+                  <h4>Current Sermon Draft</h4>
+                  <div class="fake-line"></div>
+                  <div class="fake-line"></div>
+                  <div class="fake-line short"></div>
+                  <div class="progress"><span></span></div>
+                </div>
+                <div class="mini-panel">
+                  <h4>Quick Tools</h4>
+                  <div class="fake-line"></div>
+                  <div class="fake-line"></div>
+                  <div class="fake-line short"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section demo" id="demo">
+      <div class="container">
+        <div class="demo-card">
+          <div class="demo-content">
+            <p class="eyebrow">Premium ministry workspace</p>
+            <h2>Everything your ministry study week needs in one clean dashboard.</h2>
+            <p>
+              Move from Bible reading to sermon outlines, notes, research, bookmarks, and prayer planning without
+              jumping between scattered tools. The layout is built to match your Shepherd Library dashboard style.
+            </p>
+            <div class="hero-actions" style="justify-content:flex-start;margin-top:30px;">
+              <a class="btn btn-orange" href="dashboard.html">Open Dashboard</a>
+              <a class="btn btn-primary" href="ai-assistant.html">Try AI Assistant</a>
+            </div>
+          </div>
+          <div class="demo-visual">
+            <div class="sermon-card">
+              <span class="tag">AI Sermon Builder</span>
+              <h3>Returning to the Church of the Book of Acts</h3>
+              <ul class="outline-list">
+                <li>✅ Scripture focus: Acts 2:42–47</li>
+                <li>✅ Main idea: Recovering God’s original design</li>
+                <li>✅ Outline: Scripture, fellowship, prayer, evangelism</li>
+                <li>✅ Export ready for PDF, Word, or teaching notes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Core features</p>
+          <h2>Built for pastors, new believers, Bible teachers, and ministry leaders.</h2>
+          <p>Use these cards to connect directly to the pages you have already started building inside Shepherd Library.</p>
+        </div>
+
+        <div class="feature-grid">
+          <a class="feature-card" href="bible-reader.html">
+            <div class="icon-bubble">📖</div>
+            <h3>Bible Reader</h3>
+            <p>Read all 66 books of the Bible with chapters, verses, study flow, bookmarks, and a clean devotional layout.</p>
+          </a>
+          <a class="feature-card" href="ai-assistant.html">
+            <div class="icon-bubble">🤖</div>
+            <h3>AI Bible Assistant</h3>
+            <p>Ask Bible questions, explore biblical topics, and get responsible study help for teaching and discipleship.</p>
+          </a>
+          <a class="feature-card" href="sermon-builder.html">
+            <div class="icon-bubble">📝</div>
+            <h3>AI Sermon Builder</h3>
+            <p>Create sermon outlines, save drafts, organize illustrations, and prepare export-ready teaching notes.</p>
+          </a>
+          <a class="feature-card" href="study-notes.html">
+            <div class="icon-bubble">🎓</div>
+            <h3>Study Notes</h3>
+            <p>Write, organize, print, and export Bible study notes for personal devotion, small groups, or classes.</p>
+          </a>
+          <a class="feature-card" href="research.html">
+            <div class="icon-bubble">📚</div>
+            <h3>Research Library</h3>
+            <p>Collect Bible dictionaries, commentaries, ministry links, research resources, and topic references.</p>
+          </a>
+          <a class="feature-card" href="prayer-journal.html">
+            <div class="icon-bubble">🙏</div>
+            <h3>Prayer Journal</h3>
+            <p>Track prayer requests, answered prayers, spiritual goals, and ministry intercession in one private space.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section solutions" id="solutions">
+      <div class="container solutions-layout">
+        <div class="solution-hero-card">
+          <p class="eyebrow" style="color:var(--gold);">Solutions</p>
+          <h2>One platform for real ministry work.</h2>
+          <p>
+            Shepherd Library is designed to serve the people who prepare, teach, lead, disciple, and grow in the Word every week.
+          </p>
+          <ul class="check-list">
+            <li>✅ Sermon preparation and weekly teaching</li>
+            <li>✅ New believer discipleship and Bible basics</li>
+            <li>✅ Leadership training, prayer, and study organization</li>
+            <li>✅ Research support for pastors and ministry teams</li>
+          </ul>
+        </div>
+
+        <div class="solution-grid">
+          <div class="solution-card">
+            <h3>For Pastors</h3>
+            <p>Prepare sermons, organize messages, keep research together, and build a teaching archive.</p>
+          </div>
+          <div class="solution-card">
+            <h3>For New Believers</h3>
+            <p>Ask questions, study Bible topics, save notes, and grow with simple explanations.</p>
+          </div>
+          <div class="solution-card">
+            <h3>For Bible Teachers</h3>
+            <p>Create lessons, study outlines, discussion questions, and class-ready teaching notes.</p>
+          </div>
+          <div class="solution-card">
+            <h3>For Ministry Leaders</h3>
+            <p>Plan trainings, organize resources, build team workflows, and support discipleship.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pricing" id="pricing">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Pricing</p>
+          <h2>Simple plans for personal study and ministry teams.</h2>
+          <p>Update these prices later to match your real Stripe or Supabase subscription setup.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Starter</h3>
+            <p>For personal Bible study and basic note organization.</p>
+            <div class="price">Free</div>
+            <ul>
+              <li>✅ Bible reader access</li>
+              <li>✅ Basic study notes</li>
+              <li>✅ Prayer journal</li>
+              <li>✅ Limited AI questions</li>
+            </ul>
+            <a class="btn btn-primary" href="signup.html">Start Free</a>
+          </div>
+
+          <div class="pricing-card featured">
+            <span class="popular">Most Popular</span>
+            <h3>Ministry Pro</h3>
+            <p>For pastors, teachers, and leaders preparing weekly messages.</p>
+            <div class="price">$19<span>/mo</span></div>
+            <ul>
+              <li>✅ Sermon builder</li>
+              <li>✅ AI Bible assistant</li>
+              <li>✅ Research library</li>
+              <li>✅ Export to PDF and Word</li>
+              <li>✅ Saved drafts and bookmarks</li>
+            </ul>
+            <a class="btn btn-orange" href="signup.html">Choose Pro</a>
+          </div>
+
+          <div class="pricing-card">
+            <h3>Church Team</h3>
+            <p>For churches that want shared ministry tools and collaboration.</p>
+            <div class="price">$49<span>/mo</span></div>
+            <ul>
+              <li>✅ Multiple team members</li>
+              <li>✅ Shared sermon archive</li>
+              <li>✅ Ministry resources</li>
+              <li>✅ Team collaboration</li>
+              <li>✅ Priority support</li>
+            </ul>
+            <a class="btn btn-primary" href="#contact">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">FAQ</p>
+          <h2>Questions pastors and Bible students may ask.</h2>
+        </div>
+
+        <div class="faq-layout">
+          <div class="faq-item active">
+            <button class="faq-question" type="button"><span>Is Shepherd Library only for pastors?</span><span>+</span></button>
+            <div class="faq-content"><p>No. It is built for pastors, ministry leaders, Bible teachers, new believers, students, and anyone who wants to understand Scripture better.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button"><span>Can I connect this page to my existing project?</span><span>+</span></button>
+            <div class="faq-content"><p>Yes. Save this file as landing page.html or rename it to index.html, then keep the page links such as dashboard.html, bible-reader.html, ai-assistant.html, and signup.html in the same project folder.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button"><span>Does the AI replace Bible study?</span><span>+</span></button>
+            <div class="faq-content"><p>No. The AI should support study, organization, and preparation. Scripture remains the final authority, and users should compare all answers with the Bible.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button"><span>Can users export sermons and notes?</span><span>+</span></button>
+            <div class="faq-content"><p>The landing page is ready to promote that feature. Your sermon-builder.html and study-notes.html pages can add real PDF, Word, print, and database export functions.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Prepare better. Study deeper. Lead with the Word.</h2>
+        <p>Give your church, Bible study group, and personal devotion time a beautiful digital library built around Scripture and ministry work.</p>
+        <div class="hero-actions">
+          <a class="btn btn-light" href="signup.html">Create Free Account</a>
+          <a class="btn btn-orange" href="dashboard.html">View Dashboard</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Contact</p>
+          <h2>Ready to bring Shepherd Library to your ministry?</h2>
+          <p>Use this contact section now, then connect the form to Supabase, Formspree, or your own backend later.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>Contact Shepherd Library</h3>
+            <p>Send a message about church team setup, ministry tools, or partnership support.</p>
+            <div class="contact-info">
+              <span>📧 support@shepherdlibrary.app</span>
+              <span>🌐 shepherdlibrary.app</span>
+              <span>⛪ Built for pastors, churches, and believers</span>
+            </div>
+          </div>
+
+          <form class="contact-card contact-form" onsubmit="event.preventDefault(); alert('Thank you! Connect this form to your backend to receive messages.');">
+            <div class="field-grid">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Your name" required />
+              </label>
+              <label>
+                Email
+                <input type="email" name="email" placeholder="you@example.com" required />
+              </label>
+            </div>
+            <label>
+              Ministry or Church
+              <input type="text" name="ministry" placeholder="Church or ministry name" />
+            </label>
+            <label>
+              Message
+              <textarea name="message" placeholder="How can Shepherd Library help you?" required></textarea>
+            </label>
+            <button class="btn btn-orange" type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a class="brand" href="#home">
+        <span class="brand-mark">📖</span>
+        <span>The Shepherd's Library</span>
+      </a>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="login.html">Login</a>
+        <a href="signup.html">Start Free</a>
+      </div>
+      <p>© 2026 The Shepherd's Library. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const topbar = document.getElementById('topbar');
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.querySelectorAll('.nav-links a, .nav-actions a');
+
+    mobileToggle.addEventListener('click', () => {
+      topbar.classList.toggle('open');
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => topbar.classList.remove('open'));
+    });
+
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.closest('.faq-item');
+        item.classList.toggle('active');
+      });
+    });
+  </script>
+</body>
+</html>
