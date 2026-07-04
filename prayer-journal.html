@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prayer Journal | Shepherd Library</title>
+  <meta name="description" content="A private prayer journal for Shepherd Library with prayer requests, answered prayers, scripture notes, and ministry prayer tracking." />
+
+  <!-- Optional project styles. The page also includes its own premium styling below. -->
+  <link rel="stylesheet" href="app.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="sidebar.css" />
+  <link rel="stylesheet" href="cards.css" />
+  <link rel="stylesheet" href="forms.css" />
+  <link rel="stylesheet" href="buttons.css" />
+  <link rel="stylesheet" href="responsive.css" />
+
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0d1c31;
+      --panel: rgba(255, 255, 255, 0.075);
+      --panel-strong: rgba(255, 255, 255, 0.115);
+      --panel-border: rgba(255, 255, 255, 0.14);
+      --text: #eef5ff;
+      --muted: #9fb0ca;
+      --muted-2: #6f819c;
+      --gold: #f6c85f;
+      --gold-dark: #c99425;
+      --blue: #6aa8ff;
+      --green: #54d38a;
+      --red: #ff6b7a;
+      --purple: #b894ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --sidebar-width: 292px;
+      --transition: 180ms ease;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(246, 200, 95, 0.16), transparent 35%),
+        radial-gradient(circle at 80% 12%, rgba(106, 168, 255, 0.18), transparent 32%),
+        radial-gradient(circle at 60% 90%, rgba(184, 148, 255, 0.12), transparent 35%),
+        linear-gradient(135deg, #06101f 0%, #07172b 48%, #050b15 100%);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .app-shell {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      background: rgba(3, 11, 22, 0.78);
+      border-right: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(18px);
+      overflow-y: auto;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 10px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      margin-bottom: 18px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold), #fff0b0);
+      color: #1a1200;
+      box-shadow: 0 12px 30px rgba(246, 200, 95, 0.28);
+      font-size: 23px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .brand p {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .nav-section-title {
+      margin: 20px 12px 8px;
+      font-size: 11px;
+      color: var(--muted-2);
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-weight: 800;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px 13px;
+      border-radius: 15px;
+      color: #d9e5f6;
+      margin-bottom: 5px;
+      transition: var(--transition);
+      border: 1px solid transparent;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(2px);
+    }
+
+    .nav-link.active {
+      background: linear-gradient(135deg, rgba(246, 200, 95, 0.22), rgba(106, 168, 255, 0.12));
+      border-color: rgba(246, 200, 95, 0.33);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 15px;
+      flex: 0 0 auto;
+    }
+
+    .sidebar-card {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(246, 200, 95, 0.2);
+      background:
+        linear-gradient(145deg, rgba(246, 200, 95, 0.16), rgba(255, 255, 255, 0.06)),
+        rgba(255, 255, 255, 0.06);
+    }
+
+    .sidebar-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .sidebar-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 14px;
+      padding: 11px 15px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.075);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 750;
+      min-height: 42px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.11);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), #ffe8a2);
+      color: #1a1200;
+      border-color: rgba(255, 235, 168, 0.5);
+      box-shadow: 0 12px 34px rgba(246, 200, 95, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ffd36e, #fff0b8);
+    }
+
+    .btn-danger {
+      color: #ffd9dd;
+      border-color: rgba(255, 107, 122, 0.24);
+      background: rgba(255, 107, 122, 0.09);
+    }
+
+    .btn-small {
+      padding: 8px 10px;
+      min-height: 34px;
+      font-size: 13px;
+      border-radius: 12px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: var(--radius-xl);
+      padding: 34px;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.055)),
+        radial-gradient(circle at 85% 18%, rgba(246, 200, 95, 0.25), transparent 29%),
+        radial-gradient(circle at 10% 88%, rgba(106, 168, 255, 0.18), transparent 30%);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      right: -80px;
+      top: -70px;
+      border-radius: 999px;
+      background: rgba(246, 200, 95, 0.12);
+      border: 1px solid rgba(246, 200, 95, 0.2);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(246, 200, 95, 0.12);
+      color: #ffe2a0;
+      border: 1px solid rgba(246, 200, 95, 0.24);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 14px;
+    }
+
+    .hero h2 {
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+      margin: 0 0 14px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #c8d6eb;
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 760px;
+    }
+
+    .scripture-card {
+      border-radius: 24px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(3, 11, 22, 0.48);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .scripture-card .label {
+      color: var(--gold);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .scripture-card blockquote {
+      margin: 0;
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 1.6;
+      font-weight: 650;
+    }
+
+    .scripture-card cite {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-style: normal;
+      font-size: 13px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card,
+    .panel,
+    .journal-card,
+    .guide-card {
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(16px);
+    }
+
+    .stat-card {
+      padding: 19px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(246, 200, 95, 0.1), transparent 58%);
+      pointer-events: none;
+    }
+
+    .stat-label {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      position: relative;
+      z-index: 1;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-note {
+      position: relative;
+      z-index: 1;
+      margin-top: 4px;
+      color: var(--muted-2);
+      font-size: 12px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(330px, 0.72fr) minmax(0, 1.28fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .panel h3 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+
+    .panel-subtitle {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      color: #dce8f8;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      color: var(--text);
+      background: rgba(3, 11, 22, 0.55);
+      border-radius: 14px;
+      padding: 12px 13px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(159, 176, 202, 0.66);
+    }
+
+    textarea {
+      min-height: 118px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: rgba(246, 200, 95, 0.55);
+      box-shadow: 0 0 0 4px rgba(246, 200, 95, 0.09);
+    }
+
+    select option {
+      background: #091527;
+      color: var(--text);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .toolbar .search {
+      flex: 1 1 240px;
+    }
+
+    .toolbar .filter {
+      flex: 0 1 180px;
+    }
+
+    .prayer-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .journal-card {
+      padding: 18px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .journal-card:hover {
+      transform: translateY(-2px);
+      background: var(--panel-strong);
+    }
+
+    .journal-card.answered {
+      border-color: rgba(84, 211, 138, 0.36);
+      background: linear-gradient(135deg, rgba(84, 211, 138, 0.11), rgba(255, 255, 255, 0.07));
+    }
+
+    .journal-card.high {
+      border-color: rgba(255, 107, 122, 0.28);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .journal-title {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .journal-meta {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 9px;
+      color: #dce8f8;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .pill.gold {
+      color: #ffdf95;
+      border-color: rgba(246, 200, 95, 0.25);
+      background: rgba(246, 200, 95, 0.11);
+    }
+
+    .pill.green {
+      color: #bff7d1;
+      border-color: rgba(84, 211, 138, 0.28);
+      background: rgba(84, 211, 138, 0.11);
+    }
+
+    .pill.red {
+      color: #ffd0d5;
+      border-color: rgba(255, 107, 122, 0.25);
+      background: rgba(255, 107, 122, 0.1);
+    }
+
+    .journal-text {
+      color: #c8d6eb;
+      line-height: 1.65;
+      margin: 12px 0 0;
+      white-space: pre-wrap;
+    }
+
+    .scripture-line {
+      margin-top: 13px;
+      padding: 12px 13px;
+      border-left: 3px solid var(--gold);
+      background: rgba(246, 200, 95, 0.08);
+      border-radius: 12px;
+      color: #ffe4a7;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .answered-note {
+      margin-top: 13px;
+      padding: 12px 13px;
+      border-left: 3px solid var(--green);
+      background: rgba(84, 211, 138, 0.08);
+      border-radius: 12px;
+      color: #c9f8d7;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      margin-top: 14px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 18px;
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-lg);
+      color: var(--muted);
+    }
+
+    .empty-state .icon {
+      font-size: 46px;
+      margin-bottom: 12px;
+    }
+
+    .empty-state h3 {
+      color: var(--text);
+      margin: 0 0 8px;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .guide-card {
+      padding: 18px;
+    }
+
+    .guide-card h4 {
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .guide-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 13px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      padding: 13px 16px;
+      background: rgba(5, 14, 28, 0.92);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: 220ms ease;
+      z-index: 100;
+      max-width: 330px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 70;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: min(620px, 100%);
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: linear-gradient(145deg, rgba(13, 28, 49, 0.98), rgba(4, 12, 24, 0.98));
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .modal h3 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .footer-note {
+      color: var(--muted-2);
+      text-align: center;
+      font-size: 13px;
+      padding: 28px 10px 6px;
+    }
+
+    @media (max-width: 1180px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        transform: translateX(-105%);
+        width: min(88vw, var(--sidebar-width));
+        transition: 220ms ease;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .mobile-menu {
+        display: inline-flex;
+      }
+
+      .main {
+        padding: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .hero,
+      .panel {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      .guide-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .stats-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h2 {
+        font-size: 35px;
+      }
+
+      .top-actions,
+      .toolbar,
+      .card-actions {
+        width: 100%;
+      }
+
+      .top-actions .btn,
+      .toolbar .filter,
+      .card-actions .btn,
+      .form-grid .btn {
+        width: 100%;
+      }
+
+      .journal-card {
+        padding: 16px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #111;
+      }
+
+      .sidebar,
+      .topbar,
+      .left-column,
+      .toolbar,
+      .card-actions,
+      .guide-grid,
+      .footer-note,
+      .toast,
+      .modal-overlay {
+        display: none !important;
+      }
+
+      .app-shell,
+      .content-grid {
+        display: block;
+      }
+
+      .main {
+        padding: 0;
+      }
+
+      .hero,
+      .stat-card,
+      .panel,
+      .journal-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        background: #fff;
+        color: #111;
+      }
+
+      .hero p,
+      .journal-text,
+      .panel-subtitle,
+      .stat-label,
+      .stat-note,
+      .pill,
+      .scripture-card cite {
+        color: #333;
+      }
+
+      @page {
+        margin: 0.55in;
+      }
+
+      .hero,
+      .stat-card,
+      .panel,
+      .journal-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .journal-title {
+        color: #111;
+      }
+
+      .scripture-line,
+      .answered-note {
+        background: #f7f7f7;
+        color: #111;
+        border: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Shepherd Library navigation">
+      <a class="brand" href="dashboard.html" aria-label="Go to dashboard">
+        <div class="brand-mark">✝</div>
+        <div>
+          <h1>Shepherd Library</h1>
+          <p>Pastoral study workspace</p>
+        </div>
+      </a>
+
+      <div class="nav-section-title">Main Library</div>
+      <a class="nav-link" href="dashboard.html"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
+      <a class="nav-link" href="bible-reader.html"><span class="nav-icon">📖</span><span>Bible Reader</span></a>
+      <a class="nav-link" href="ai-assistant.html"><span class="nav-icon">🤖</span><span>AI Bible Assistant</span></a>
+      <a class="nav-link" href="sermon-builder.html"><span class="nav-icon">📝</span><span>AI Sermon Builder</span></a>
+      <a class="nav-link" href="study-notes.html"><span class="nav-icon">🎓</span><span>Bible Study Creator</span></a>
+      <a class="nav-link" href="research.html"><span class="nav-icon">📚</span><span>Christian Research</span></a>
+      <a class="nav-link active" href="prayer-journal.html"><span class="nav-icon">🙏</span><span>Prayer Journal</span></a>
+
+      <div class="nav-section-title">Church Tools</div>
+      <a class="nav-link" href="church-resources.html"><span class="nav-icon">⛪</span><span>Church Resource Center</span></a>
+      <a class="nav-link" href="team.html"><span class="nav-icon">👥</span><span>Team Collaboration</span></a>
+      <a class="nav-link" href="calendar.html"><span class="nav-icon">📅</span><span>Sermon Calendar</span></a>
+      <a class="nav-link" href="media.html"><span class="nav-icon">🎥</span><span>Media Builder</span></a>
+      <a class="nav-link" href="podcast-teaching-note.html"><span class="nav-icon">🎙️</span><span>Podcast & Notes</span></a>
+
+      <div class="sidebar-card">
+        <h3>Prayer Reminder</h3>
+        <p>Keep record of requests, testimonies, scripture promises, and answered prayers for yourself, family, church, and ministry.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+          <div class="breadcrumb">
+            <a href="dashboard.html">Shepherd Library</a>
+            <span>›</span>
+            <span>Prayer Journal</span>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="btn" type="button" id="printBtn">🖨️ Print / Save PDF</button>
+          <button class="btn" type="button" id="exportBtn">⬇️ Export CSV</button>
+          <button class="btn" type="button" id="backupBtn">💾 Backup JSON</button>
+          <button class="btn btn-primary" type="button" id="focusTitleBtn">🙏 Start Prayer</button>
+        </div>
+      </div>
+
+      <section class="hero" aria-labelledby="pageTitle">
+        <div class="hero-content">
+          <div>
+            <div class="eyebrow">Private Devotion Space</div>
+            <h2 id="pageTitle">Prayer Journal</h2>
+            <p>
+              Write prayer requests, record scriptures, track ongoing burdens, and celebrate answered prayers. This page saves entries in your browser so the journal works even without a backend.
+            </p>
+          </div>
+          <div class="scripture-card">
+            <div class="label">Prayer Scripture</div>
+            <blockquote>“The effectual fervent prayer of a righteous man availeth much.”</blockquote>
+            <cite>James 5:16</cite>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-grid" aria-label="Prayer journal summary">
+        <div class="stat-card">
+          <div class="stat-label">Total Prayers</div>
+          <div class="stat-value" id="totalPrayers">0</div>
+          <div class="stat-note">All saved requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Requests</div>
+          <div class="stat-value" id="activePrayers">0</div>
+          <div class="stat-note">Still praying</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Answered Prayers</div>
+          <div class="stat-value" id="answeredPrayers">0</div>
+          <div class="stat-note">Testimonies recorded</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">High Priority</div>
+          <div class="stat-value" id="highPriority">0</div>
+          <div class="stat-note">Urgent intercession</div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="left-column">
+          <section class="panel" aria-labelledby="addPrayerTitle">
+            <div class="panel-header">
+              <div>
+                <h3 id="addPrayerTitle">Add Prayer</h3>
+                <p class="panel-subtitle">Create a new request, scripture meditation, or testimony note.</p>
+              </div>
+            </div>
+
+            <form id="prayerForm" class="form-grid">
+              <input type="hidden" id="editingId" />
+
+              <div class="field">
+                <label for="title">Prayer Title</label>
+                <input id="title" name="title" type="text" placeholder="Example: Pray for church growth" required />
+              </div>
+
+              <div class="two-col">
+                <div class="field">
+                  <label for="category">Category</label>
+                  <select id="category" name="category">
+                    <option>Personal</option>
+                    <option>Family</option>
+                    <option>Church</option>
+                    <option>Ministry</option>
+                    <option>Healing</option>
+                    <option>Breakthrough</option>
+                    <option>Thanksgiving</option>
+                    <option>Intercession</option>
+                    <option>Leadership</option>
+                    <option>Community</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="priority">Priority</label>
+                  <select id="priority" name="priority">
+                    <option>Normal</option>
+                    <option>High</option>
+                    <option>Urgent</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="two-col">
+                <div class="field">
+                  <label for="status">Status</label>
+                  <select id="status" name="status">
+                    <option>Praying</option>
+                    <option>Waiting</option>
+                    <option>Answered</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="date">Date</label>
+                  <input id="date" name="date" type="date" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="scripture">Scripture Reference</label>
+                <input id="scripture" name="scripture" type="text" placeholder="Example: Philippians 4:6-7" />
+              </div>
+
+              <div class="field">
+                <label for="details">Prayer Details</label>
+                <textarea id="details" name="details" placeholder="Write the prayer request, burden, or devotional reflection..." required></textarea>
+              </div>
+
+              <div class="field" id="answerField" style="display:none;">
+                <label for="answerNote">Answered Prayer / Testimony</label>
+                <textarea id="answerNote" name="answerNote" placeholder="Record how God answered this prayer..."></textarea>
+              </div>
+
+              <button class="btn btn-primary" type="submit" id="saveBtn">➕ Save Prayer</button>
+              <button class="btn" type="button" id="cancelEditBtn" style="display:none;">Cancel Edit</button>
+            </form>
+          </section>
+
+          <section class="guide-grid" aria-label="Prayer guide">
+            <article class="guide-card">
+              <h4>🙏 Daily Prayer Flow</h4>
+              <ul>
+                <li>Adoration</li>
+                <li>Confession</li>
+                <li>Thanksgiving</li>
+                <li>Supplication</li>
+              </ul>
+            </article>
+            <article class="guide-card">
+              <h4>📖 Scriptures</h4>
+              <ul>
+                <li>Matthew 6:9-13</li>
+                <li>Philippians 4:6-7</li>
+                <li>1 John 5:14-15</li>
+                <li>Jeremiah 33:3</li>
+              </ul>
+            </article>
+            <article class="guide-card">
+              <h4>⛪ Ministry Focus</h4>
+              <ul>
+                <li>Pastors and leaders</li>
+                <li>Families and youth</li>
+                <li>Church growth</li>
+                <li>Revival and evangelism</li>
+              </ul>
+            </article>
+          </section>
+        </div>
+
+        <section class="panel" aria-labelledby="journalListTitle">
+          <div class="panel-header">
+            <div>
+              <h3 id="journalListTitle">My Prayer Entries</h3>
+              <p class="panel-subtitle">Search, filter, edit, delete, or mark prayers as answered.</p>
+            </div>
+            <button class="btn btn-danger btn-small" id="clearBtn" title="Clear all saved prayers">Clear All</button>
+          </div>
+
+          <div class="toolbar">
+            <input class="search" id="searchInput" type="search" placeholder="Search prayers, scriptures, categories..." />
+            <select class="filter" id="statusFilter">
+              <option value="All">All Statuses</option>
+              <option value="Praying">Praying</option>
+              <option value="Waiting">Waiting</option>
+              <option value="Answered">Answered</option>
+            </select>
+            <select class="filter" id="categoryFilter">
+              <option value="All">All Categories</option>
+              <option>Personal</option>
+              <option>Family</option>
+              <option>Church</option>
+              <option>Ministry</option>
+              <option>Healing</option>
+              <option>Breakthrough</option>
+              <option>Thanksgiving</option>
+              <option>Intercession</option>
+              <option>Leadership</option>
+              <option>Community</option>
+            </select>
+          </div>
+
+          <div class="prayer-list" id="prayerList"></div>
+        </section>
+      </section>
+
+      <p class="footer-note">Shepherd Library Prayer Journal • Your entries are stored privately in this browser using localStorage.</p>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="answerModal" role="dialog" aria-modal="true" aria-labelledby="answerModalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 id="answerModalTitle">Record Answered Prayer</h3>
+          <p class="panel-subtitle">Write a short testimony of how this prayer was answered.</p>
+        </div>
+        <button class="close-btn" id="closeAnswerModal" aria-label="Close modal">✕</button>
+      </div>
+      <form id="answerForm" class="form-grid">
+        <input type="hidden" id="answerPrayerId" />
+        <div class="field">
+          <label for="modalAnswerNote">Testimony Note</label>
+          <textarea id="modalAnswerNote" placeholder="Example: God opened the door, provided healing, restored peace, or gave direction..." required></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">✅ Mark as Answered</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = "shepherd_prayer_journal_v1";
+
+    const samplePrayers = [
+      {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + 1),
+        title: "Pray for spiritual growth",
+        category: "Church",
+        priority: "Normal",
+        status: "Praying",
+        date: new Date().toISOString().slice(0, 10),
+        scripture: "Acts 2:42-47",
+        details: "Lord, help our church remain devoted to Your Word, prayer, fellowship, generosity, and evangelism.",
+        answerNote: "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + 2),
+        title: "Family protection and peace",
+        category: "Family",
+        priority: "High",
+        status: "Waiting",
+        date: new Date().toISOString().slice(0, 10),
+        scripture: "Psalm 91:1-2",
+        details: "Cover my family with wisdom, unity, peace, provision, and protection.",
+        answerNote: "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+    ];
+
+    let prayers = loadPrayers();
+
+    const els = {
+      sidebar: document.getElementById("sidebar"),
+      mobileMenu: document.getElementById("mobileMenu"),
+      prayerForm: document.getElementById("prayerForm"),
+      editingId: document.getElementById("editingId"),
+      title: document.getElementById("title"),
+      category: document.getElementById("category"),
+      priority: document.getElementById("priority"),
+      status: document.getElementById("status"),
+      date: document.getElementById("date"),
+      scripture: document.getElementById("scripture"),
+      details: document.getElementById("details"),
+      answerNote: document.getElementById("answerNote"),
+      answerField: document.getElementById("answerField"),
+      saveBtn: document.getElementById("saveBtn"),
+      cancelEditBtn: document.getElementById("cancelEditBtn"),
+      prayerList: document.getElementById("prayerList"),
+      searchInput: document.getElementById("searchInput"),
+      statusFilter: document.getElementById("statusFilter"),
+      categoryFilter: document.getElementById("categoryFilter"),
+      totalPrayers: document.getElementById("totalPrayers"),
+      activePrayers: document.getElementById("activePrayers"),
+      answeredPrayers: document.getElementById("answeredPrayers"),
+      highPriority: document.getElementById("highPriority"),
+      printBtn: document.getElementById("printBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      backupBtn: document.getElementById("backupBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      focusTitleBtn: document.getElementById("focusTitleBtn"),
+      answerModal: document.getElementById("answerModal"),
+      answerForm: document.getElementById("answerForm"),
+      answerPrayerId: document.getElementById("answerPrayerId"),
+      modalAnswerNote: document.getElementById("modalAnswerNote"),
+      closeAnswerModal: document.getElementById("closeAnswerModal"),
+      toast: document.getElementById("toast")
+    };
+
+    init();
+
+    function init() {
+      if (!localStorage.getItem(STORAGE_KEY)) {
+        prayers = samplePrayers;
+        savePrayers();
+      }
+
+      els.date.value = new Date().toISOString().slice(0, 10);
+      render();
+      bindEvents();
+    }
+
+    function bindEvents() {
+      els.mobileMenu.addEventListener("click", () => els.sidebar.classList.toggle("open"));
+
+      document.addEventListener("click", (event) => {
+        if (window.innerWidth <= 860 && !els.sidebar.contains(event.target) && !els.mobileMenu.contains(event.target)) {
+          els.sidebar.classList.remove("open");
+        }
+      });
+
+      els.status.addEventListener("change", () => {
+        els.answerField.style.display = els.status.value === "Answered" ? "grid" : "none";
+      });
+
+      els.prayerForm.addEventListener("submit", handleSavePrayer);
+      els.cancelEditBtn.addEventListener("click", resetForm);
+
+      els.searchInput.addEventListener("input", renderList);
+      els.statusFilter.addEventListener("change", renderList);
+      els.categoryFilter.addEventListener("change", renderList);
+
+      els.printBtn.addEventListener("click", printJournal);
+      els.exportBtn.addEventListener("click", exportPrayersCSV);
+      els.backupBtn.addEventListener("click", exportPrayersJSON);
+      els.clearBtn.addEventListener("click", clearAllPrayers);
+      els.focusTitleBtn.addEventListener("click", () => {
+        els.title.focus();
+        window.scrollTo({ top: document.querySelector(".left-column").offsetTop - 18, behavior: "smooth" });
+      });
+
+      els.closeAnswerModal.addEventListener("click", closeAnswerModal);
+      els.answerModal.addEventListener("click", (event) => {
+        if (event.target === els.answerModal) closeAnswerModal();
+      });
+      els.answerForm.addEventListener("submit", handleAnsweredPrayer);
+    }
+
+    function loadPrayers() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : [];
+      } catch (error) {
+        console.error("Could not load prayers", error);
+        return [];
+      }
+    }
+
+    function savePrayers() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(prayers));
+    }
+
+    function handleSavePrayer(event) {
+      event.preventDefault();
+
+      const now = new Date().toISOString();
+      const editingId = els.editingId.value;
+      const payload = {
+        title: els.title.value.trim(),
+        category: els.category.value,
+        priority: els.priority.value,
+        status: els.status.value,
+        date: els.date.value || new Date().toISOString().slice(0, 10),
+        scripture: els.scripture.value.trim(),
+        details: els.details.value.trim(),
+        answerNote: els.answerNote.value.trim(),
+        updatedAt: now
+      };
+
+      if (!payload.title || !payload.details) {
+        showToast("Please enter a title and prayer details.");
+        return;
+      }
+
+      if (editingId) {
+        prayers = prayers.map((prayer) => prayer.id === editingId ? { ...prayer, ...payload } : prayer);
+        showToast("Prayer updated successfully.");
+      } else {
+        prayers.unshift({
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+          ...payload,
+          createdAt: now
+        });
+        showToast("Prayer saved to your journal.");
+      }
+
+      savePrayers();
+      resetForm();
+      render();
+    }
+
+    function render() {
+      renderStats();
+      renderList();
+    }
+
+    function renderStats() {
+      const answered = prayers.filter((prayer) => prayer.status === "Answered").length;
+      const high = prayers.filter((prayer) => prayer.priority === "High" || prayer.priority === "Urgent").length;
+      els.totalPrayers.textContent = prayers.length;
+      els.activePrayers.textContent = prayers.length - answered;
+      els.answeredPrayers.textContent = answered;
+      els.highPriority.textContent = high;
+    }
+
+    function renderList() {
+      const filtered = getFilteredPrayers();
+
+      if (!filtered.length) {
+        els.prayerList.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">🙏</div>
+            <h3>No prayers found</h3>
+            <p>Add your first prayer request or adjust your search filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      els.prayerList.innerHTML = filtered.map(createPrayerCard).join("");
+
+      document.querySelectorAll("[data-action]").forEach((button) => {
+        button.addEventListener("click", handleCardAction);
+      });
+    }
+
+    function createPrayerCard(prayer) {
+      const isAnswered = prayer.status === "Answered";
+      const isHigh = prayer.priority === "High" || prayer.priority === "Urgent";
+      const priorityClass = prayer.priority === "Urgent" ? "red" : prayer.priority === "High" ? "gold" : "";
+      const statusClass = isAnswered ? "green" : prayer.status === "Waiting" ? "gold" : "";
+
+      return `
+        <article class="journal-card ${isAnswered ? "answered" : ""} ${isHigh ? "high" : ""}">
+          <div class="card-top">
+            <div>
+              <h4 class="journal-title">${escapeHTML(prayer.title)}</h4>
+              <div class="journal-meta">
+                <span class="pill">${getCategoryIcon(prayer.category)} ${escapeHTML(prayer.category)}</span>
+                <span class="pill ${priorityClass}">⚑ ${escapeHTML(prayer.priority)}</span>
+                <span class="pill ${statusClass}">${isAnswered ? "✅" : prayer.status === "Waiting" ? "⏳" : "🙏"} ${escapeHTML(prayer.status)}</span>
+                <span class="pill">📅 ${formatDate(prayer.date)}</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="journal-text">${escapeHTML(prayer.details)}</p>
+          ${prayer.scripture ? `<div class="scripture-line"><strong>Scripture:</strong> ${escapeHTML(prayer.scripture)}</div>` : ""}
+          ${prayer.answerNote ? `<div class="answered-note"><strong>Testimony:</strong> ${escapeHTML(prayer.answerNote)}</div>` : ""}
+
+          <div class="card-actions">
+            ${!isAnswered ? `<button class="btn btn-small" data-action="answer" data-id="${prayer.id}">✅ Answered</button>` : `<button class="btn btn-small" data-action="reopen" data-id="${prayer.id}">↩️ Reopen</button>`}
+            <button class="btn btn-small" data-action="copy" data-id="${prayer.id}">📋 Copy</button>
+            <button class="btn btn-small" data-action="edit" data-id="${prayer.id}">✏️ Edit</button>
+            <button class="btn btn-danger btn-small" data-action="delete" data-id="${prayer.id}">🗑️ Delete</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function handleCardAction(event) {
+      const { action, id } = event.currentTarget.dataset;
+      const prayer = prayers.find((item) => item.id === id);
+      if (!prayer) return;
+
+      if (action === "answer") openAnswerModal(id);
+      if (action === "reopen") reopenPrayer(id);
+      if (action === "copy") copyPrayer(prayer);
+      if (action === "edit") editPrayer(prayer);
+      if (action === "delete") deletePrayer(id);
+    }
+
+    function openAnswerModal(id) {
+      els.answerPrayerId.value = id;
+      els.modalAnswerNote.value = "";
+      els.answerModal.classList.add("show");
+      els.modalAnswerNote.focus();
+    }
+
+    function closeAnswerModal() {
+      els.answerModal.classList.remove("show");
+      els.answerForm.reset();
+    }
+
+    function handleAnsweredPrayer(event) {
+      event.preventDefault();
+      const id = els.answerPrayerId.value;
+      const note = els.modalAnswerNote.value.trim();
+
+      prayers = prayers.map((prayer) => prayer.id === id ? {
+        ...prayer,
+        status: "Answered",
+        answerNote: note,
+        updatedAt: new Date().toISOString()
+      } : prayer);
+
+      savePrayers();
+      closeAnswerModal();
+      render();
+      showToast("Answered prayer recorded as a testimony.");
+    }
+
+    function reopenPrayer(id) {
+      prayers = prayers.map((prayer) => prayer.id === id ? {
+        ...prayer,
+        status: "Praying",
+        updatedAt: new Date().toISOString()
+      } : prayer);
+      savePrayers();
+      render();
+      showToast("Prayer moved back to active requests.");
+    }
+
+    function editPrayer(prayer) {
+      els.editingId.value = prayer.id;
+      els.title.value = prayer.title;
+      els.category.value = prayer.category;
+      els.priority.value = prayer.priority;
+      els.status.value = prayer.status;
+      els.date.value = prayer.date;
+      els.scripture.value = prayer.scripture || "";
+      els.details.value = prayer.details;
+      els.answerNote.value = prayer.answerNote || "";
+      els.answerField.style.display = prayer.status === "Answered" ? "grid" : "none";
+      els.saveBtn.textContent = "💾 Update Prayer";
+      els.cancelEditBtn.style.display = "inline-flex";
+      els.title.focus();
+      window.scrollTo({ top: document.querySelector(".left-column").offsetTop - 18, behavior: "smooth" });
+    }
+
+    function deletePrayer(id) {
+      const confirmed = confirm("Delete this prayer entry? This cannot be undone.");
+      if (!confirmed) return;
+      prayers = prayers.filter((prayer) => prayer.id !== id);
+      savePrayers();
+      render();
+      showToast("Prayer deleted.");
+    }
+
+    function clearAllPrayers() {
+      if (!prayers.length) {
+        showToast("There are no prayers to clear.");
+        return;
+      }
+      const confirmed = confirm("Clear all prayer entries from this browser?");
+      if (!confirmed) return;
+      prayers = [];
+      savePrayers();
+      render();
+      showToast("Prayer journal cleared.");
+    }
+
+    function copyPrayer(prayer) {
+      const text = [
+        `Prayer: ${prayer.title}`,
+        `Category: ${prayer.category}`,
+        `Priority: ${prayer.priority}`,
+        `Status: ${prayer.status}`,
+        `Date: ${formatDate(prayer.date)}`,
+        prayer.scripture ? `Scripture: ${prayer.scripture}` : "",
+        "",
+        prayer.details,
+        prayer.answerNote ? `\nTestimony: ${prayer.answerNote}` : ""
+      ].filter(Boolean).join("\n");
+
+      navigator.clipboard.writeText(text)
+        .then(() => showToast("Prayer copied to clipboard."))
+        .catch(() => showToast("Unable to copy. Please try again."));
+    }
+
+    function getFilteredPrayers() {
+      const search = els.searchInput.value.toLowerCase().trim();
+      const status = els.statusFilter.value;
+      const category = els.categoryFilter.value;
+
+      return prayers.filter((prayer) => {
+        const text = `${prayer.title} ${prayer.category} ${prayer.priority} ${prayer.status} ${prayer.scripture} ${prayer.details} ${prayer.answerNote}`.toLowerCase();
+        const matchesSearch = !search || text.includes(search);
+        const matchesStatus = status === "All" || prayer.status === status;
+        const matchesCategory = category === "All" || prayer.category === category;
+        return matchesSearch && matchesStatus && matchesCategory;
+      });
+    }
+
+    function printJournal() {
+      const filtered = getFilteredPrayers();
+      if (!filtered.length) {
+        showToast("There are no prayer entries to print.");
+        return;
+      }
+      document.title = `Shepherd Prayer Journal - ${new Date().toISOString().slice(0, 10)}`;
+      window.print();
+    }
+
+    function exportPrayersCSV() {
+      const filtered = getFilteredPrayers();
+      if (!filtered.length) {
+        showToast("There are no prayer entries to export.");
+        return;
+      }
+
+      const headers = [
+        "Title",
+        "Category",
+        "Priority",
+        "Status",
+        "Date",
+        "Scripture",
+        "Prayer Details",
+        "Answered Prayer / Testimony",
+        "Created At",
+        "Updated At"
+      ];
+
+      const rows = filtered.map((prayer) => [
+        prayer.title,
+        prayer.category,
+        prayer.priority,
+        prayer.status,
+        prayer.date,
+        prayer.scripture || "",
+        prayer.details,
+        prayer.answerNote || "",
+        prayer.createdAt || "",
+        prayer.updatedAt || ""
+      ]);
+
+      const csv = [headers, ...rows].map((row) => row.map(csvCell).join(",")).join("\n");
+      downloadFile(csv, `shepherd-prayer-journal-${new Date().toISOString().slice(0, 10)}.csv`, "text/csv;charset=utf-8");
+      showToast("Prayer journal exported as CSV.");
+    }
+
+    function exportPrayersJSON() {
+      if (!prayers.length) {
+        showToast("There are no prayer entries to back up.");
+        return;
+      }
+
+      const backup = {
+        app: "Shepherd Library",
+        feature: "Prayer Journal",
+        exportedAt: new Date().toISOString(),
+        totalPrayers: prayers.length,
+        prayers
+      };
+
+      downloadFile(
+        JSON.stringify(backup, null, 2),
+        `shepherd-prayer-journal-backup-${new Date().toISOString().slice(0, 10)}.json`,
+        "application/json;charset=utf-8"
+      );
+      showToast("Prayer journal backup downloaded as JSON.");
+    }
+
+    function csvCell(value) {
+      const safeValue = value === null || value === undefined ? "" : String(value);
+      return `"${safeValue.replace(/"/g, '""')}"`;
+    }
+
+    function downloadFile(content, filename, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function resetForm() {
+      els.prayerForm.reset();
+      els.editingId.value = "";
+      els.date.value = new Date().toISOString().slice(0, 10);
+      els.answerField.style.display = "none";
+      els.saveBtn.textContent = "➕ Save Prayer";
+      els.cancelEditBtn.style.display = "none";
+    }
+
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => els.toast.classList.remove("show"), 2600);
+    }
+
+    function getCategoryIcon(category) {
+      const icons = {
+        Personal: "🧎",
+        Family: "👨‍👩‍👧‍👦",
+        Church: "⛪",
+        Ministry: "🔥",
+        Healing: "🕊️",
+        Breakthrough: "🚪",
+        Thanksgiving: "🙌",
+        Intercession: "🙏",
+        Leadership: "👑",
+        Community: "🤝"
+      };
+      return icons[category] || "🙏";
+    }
+
+    function formatDate(value) {
+      if (!value) return "No date";
+      const date = new Date(`${value}T00:00:00`);
+      return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    function escapeHTML(value = "") {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
