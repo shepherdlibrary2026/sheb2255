@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verse Graphic Studio | Shepherd Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #071329;
+      --navy-2: #0d1f3f;
+      --blue: #172d65;
+      --purple: #5839b7;
+      --lavender: #f3f1ff;
+      --card: #ffffff;
+      --muted: #64748b;
+      --text: #172033;
+      --line: #e6e8f4;
+      --orange: #f59e0b;
+      --orange-2: #ffb547;
+      --green: #16a34a;
+      --red: #ef4444;
+      --shadow: 0 20px 45px rgba(15, 23, 42, .10);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      background: var(--lavender);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+
+    .app {
+      display: grid;
+      grid-template-columns: 284px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #061126 0%, #0b1b3a 56%, #071329 100%);
+      color: #fff;
+      padding: 26px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 12px 0 30px rgba(7, 19, 41, .18);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 8px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+      margin-bottom: 18px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #fbbf24, #f97316);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      box-shadow: 0 10px 24px rgba(245, 158, 11, .35);
+    }
+
+    .brand h1 { font-size: 19px; margin: 0; line-height: 1.1; font-weight: 900; }
+    .brand span { color: #fde68a; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+    .nav-title {
+      color: #93a4c7;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 800;
+      margin: 22px 12px 10px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #d9e4ff;
+      padding: 12px 13px;
+      border-radius: 15px;
+      margin: 5px 0;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: rgba(255,255,255,.11);
+      color: #fff;
+      transform: translateX(3px);
+    }
+
+    .nav-link.active {
+      box-shadow: inset 3px 0 0 var(--orange);
+    }
+
+    .sidebar-card {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(88,57,183,.32), rgba(245,158,11,.18));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .sidebar-card strong { display:block; margin-bottom: 6px; }
+    .sidebar-card p { color:#dbe6ff; font-size: 13px; line-height:1.5; margin:0 0 14px; }
+
+    .main {
+      padding: 28px;
+      max-width: 1540px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .search {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: min(520px, 100%);
+      box-shadow: 0 10px 24px rgba(15,23,42,.04);
+    }
+
+    .search input {
+      border: 0;
+      outline: 0;
+      width: 100%;
+      color: var(--text);
+    }
+
+    .top-actions { display:flex; align-items:center; gap:12px; flex-wrap: wrap; }
+
+    .pill {
+      background: #fff;
+      border: 1px solid var(--line);
+      color: #334155;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 10px 22px rgba(15,23,42,.04);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      padding: 34px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(245,158,11,.42), transparent 24%),
+        radial-gradient(circle at 10% 85%, rgba(99,102,241,.38), transparent 26%),
+        linear-gradient(135deg, #0b1b3a 0%, #172d65 48%, #5839b7 100%);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -70px;
+      bottom: -100px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.10);
+    }
+
+    .hero-content { position:relative; z-index:1; display:grid; grid-template-columns: 1.3fr .7fr; gap: 24px; align-items:center; }
+    .eyebrow { color:#fde68a; font-size:13px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; margin-bottom: 10px; }
+    .hero h2 { font-size: clamp(30px, 4vw, 52px); line-height:1.02; margin:0 0 14px; letter-spacing:-.04em; font-weight: 900; }
+    .hero p { margin:0; color:#e9edff; font-size:16px; line-height:1.7; max-width:760px; }
+
+    .hero-metrics { display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .metric { background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.16); border-radius:22px; padding:18px; backdrop-filter: blur(10px); }
+    .metric strong { display:block; font-size:26px; font-weight:900; }
+    .metric span { color:#dbe6ff; font-size:12px; font-weight:700; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(320px, 430px) 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, .07);
+    }
+
+    .panel { padding: 22px; }
+    .panel-header { display:flex; justify-content:space-between; gap:14px; align-items:flex-start; margin-bottom:18px; }
+    .panel h3 { margin:0; font-size:20px; letter-spacing:-.02em; }
+    .panel p.small { margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
+
+    .badge {
+      border-radius: 999px;
+      background: #fff7ed;
+      color: #9a3412;
+      padding: 8px 11px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    label { display:block; margin: 15px 0 8px; font-size: 13px; font-weight: 900; color:#27364f; }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #dfe4f2;
+      border-radius: 15px;
+      padding: 13px 14px;
+      outline: none;
+      background: #fbfcff;
+      color: var(--text);
+      transition: .18s ease;
+    }
+
+    textarea { min-height: 96px; resize: vertical; }
+    input:focus, textarea:focus, select:focus { border-color:#8b7cf6; box-shadow:0 0 0 4px rgba(88,57,183,.10); background:#fff; }
+
+    .field-row { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn {
+      border: 0;
+      border-radius: 15px;
+      padding: 13px 16px;
+      font-weight: 900;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--orange), #f97316); color:#fff; box-shadow:0 14px 24px rgba(245, 158, 11, .25); }
+    .btn-dark { background: #10224a; color:#fff; }
+    .btn-light { background: #f4f6ff; color:#172d65; border:1px solid #e1e6f8; }
+    .btn-green { background: #dcfce7; color:#166534; }
+    .btn-full { width:100%; margin-top: 16px; }
+
+    .quick-verses { display:grid; gap:10px; margin-top: 14px; }
+    .verse-chip {
+      text-align:left;
+      border:1px solid #e3e7f4;
+      background:#fbfcff;
+      padding:12px;
+      border-radius:15px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .verse-chip:hover { border-color:#f59e0b; background:#fffaf0; }
+    .verse-chip strong { display:block; font-size:13px; margin-bottom:3px; }
+    .verse-chip span { color:var(--muted); font-size:12px; }
+
+    .studio {
+      display: grid;
+      gap: 24px;
+    }
+
+    .toolbar {
+      padding: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left, .toolbar-right { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .canvas-wrap {
+      padding: 24px;
+      display:grid;
+      grid-template-columns: 1fr 310px;
+      gap: 24px;
+      align-items:start;
+    }
+
+    .graphic-stage {
+      min-height: 650px;
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.9), rgba(247,248,255,.82)),
+        repeating-linear-gradient(45deg, #eef1fb 0 14px, #f7f8ff 14px 28px);
+      border: 1px dashed #cbd5e1;
+      display:grid;
+      place-items:center;
+      padding: 18px;
+    }
+
+    .graphic-preview {
+      width: min(100%, 560px);
+      aspect-ratio: 4 / 5;
+      border-radius: 30px;
+      padding: 42px;
+      color: #fff;
+      background:
+        linear-gradient(180deg, rgba(7,19,41,.08), rgba(7,19,41,.72)),
+        radial-gradient(circle at 22% 18%, rgba(251,191,36,.8), transparent 20%),
+        radial-gradient(circle at 82% 78%, rgba(88,57,183,.9), transparent 34%),
+        linear-gradient(135deg, #0b1b3a, #172d65 48%, #5839b7);
+      box-shadow: 0 30px 70px rgba(7,19,41,.26);
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .graphic-preview::before {
+      content:'';
+      position:absolute;
+      inset:18px;
+      border:1px solid rgba(255,255,255,.20);
+      border-radius:24px;
+      pointer-events:none;
+    }
+
+    .graphic-preview::after {
+      content:'✦';
+      position:absolute;
+      right:34px;
+      top:24px;
+      color:rgba(255,255,255,.24);
+      font-size:82px;
+      transform:rotate(12deg);
+    }
+
+    .preview-top { position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; }
+    .preview-brand { font-size:13px; font-weight:900; color:#fde68a; letter-spacing:.12em; text-transform:uppercase; }
+    .preview-date { font-size:12px; color:#dbe6ff; font-weight:700; }
+
+    .preview-main { position:relative; z-index:1; text-align:left; }
+    .preview-label { color:#fde68a; font-size:13px; text-transform:uppercase; letter-spacing:.14em; font-weight:900; margin-bottom:16px; }
+    .preview-verse { font-size: clamp(30px, 4vw, 48px); line-height:1.08; font-weight:900; letter-spacing:-.05em; margin:0 0 22px; }
+    .preview-ref { display:inline-flex; padding:12px 16px; border-radius:999px; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.18); color:#fff; font-size:15px; font-weight:900; }
+    .preview-footer { position:relative; z-index:1; color:#e5e7ff; font-size:13px; font-weight:700; display:flex; justify-content:space-between; gap:10px; align-items:center; }
+
+    .side-tools { display:grid; gap:16px; }
+    .mini-card { background:#fbfcff; border:1px solid #e5e9f6; border-radius:20px; padding:16px; }
+    .mini-card h4 { margin:0 0 8px; font-size:15px; }
+    .mini-card p { margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+
+    .colors { display:flex; gap:9px; margin-top:12px; flex-wrap:wrap; }
+    .swatch { width:36px; height:36px; border-radius:12px; border:3px solid #fff; box-shadow:0 0 0 1px #dfe4f2; cursor:pointer; }
+    .swatch:nth-child(1){ background:linear-gradient(135deg,#0b1b3a,#5839b7); }
+    .swatch:nth-child(2){ background:linear-gradient(135deg,#7c2d12,#f59e0b); }
+    .swatch:nth-child(3){ background:linear-gradient(135deg,#064e3b,#16a34a); }
+    .swatch:nth-child(4){ background:linear-gradient(135deg,#1e1b4b,#be185d); }
+    .swatch:nth-child(5){ background:linear-gradient(135deg,#111827,#475569); }
+
+    .format-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+    .format-btn { border:1px solid #e1e6f8; border-radius:13px; padding:10px 7px; background:#fff; font-size:12px; font-weight:900; cursor:pointer; }
+    .format-btn.active { background:#fff7ed; border-color:#f59e0b; color:#9a3412; }
+
+    .template-grid {
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      padding: 0 24px 24px;
+    }
+
+    .template {
+      border:1px solid #e5e9f6;
+      border-radius:20px;
+      padding:12px;
+      cursor:pointer;
+      transition:.2s ease;
+      background:#fff;
+    }
+    .template:hover { transform: translateY(-3px); box-shadow:0 16px 28px rgba(15,23,42,.08); }
+    .template-thumb { aspect-ratio:1/1; border-radius:16px; display:grid; place-items:center; color:#fff; font-weight:900; text-align:center; padding:14px; }
+    .template:nth-child(1) .template-thumb { background:linear-gradient(135deg,#0b1b3a,#5839b7); }
+    .template:nth-child(2) .template-thumb { background:linear-gradient(135deg,#7c2d12,#f59e0b); }
+    .template:nth-child(3) .template-thumb { background:linear-gradient(135deg,#064e3b,#16a34a); }
+    .template:nth-child(4) .template-thumb { background:linear-gradient(135deg,#111827,#475569); }
+    .template strong { display:block; margin-top:10px; font-size:13px; }
+    .template span { color:var(--muted); font-size:12px; }
+
+    .saved-grid {
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      padding: 22px;
+    }
+    .saved-item { border:1px solid #e5e9f6; border-radius:20px; padding:15px; background:#fbfcff; }
+    .saved-item strong { display:block; font-size:14px; margin-bottom:5px; }
+    .saved-item span { color:var(--muted); font-size:12px; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(7,19,41,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:20;
+    }
+    .modal-backdrop.show { display:flex; }
+    .modal { background:#fff; border-radius:26px; width:min(720px,100%); padding:24px; box-shadow:0 30px 80px rgba(7,19,41,.30); }
+    .modal h3 { margin:0 0 8px; font-size:24px; }
+    .modal p { color:var(--muted); line-height:1.6; }
+    .prompt-box { background:#0b1b3a; color:#eaf0ff; border-radius:18px; padding:18px; font-size:13px; line-height:1.7; white-space:pre-wrap; max-height:300px; overflow:auto; }
+    .modal-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:18px; flex-wrap:wrap; }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      background:#071329;
+      color:#fff;
+      padding:14px 16px;
+      border-radius:16px;
+      box-shadow:0 16px 35px rgba(7,19,41,.28);
+      display:none;
+      z-index:30;
+      font-weight:800;
+      font-size:14px;
+    }
+    .toast.show { display:block; }
+
+    @media (max-width: 1180px) {
+      .workspace, .canvas-wrap, .hero-content { grid-template-columns:1fr; }
+      .hero-metrics { grid-template-columns: repeat(4, 1fr); }
+      .template-grid, .saved-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 850px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { position:relative; height:auto; }
+      .main { padding:18px; }
+      .topbar { align-items:stretch; flex-direction:column; }
+      .search { min-width:100%; }
+      .hero { padding:24px; border-radius:24px; }
+      .hero-metrics { grid-template-columns: repeat(2, 1fr); }
+      .field-row { grid-template-columns:1fr; }
+      .template-grid, .saved-grid { grid-template-columns:1fr; }
+      .graphic-stage { min-height:auto; }
+      .graphic-preview { padding:30px; }
+    }
+
+    @media print {
+      body { background:#fff; }
+      .sidebar, .topbar, .hero, .builder-panel, .toolbar, .side-tools, .template-section, .saved-section { display:none !important; }
+      .app, .workspace, .canvas-wrap { display:block; }
+      .main, .canvas-wrap, .graphic-stage { padding:0; }
+      .card, .graphic-stage { border:0; box-shadow:none; }
+      .graphic-preview { width:100%; max-width:720px; margin:0 auto; box-shadow:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">📖</div>
+        <div>
+          <h1>Shepherd Library</h1>
+          <span>Ministry AI Suite</span>
+        </div>
+      </div>
+
+      <div class="nav-title">Dashboard</div>
+      <a href="dashboard.html" class="nav-link">🏠 Home</a>
+      <a href="bible-reader.html" class="nav-link">📖 Bible Reader</a>
+      <a href="ai-assistant.html" class="nav-link">🤖 AI Bible Assistant</a>
+      <a href="sermon-builder.html" class="nav-link">📝 Sermon Builder</a>
+      <a href="study-notes.html" class="nav-link">🎓 Study Notes</a>
+      <a href="research.html" class="nav-link">📚 Research Library</a>
+      <a href="prayer-journal.html" class="nav-link">🙏 Prayer Journal</a>
+
+      <div class="nav-title">Creative Tools</div>
+      <a href="media.html" class="nav-link">🎥 Media Builder</a>
+      <a href="verse-graphic.html" class="nav-link active">🎨 Verse Graphic</a>
+      <a href="slide-designer.html" class="nav-link">🖥️ Slide Designer</a>
+      <a href="podcast-teaching-notes.html" class="nav-link">🎙️ Podcast Notes</a>
+      <a href="bookmarks.html" class="nav-link">🔖 Bookmarks</a>
+      <a href="account-settings.html" class="nav-link">⚙️ Settings</a>
+
+      <div class="sidebar-card">
+        <strong>AI Graphic Tip</strong>
+        <p>Use a scripture, audience, style, and format to generate graphics for social media, screens, flyers, and sermon slides.</p>
+        <button class="btn btn-primary" onclick="openPromptModal()">✨ Build AI Prompt</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="search">
+          <span>🔎</span>
+          <input type="search" placeholder="Search verse graphics, templates, saved designs..." />
+        </div>
+        <div class="top-actions">
+          <span class="pill">🎨 Creative Studio</span>
+          <span class="pill">⚡ AI Ready</span>
+          <span class="pill">👤 Pastor Workspace</span>
+        </div>
+      </div>
+
+      <section class="hero">
+        <div class="hero-content">
+          <div>
+            <div class="eyebrow">Verse Graphic Studio</div>
+            <h2>Create premium Bible verse graphics with AI.</h2>
+            <p>Turn scripture into beautiful ministry visuals for Facebook, Instagram, Sunday screens, sermon slides, announcements, devotionals, and outreach campaigns.</p>
+          </div>
+          <div class="hero-metrics">
+            <div class="metric"><strong>12+</strong><span>Graphic styles</span></div>
+            <div class="metric"><strong>4</strong><span>Export formats</span></div>
+            <div class="metric"><strong>AI</strong><span>Prompt builder</span></div>
+            <div class="metric"><strong>PDF</strong><span>Print ready</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="card panel builder-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Graphic Builder</h3>
+              <p class="small">Enter scripture details and choose a design direction. The preview updates instantly.</p>
+            </div>
+            <span class="badge">Live Preview</span>
+          </div>
+
+          <label for="verseText">Bible Verse Text</label>
+          <textarea id="verseText" placeholder="Example: The Lord is my shepherd; I shall not want.">The Lord is my shepherd; I shall not want.</textarea>
+
+          <div class="field-row">
+            <div>
+              <label for="verseRef">Reference</label>
+              <input id="verseRef" value="Psalm 23:1" placeholder="Psalm 23:1" />
+            </div>
+            <div>
+              <label for="audience">Audience</label>
+              <select id="audience">
+                <option>Church Members</option>
+                <option>New Believers</option>
+                <option>Youth Ministry</option>
+                <option>Pastors & Leaders</option>
+                <option>Prayer Group</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div>
+              <label for="style">Graphic Style</label>
+              <select id="style">
+                <option value="premium">Premium Church</option>
+                <option value="worship">Worship Night</option>
+                <option value="devotional">Daily Devotional</option>
+                <option value="youth">Youth Energy</option>
+                <option value="classic">Classic Scripture</option>
+              </select>
+            </div>
+            <div>
+              <label for="format">Format</label>
+              <select id="format">
+                <option value="portrait">Instagram Portrait 4:5</option>
+                <option value="square">Square Post 1:1</option>
+                <option value="story">Story/Reel 9:16</option>
+                <option value="wide">Church Screen 16:9</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="imageDirection">AI Image Direction</label>
+          <textarea id="imageDirection" placeholder="Describe the background image, mood, colors, and lighting.">Warm golden light, peaceful open Bible, subtle church worship atmosphere, premium modern Christian design, deep navy and purple background.</textarea>
+
+          <label for="caption">Optional Caption / Call to Action</label>
+          <input id="caption" value="Share this promise with someone today." placeholder="Share this promise with someone today." />
+
+          <button class="btn btn-primary btn-full" onclick="updatePreview()">✨ Generate Preview</button>
+          <button class="btn btn-dark btn-full" onclick="openPromptModal()">🤖 Create AI Image Prompt</button>
+
+          <label>Quick Verse Ideas</label>
+          <div class="quick-verses">
+            <button class="verse-chip" onclick="setVerse('I can do all things through Christ who strengthens me.', 'Philippians 4:13')"><strong>Strength</strong><span>Philippians 4:13</span></button>
+            <button class="verse-chip" onclick="setVerse('For we walk by faith, not by sight.', '2 Corinthians 5:7')"><strong>Faith</strong><span>2 Corinthians 5:7</span></button>
+            <button class="verse-chip" onclick="setVerse('Be still, and know that I am God.', 'Psalm 46:10')"><strong>Peace</strong><span>Psalm 46:10</span></button>
+          </div>
+        </aside>
+
+        <section class="studio">
+          <div class="card toolbar">
+            <div class="toolbar-left">
+              <button class="btn btn-light" onclick="setFormat('square')">⬜ Square</button>
+              <button class="btn btn-light" onclick="setFormat('portrait')">📱 Portrait</button>
+              <button class="btn btn-light" onclick="setFormat('story')">🎬 Story</button>
+              <button class="btn btn-light" onclick="setFormat('wide')">🖥️ Screen</button>
+            </div>
+            <div class="toolbar-right">
+              <button class="btn btn-green" onclick="saveDesign()">💾 Save</button>
+              <button class="btn btn-light" onclick="copyPrompt()">📋 Copy Prompt</button>
+              <button class="btn btn-dark" onclick="window.print()">🖨️ Print / PDF</button>
+              <button class="btn btn-primary" onclick="downloadPNG()">⬇️ Download PNG</button>
+            </div>
+          </div>
+
+          <div class="card canvas-wrap">
+            <div class="graphic-stage">
+              <article class="graphic-preview" id="graphicPreview">
+                <div class="preview-top">
+                  <div class="preview-brand">Shepherd Library</div>
+                  <div class="preview-date" id="previewDate">Today</div>
+                </div>
+                <div class="preview-main">
+                  <div class="preview-label">Verse of the Day</div>
+                  <h2 class="preview-verse" id="previewVerse">The Lord is my shepherd; I shall not want.</h2>
+                  <div class="preview-ref" id="previewRef">Psalm 23:1</div>
+                </div>
+                <div class="preview-footer">
+                  <span id="previewCaption">Share this promise with someone today.</span>
+                  <span>✦</span>
+                </div>
+              </article>
+            </div>
+
+            <aside class="side-tools">
+              <div class="mini-card">
+                <h4>Brand Colors</h4>
+                <p>Choose a premium color mood for your verse design.</p>
+                <div class="colors">
+                  <button class="swatch" onclick="setTheme('blue')" title="Blue Purple"></button>
+                  <button class="swatch" onclick="setTheme('gold')" title="Gold Flame"></button>
+                  <button class="swatch" onclick="setTheme('green')" title="Fresh Green"></button>
+                  <button class="swatch" onclick="setTheme('pink')" title="Royal Pink"></button>
+                  <button class="swatch" onclick="setTheme('gray')" title="Modern Gray"></button>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <h4>Output Size</h4>
+                <p>Select where this graphic will be used.</p>
+                <div class="format-grid">
+                  <button class="format-btn active" onclick="setFormat('portrait', this)">4:5</button>
+                  <button class="format-btn" onclick="setFormat('square', this)">1:1</button>
+                  <button class="format-btn" onclick="setFormat('story', this)">9:16</button>
+                  <button class="format-btn" onclick="setFormat('wide', this)">16:9</button>
+                  <button class="format-btn" onclick="setFormat('flyer', this)">Flyer</button>
+                  <button class="format-btn" onclick="setFormat('banner', this)">Banner</button>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <h4>Real App Connection</h4>
+                <p>Connect the AI prompt button to your image API, then save generated images to Supabase Storage under each user account.</p>
+              </div>
+
+              <div class="mini-card">
+                <h4>Recommended API Flow</h4>
+                <p>User enters verse → app builds prompt → image API generates graphic → save PNG URL and metadata to database.</p>
+              </div>
+            </aside>
+          </div>
+
+          <div class="card template-section">
+            <div class="panel-header" style="padding:22px 24px 4px; margin:0;">
+              <div>
+                <h3>Premium Templates</h3>
+                <p class="small">Starter looks for church posts, worship graphics, devotionals, and screens.</p>
+              </div>
+            </div>
+            <div class="template-grid">
+              <div class="template" onclick="setTheme('blue')"><div class="template-thumb">Sunday Verse</div><strong>Premium Church</strong><span>Deep navy and purple</span></div>
+              <div class="template" onclick="setTheme('gold')"><div class="template-thumb">Prayer Fire</div><strong>Worship Night</strong><span>Warm gold atmosphere</span></div>
+              <div class="template" onclick="setTheme('green')"><div class="template-thumb">Daily Grace</div><strong>Devotional</strong><span>Peaceful green style</span></div>
+              <div class="template" onclick="setTheme('gray')"><div class="template-thumb">Scripture Card</div><strong>Classic Minimal</strong><span>Clean modern layout</span></div>
+            </div>
+          </div>
+
+          <div class="card saved-section">
+            <div class="panel-header" style="padding:22px 22px 0; margin:0;">
+              <div>
+                <h3>Saved Designs</h3>
+                <p class="small">Example saved area. Connect this to Supabase for real user history.</p>
+              </div>
+            </div>
+            <div class="saved-grid" id="savedGrid">
+              <div class="saved-item"><strong>Psalm 23:1 Graphic</strong><span>Instagram Portrait • Draft</span></div>
+              <div class="saved-item"><strong>Faith Sunday Post</strong><span>Square Post • Saved</span></div>
+              <div class="saved-item"><strong>Youth Night Verse</strong><span>Story/Reel • Ready</span></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="promptModal">
+    <div class="modal">
+      <h3>AI Image Prompt</h3>
+      <p>Use this prompt with your AI image API. In production, send this prompt to your backend and return the generated image to the preview area.</p>
+      <div class="prompt-box" id="promptOutput"></div>
+      <div class="modal-actions">
+        <button class="btn btn-light" onclick="closePromptModal()">Close</button>
+        <button class="btn btn-dark" onclick="copyPrompt()">Copy Prompt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Saved</div>
+
+  <script>
+    const preview = document.getElementById('graphicPreview');
+    const today = new Date();
+    document.getElementById('previewDate').textContent = today.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function updatePreview() {
+      const verse = document.getElementById('verseText').value.trim() || 'Enter a Bible verse to begin.';
+      const ref = document.getElementById('verseRef').value.trim() || 'Bible Reference';
+      const caption = document.getElementById('caption').value.trim() || 'Created with Shepherd Library';
+      document.getElementById('previewVerse').textContent = verse;
+      document.getElementById('previewRef').textContent = ref;
+      document.getElementById('previewCaption').textContent = caption;
+      showToast('Preview updated');
+    }
+
+    function setVerse(text, reference) {
+      document.getElementById('verseText').value = text;
+      document.getElementById('verseRef').value = reference;
+      updatePreview();
+    }
+
+    function setTheme(theme) {
+      const themes = {
+        blue: "linear-gradient(180deg, rgba(7,19,41,.08), rgba(7,19,41,.72)), radial-gradient(circle at 22% 18%, rgba(251,191,36,.8), transparent 20%), radial-gradient(circle at 82% 78%, rgba(88,57,183,.9), transparent 34%), linear-gradient(135deg, #0b1b3a, #172d65 48%, #5839b7)",
+        gold: "linear-gradient(180deg, rgba(7,19,41,.05), rgba(82,31,8,.72)), radial-gradient(circle at 24% 18%, rgba(255,237,213,.9), transparent 20%), radial-gradient(circle at 78% 82%, rgba(245,158,11,.92), transparent 34%), linear-gradient(135deg, #7c2d12, #c2410c, #f59e0b)",
+        green: "linear-gradient(180deg, rgba(7,19,41,.05), rgba(6,78,59,.76)), radial-gradient(circle at 20% 18%, rgba(187,247,208,.85), transparent 22%), radial-gradient(circle at 78% 78%, rgba(22,163,74,.95), transparent 34%), linear-gradient(135deg, #052e2b, #064e3b, #16a34a)",
+        pink: "linear-gradient(180deg, rgba(7,19,41,.05), rgba(76,29,149,.78)), radial-gradient(circle at 20% 18%, rgba(251,207,232,.9), transparent 20%), radial-gradient(circle at 80% 80%, rgba(190,24,93,.9), transparent 36%), linear-gradient(135deg, #1e1b4b, #581c87, #be185d)",
+        gray: "linear-gradient(180deg, rgba(17,24,39,.08), rgba(17,24,39,.72)), radial-gradient(circle at 22% 18%, rgba(226,232,240,.85), transparent 20%), radial-gradient(circle at 80% 78%, rgba(71,85,105,.9), transparent 34%), linear-gradient(135deg, #111827, #334155, #64748b)"
+      };
+      preview.style.background = themes[theme] || themes.blue;
+      showToast('Theme changed');
+    }
+
+    function setFormat(format, btn) {
+      const ratios = {
+        portrait: '4 / 5',
+        square: '1 / 1',
+        story: '9 / 16',
+        wide: '16 / 9',
+        flyer: '8.5 / 11',
+        banner: '3 / 1'
+      };
+      document.getElementById('format').value = ['portrait','square','story','wide'].includes(format) ? format : 'portrait';
+      preview.style.aspectRatio = ratios[format] || ratios.portrait;
+      document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      showToast('Format updated');
+    }
+
+    function buildPrompt() {
+      const verse = document.getElementById('verseText').value.trim();
+      const ref = document.getElementById('verseRef').value.trim();
+      const audience = document.getElementById('audience').value;
+      const style = document.getElementById('style').selectedOptions[0].textContent;
+      const format = document.getElementById('format').selectedOptions[0].textContent;
+      const direction = document.getElementById('imageDirection').value.trim();
+      const caption = document.getElementById('caption').value.trim();
+
+      return `Create a professional premium Christian Bible verse graphic for Shepherd Library.\n\nVerse text: "${verse}"\nBible reference: ${ref}\nAudience: ${audience}\nDesign style: ${style}\nFormat: ${format}\nBackground direction: ${direction}\nOptional caption: ${caption}\n\nDesign requirements:\n- Modern premium ministry design\n- Deep contrast and readable typography\n- Elegant scripture layout with strong hierarchy\n- Space for Shepherd Library branding\n- Warm spiritual atmosphere without looking cheap\n- High-resolution social media ready graphic\n- Do not misspell the Bible verse or reference`; 
+    }
+
+    function openPromptModal() {
+      updatePreview();
+      document.getElementById('promptOutput').textContent = buildPrompt();
+      document.getElementById('promptModal').classList.add('show');
+    }
+
+    function closePromptModal() {
+      document.getElementById('promptModal').classList.remove('show');
+    }
+
+    async function copyPrompt() {
+      const prompt = buildPrompt();
+      try {
+        await navigator.clipboard.writeText(prompt);
+        showToast('AI prompt copied');
+      } catch (error) {
+        document.getElementById('promptOutput').textContent = prompt;
+        document.getElementById('promptModal').classList.add('show');
+        showToast('Prompt ready to copy');
+      }
+    }
+
+    function saveDesign() {
+      updatePreview();
+      const ref = document.getElementById('verseRef').value.trim() || 'Untitled Verse';
+      const format = document.getElementById('format').selectedOptions[0].textContent;
+      const savedGrid = document.getElementById('savedGrid');
+      const item = document.createElement('div');
+      item.className = 'saved-item';
+      item.innerHTML = `<strong>${ref} Graphic</strong><span>${format} • Saved locally</span>`;
+      savedGrid.prepend(item);
+      showToast('Design saved to page');
+    }
+
+    function downloadPNG() {
+      showToast('Use the print/PDF button or connect html2canvas for PNG export');
+      alert('To enable real PNG download, add html2canvas or connect your backend image renderer. The preview, print, save, and AI prompt features are ready.');
+    }
+
+    document.getElementById('verseText').addEventListener('input', updatePreview);
+    document.getElementById('verseRef').addEventListener('input', updatePreview);
+    document.getElementById('caption').addEventListener('input', updatePreview);
+    document.getElementById('promptModal').addEventListener('click', function(e) {
+      if (e.target.id === 'promptModal') closePromptModal();
+    });
+  </script>
+</body>
+</html>
